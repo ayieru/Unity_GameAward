@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//éQçlÅFhttps://yuji2yuji.hatenablog.com/entry/2017/12/30/171811
+
 public class magnet : MonoBehaviour
 {
-    public bool a;
     public float power;
 
     Vector3 distance;
@@ -44,11 +45,6 @@ public class magnet : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            a = true;
-        }
-
         if (((metal.transform.position.y - magRightPoint.y) * magAngleSign < magAngleSign * (metal.transform.position.x - magRightPoint.x) / -Mathf.Tan(magAngle)) &&
             ((metal.transform.position.y - magRightPoint.y) * magAngleSign > magAngleSign * (metal.transform.position.x - magLeftPoint.x) / -Mathf.Tan(magAngle)))
         {
