@@ -41,9 +41,21 @@ public class Player : MonoBehaviour
         }
 
         //ジャンプ
-        if (Input.GetKeyDown(KeyCode.Space) && !(rb.velocity.y < -0.5f))
+        if (Input.GetButtonDown("Jump") && !(rb.velocity.y < -0.5f))
         {
             rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+        }
+
+        //アクション
+        if(Input.GetButtonDown("Action"))
+        {
+            Debug.Log("アクション");
+        }
+
+        //極切り替え
+        if (Input.GetButtonDown("MagnetChange"))
+        {
+            Debug.Log("極切り替え");
         }
 
 
