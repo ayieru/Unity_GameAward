@@ -8,7 +8,7 @@ public class Player : MagnetManager
     [SerializeField] Magnet_Pole Pole = Magnet_Pole.N;
 
     [Header("移動速度")]
-    [SerializeField]　private float Speed = 5.0f;
+    [SerializeField] private float Speed = 5.0f;
 
     [Header("ジャンプ力")]
     [SerializeField] private float JumpPower = 10.0f;
@@ -45,7 +45,7 @@ public class Player : MagnetManager
         }
 
         //アクション
-        if(Input.GetButtonDown("Action"))
+        if (Input.GetButtonDown("Action"))
         {
             Debug.Log("アクション");
         }
