@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 287903344783892285}
   - component: {fileID: 4485863817346839193}
-  - component: {fileID: 4168253432052537782}
   - component: {fileID: 8075997886990045807}
   - component: {fileID: 6840693656493331208}
+  - component: {fileID: 1184413921441135489}
   m_Layer: 0
   m_Name: mag
   m_TagString: Untagged
@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3590380994185723307}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.27, y: 2.94, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -85,19 +85,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4168253432052537782
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3590380994185723307}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8055dc6890ce37946b60e7094ad57dd9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  power: 5
 --- !u!50 &8075997886990045807
 Rigidbody2D:
   serializedVersion: 4
@@ -113,12 +100,12 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 7
+  m_Constraints: 3
 --- !u!58 &6840693656493331208
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -135,3 +122,18 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &1184413921441135489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3590380994185723307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e38feaa5bfac5846b11ce8e587de04b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Pole: 1
+  Power: 50
+  Distance: 5
