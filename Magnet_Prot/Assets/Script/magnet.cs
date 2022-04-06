@@ -2,75 +2,49 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//参考：https://yuji2yuji.hatenablog.com/entry/2017/12/30/171811
-
-public class magnet : MonoBehaviour
+public class Magnet : MagnetManager
 {
-    public float power;
+    [Header("極")]
+    [SerializeReference] Magnet_Pole Pole = Magnet_Pole.N;
+
+    [Header("磁石の力")]
+    [SerializeReference] float Power = 20.0f;
+
+    [Header("磁石の影響距離")]
+    [SerializeReference] float Distance = 5.0f;
 
     Vector3 distance;
-    float distanceN;//法線方向の距離
-    Vector3 magPosition;//磁石の中心位置
-    Vector3 magExtents;
-    Vector3 magRightPoint;
-    Vector3 magLeftPoint;
-    float magForce;//磁力を受けるオブジェクトにかかる力
-    float magForceX;//磁力を受けるオブジェクトにかかる力
-    float magForceY;//磁力を受けるオブジェクトにかかる力
-    float magConst = 5.0f;//定数のパラメータ
-    float magAngle;//磁石の角度
-    float magAngleSign;
-    SpriteRenderer sr;
-    float width;
-    GameObject metal;//磁力を受けるオブジェクト
-    Rigidbody2D rigid2D;
-    float tanObjects;
-    float angleObjects;//オブジェクト間の角度
-    float xDir;
-    float yDir;
+    Vector3 centerPosition;
+    Vector3 forceObject;
 
-    void Start()
+    private Rigidbody2D rb;
+    private GameObject playerGO;
+    private Player player;
+
+    void Awake()
     {
-        this.sr = GetComponent<SpriteRenderer>();
-        this.magPosition = transform.position;
-        this.magAngle = transform.localEulerAngles.z * Mathf.Deg2Rad;//ラジアンで角度を取得
-        this.magAngleSign = Mathf.Sign(Mathf.Tan(magAngle));
-        this.magExtents = new Vector3(this.sr.bounds.extents.x * Mathf.Cos(magAngle), this.sr.bounds.extents.x * Mathf.Sin(magAngle), 0.0f);
-        this.magRightPoint = magPosition + magExtents;
-        this.magLeftPoint = magPosition - magExtents;
-        Debug.Log("magAngle:" + magAngle);
-        this.metal = GameObject.Find("Player");
-        this.rigid2D = this.metal.GetComponent<Rigidbody2D>();
+        centerPosition = transform.position;
+        playerGO = GameObject.Find("Player");
+        rb = playerGO.GetComponent<Rigidbody2D>();
+        player = playerGO.GetComponent<Player>();
     }
 
     void Update()
     {
-        if (((metal.transform.position.y - magRightPoint.y) * magAngleSign < magAngleSign * (metal.transform.position.x - magRightPoint.x) / -Mathf.Tan(magAngle)) &&
-            ((metal.transform.position.y - magRightPoint.y) * magAngleSign > magAngleSign * (metal.transform.position.x - magLeftPoint.x) / -Mathf.Tan(magAngle)))
+        float dis = Vector2.Distance(transform.position, player.transform.position);
+
+        if (dis < Distance)
         {
-            tanObjects = (metal.transform.position.y - magPosition.y) / (metal.transform.position.x - magPosition.x);
-            angleObjects = Mathf.Atan(tanObjects);
-            distanceN = (magPosition - metal.transform.position).magnitude * Mathf.Sin(angleObjects);
-            magForce = magConst / distanceN;
-            magForceX = Mathf.Abs(magForce * Mathf.Sin(magAngle));
-            magForceY = Mathf.Abs(magForce * Mathf.Cos(magAngle));
-            if (metal.transform.position.x > (metal.transform.position.y - magPosition.y) / Mathf.Tan(magAngle) + magPosition.x)
+            distance = centerPosition - player.transform.position;
+            forceObject = Power * distance / Mathf.Pow(distance.magnitude, 3);
+            if (Pole == player.GetPole())
             {
-                xDir = -power;
+                rb.AddForce(-forceObject, ForceMode2D.Force);
             }
             else
             {
-                xDir = power;
+                rb.AddForce(forceObject, ForceMode2D.Force);
             }
-            if (metal.transform.position.y > Mathf.Tan(magAngle) * (metal.transform.position.x - magPosition.x) + magPosition.y)
-            {
-                yDir = -power;
-            }
-            else
-            {
-                yDir = power;
-            }
-            this.rigid2D.AddForce(new Vector2(xDir * magForceX, yDir * magForceY), ForceMode2D.Force);
         }
     }
 }

@@ -2,38 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MagnetManager
 {
+    [Header("極")]
+    [SerializeField] Magnet_Pole Pole = Magnet_Pole.N;
 
     [Header("移動速度")]
-    [SerializeField]
-    private float speed;
+    [SerializeField]　private float Speed = 5.0f;
 
     [Header("ジャンプ力")]
-    [SerializeField]
-    private float jumpPower;
+    [SerializeField] private float JumpPower = 10.0f;
 
     private Rigidbody2D rb;
 
-    void Start()
+    void Awake()
     {
-
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void Update()
     {
-        rb = GetComponent<Rigidbody2D>();
-
         float horizontalKey = Input.GetAxis("Horizontal");
         float xSpeed = 0.0f;
 
         if (horizontalKey > 0)
         {
-            xSpeed = speed;
+            xSpeed = Speed;
         }
         else if (horizontalKey < 0)
         {
-            xSpeed = -speed;
+            xSpeed = -Speed;
         }
         else
         {
@@ -43,7 +41,7 @@ public class Player : MonoBehaviour
         //ジャンプ
         if (Input.GetButtonDown("Jump") && !(rb.velocity.y < -0.5f))
         {
-            rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+            rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
         }
 
         //アクション
@@ -55,10 +53,21 @@ public class Player : MonoBehaviour
         //極切り替え
         if (Input.GetButtonDown("MagnetChange"))
         {
-            Debug.Log("極切り替え");
+            if (Pole == Magnet_Pole.S)
+            {
+                Pole = Magnet_Pole.N;
+                Debug.Log("極切り替え：S → N");
+            }
+            else
+            {
+                Pole = Magnet_Pole.S;
+                Debug.Log("極切り替え：N → S");
+            }
         }
 
 
         rb.velocity = new Vector2(xSpeed, rb.velocity.y);
     }
+
+    public Magnet_Pole GetPole() { return Pole; }
 }
