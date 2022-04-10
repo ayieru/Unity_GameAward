@@ -6,21 +6,28 @@ using UnityEngine;
 
 public class MiddleCameraController : MonoBehaviour
 {
-    private GameObject player;
-    private Vector3 startPlayerOffset;
-    private Vector3 startCameraPos;
-    public  float RATE = 0.05f;
+    [Header("プレイヤーオブジェクト")]
+    private GameObject Player;
+
+    [Header("開始時のプレイヤーオフセット")]
+    private Vector3 StartPlayerOffset;
+
+    [Header("開始時のカメラ位置")]
+    private Vector3 StartCameraPos;
+
+    [Header("スクロールの差分")]
+    public float Rate = 0.15f;
 
     void Start()
     {
-        player = GameObject.Find("Player");
-        startPlayerOffset = player.transform.position;
-        startCameraPos = this.transform.position;
+        Player = GameObject.Find("Player");
+        StartPlayerOffset = Player.transform.position;
+        StartCameraPos = this.transform.position;
     }
 
     void Update()
     {
-        Vector3 v = (player.transform.position - startPlayerOffset) * RATE;
-        this.transform.position = startCameraPos + v;
+        Vector3 v = (Player.transform.position - StartPlayerOffset) * Rate;
+        this.transform.position = StartCameraPos + v;
     }
 }
