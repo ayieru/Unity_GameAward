@@ -13,35 +13,54 @@ public class Player : MagnetManager
     [Header("ジャンプ力")]
     [SerializeField] private float JumpPower = 10.0f;
 
-    private Rigidbody2D rb;
+    private Rigidbody2D Rb;
+
+    private bool HitJagde = false;// 何かとプレイヤーが当たった判定
 
     void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        Rb = GetComponent<Rigidbody2D>();
+        GameObject Iron = GameObject.FindWithTag("Iron");// Ironのタグがついているオブジェクトを取得
     }
 
     void Update()
     {
-        float horizontalKey = Input.GetAxis("Horizontal");
-        float xSpeed = 0.0f;
+        float HorizontalKey = Input.GetAxis("Horizontal");
+        float VerticalKey = Input.GetAxis("Vertical");  // 縦入力反応変数
+        float XSpeed = 0.0f;
+        float YSpeed = 0.0f;                            // 縦移動のスピード変数
 
-        if (horizontalKey > 0)
+        if (HorizontalKey > 0)
         {
-            xSpeed = Speed;
+            XSpeed = Speed;
         }
-        else if (horizontalKey < 0)
+        else if (HorizontalKey < 0)
         {
-            xSpeed = -Speed;
+            XSpeed = -Speed;
         }
         else
         {
-            xSpeed = 0.0f;
+            XSpeed = 0.0f;
+        }
+
+        // 縦入力反応処理
+        if (VerticalKey > 0)
+        {
+            YSpeed = Speed * 2.0f;
+        }
+        else if (VerticalKey < 0)
+        {
+            YSpeed = -Speed * 2.0f;
+        }
+        else
+        {
+            YSpeed = 0.0f;
         }
 
         //ジャンプ
-        if (Input.GetButtonDown("Jump") && !(rb.velocity.y < -0.5f))
+        if (Input.GetButtonDown("Jump") && !(Rb.velocity.y < -0.5f))
         {
-            rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
+            Rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
         }
 
         //アクション
@@ -65,8 +84,35 @@ public class Player : MagnetManager
             }
         }
 
+        // 磁石で引き寄せられているか、いないかの判定
+        if (HitJagde == true)
+        {
+            Rb.velocity = new Vector2(XSpeed, YSpeed);
+        }
+        else
+        {
+            Rb.velocity = new Vector2(XSpeed, Rb.velocity.y);
+        }
+    }
 
-        rb.velocity = new Vector2(xSpeed, rb.velocity.y);
+    // あたったタイミングで処理が動く
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Iron"))
+        {
+            Debug.Log("くっついた！！");
+            HitJagde = true;
+        }
+    }
+
+    // 離れたら処理が動く
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Iron"))
+        {
+            Debug.Log("離れた！！");
+            HitJagde = false;
+        }
     }
 
     public Magnet_Pole GetPole() { return Pole; }
