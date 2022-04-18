@@ -13,6 +13,11 @@ public class Player : MagnetManager
     [Header("ジャンプ力")]
     [SerializeField] private float JumpPower = 10.0f;
 
+    [Header("ジャンプ回数の上限")]
+    [SerializeField] private int MaxJumpCount = 1;
+
+    private int JumpCount = 0;
+
     private Rigidbody2D Rb;
 
     private bool HitJagde = false;// 何かとプレイヤーが当たった判定
@@ -24,8 +29,8 @@ public class Player : MagnetManager
 
     void Update()
     {
-        float HorizontalKey = Input.GetAxis("Horizontal");
-        float VerticalKey = Input.GetAxis("Vertical");  // 縦入力反応変数
+        float HorizontalKey = Input.GetAxisRaw("Horizontal");
+        float VerticalKey = Input.GetAxisRaw("Vertical");  // 縦入力反応変数
         float XSpeed = 0.0f;
         float YSpeed = 0.0f;                            // 縦移動のスピード変数
 
@@ -59,7 +64,12 @@ public class Player : MagnetManager
         //ジャンプ
         if (Input.GetButtonDown("Jump") && !(Rb.velocity.y < -0.5f))
         {
-            Rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
+            if (JumpCount < MaxJumpCount)
+            {
+                Rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
+
+                JumpCount++;
+            }
         }
 
         //アクション
@@ -105,6 +115,16 @@ public class Player : MagnetManager
 
                 HitJagde = true;
             }
+        }
+
+        if (collision.gameObject.CompareTag("Floor"))
+        {
+            JumpCount = 0;
+        }
+
+        if (collision.gameObject.CompareTag("Block"))
+        {
+            JumpCount = 0;
         }
     }
 
