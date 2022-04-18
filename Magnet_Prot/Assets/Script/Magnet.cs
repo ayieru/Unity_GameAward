@@ -5,13 +5,13 @@ using UnityEngine;
 public class Magnet : MagnetManager
 {
     [Header("‹É")]
-    [SerializeReference] Magnet_Pole Pole = Magnet_Pole.N;
+    public Magnet_Pole Pole = Magnet_Pole.N;
 
     [Header("¥Î‚Ì—Í")]
-    [SerializeReference] float Power = 20.0f;
+    public float Power = 20.0f;
 
     [Header("¥Î‚Ì‰e‹¿‹——£")]
-    [SerializeReference] float Distance = 5.0f;
+    public float Distance = 5.0f;
 
     Vector3 distance;
     Vector3 centerPosition;

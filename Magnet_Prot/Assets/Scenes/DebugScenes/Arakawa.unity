@@ -237,7 +237,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3590380994185723307, guid: 795e9833aa4c0b4448fbdede5a4ac9a5, type: 3}
       propertyPath: m_TagString
-      value: Iron
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 6840693656493331208, guid: 795e9833aa4c0b4448fbdede5a4ac9a5, type: 3}
       propertyPath: m_IsTrigger
@@ -410,13 +410,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1184413921441135489, guid: 795e9833aa4c0b4448fbdede5a4ac9a5, type: 3}
+      propertyPath: Pole
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3590380994185723307, guid: 795e9833aa4c0b4448fbdede5a4ac9a5, type: 3}
       propertyPath: m_Name
       value: mag (3)
       objectReference: {fileID: 0}
     - target: {fileID: 3590380994185723307, guid: 795e9833aa4c0b4448fbdede5a4ac9a5, type: 3}
       propertyPath: m_TagString
-      value: Iron
+      value: SPole
       objectReference: {fileID: 0}
     - target: {fileID: 6840693656493331208, guid: 795e9833aa4c0b4448fbdede5a4ac9a5, type: 3}
       propertyPath: m_IsTrigger
@@ -561,9 +565,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5754467526990713000, guid: 9c65ede3bf8a9df429b2e9417a6381e4, type: 3}
+      propertyPath: Power
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 5754467526990713001, guid: 9c65ede3bf8a9df429b2e9417a6381e4, type: 3}
       propertyPath: m_Name
       value: mag1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5754467526990713001, guid: 9c65ede3bf8a9df429b2e9417a6381e4, type: 3}
+      propertyPath: m_TagString
+      value: NPole
       objectReference: {fileID: 0}
     - target: {fileID: 5754467526990713012, guid: 9c65ede3bf8a9df429b2e9417a6381e4, type: 3}
       propertyPath: m_RootOrder
