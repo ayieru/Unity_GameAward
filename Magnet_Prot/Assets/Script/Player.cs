@@ -20,7 +20,6 @@ public class Player : MagnetManager
     void Awake()
     {
         Rb = GetComponent<Rigidbody2D>();
-        GameObject Iron = GameObject.FindWithTag("Iron");// Ironのタグがついているオブジェクトを取得
     }
 
     void Update()
@@ -84,31 +83,35 @@ public class Player : MagnetManager
             }
         }
 
-        // 磁石で引き寄せられているか、いないかの判定
         if (HitJagde == true)
         {
-            Rb.velocity = new Vector2(XSpeed, YSpeed);
+            Rb.velocity = new Vector2(XSpeed, YSpeed);      // 壁のぼり
         }
         else
         {
-            Rb.velocity = new Vector2(XSpeed, Rb.velocity.y);
+            Rb.velocity = new Vector2(XSpeed, Rb.velocity.y);// ジャンプ
         }
     }
 
     // あたったタイミングで処理が動く
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Iron"))
+        if (collision.gameObject.CompareTag("Iron")|| collision.gameObject.CompareTag("NPole")|| collision.gameObject.CompareTag("SPole"))
         {
-            Debug.Log("くっついた！！");
-            HitJagde = true;
+            // 磁石によって引き寄せられてるか
+            if (collision.gameObject.GetComponent<Magnet>().Pole != Pole)
+            {
+                Debug.Log("くっついた！！");
+
+                HitJagde = true;
+            }
         }
     }
 
     // 離れたら処理が動く
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Iron"))
+        if (collision.gameObject.CompareTag("Iron") || collision.gameObject.CompareTag("NPole") || collision.gameObject.CompareTag("SPole"))
         {
             Debug.Log("離れた！！");
             HitJagde = false;
