@@ -21,6 +21,7 @@ public class Player : MagnetManager
     private Rigidbody2D Rb;
 
     private bool HitJagde = false;// 何かとプレイヤーが当たった判定
+    private bool TwoFlug = false;
 
     void Awake()
     {
@@ -99,19 +100,35 @@ public class Player : MagnetManager
         }
         else
         {
-            Rb.velocity = new Vector2(XSpeed, Rb.velocity.y);// ジャンプ
+            Rb.velocity = new Vector2(XSpeed, Rb.velocity.y);　// ジャンプ
         }
     }
 
     // あたったタイミングで処理が動く
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Iron")|| collision.gameObject.CompareTag("NPole")|| collision.gameObject.CompareTag("SPole"))
+        //簡易的に鉄を実装
+        if (collision.gameObject.CompareTag("Iron"))
+        {
+            Debug.Log("鉄にくっついた！！");
+
+            //既にTure
+            if (HitJagde)
+            {
+                TwoFlug = true;
+            }
+
+            HitJagde = true;
+
+            Rb.gravityScale = 0.0f;
+        }
+
+        if (collision.gameObject.CompareTag("NPole")|| collision.gameObject.CompareTag("SPole"))
         {
             // 磁石によって引き寄せられてるか
             if (collision.gameObject.GetComponent<Magnet>().Pole != Pole)
             {
-                Debug.Log("くっついた！！");
+                Debug.Log("磁石にくっついた！！");
 
                 HitJagde = true;
             }
@@ -131,10 +148,27 @@ public class Player : MagnetManager
     // 離れたら処理が動く
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Iron") || collision.gameObject.CompareTag("NPole") || collision.gameObject.CompareTag("SPole"))
+        if (collision.gameObject.CompareTag("NPole") || collision.gameObject.CompareTag("SPole"))
         {
             Debug.Log("離れた！！");
             HitJagde = false;
+
+            Rb.gravityScale = 1.0f;
+        }
+
+        if (collision.gameObject.CompareTag("Iron"))
+        {
+            Debug.Log("離れた！！");
+
+            if (!TwoFlug)
+            {
+                HitJagde = false;
+                Rb.gravityScale = 1.0f;
+            }
+            else
+            {
+                TwoFlug = false;
+            }
         }
     }
 

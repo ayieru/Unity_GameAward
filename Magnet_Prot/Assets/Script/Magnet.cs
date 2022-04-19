@@ -24,6 +24,7 @@ public class Magnet : MagnetManager
     void Awake()
     {
         centerPosition = transform.position;
+
         playerGO = GameObject.Find("Player");
         rb = playerGO.GetComponent<Rigidbody2D>();
         player = playerGO.GetComponent<Player>();
@@ -37,6 +38,7 @@ public class Magnet : MagnetManager
         {
             distance = centerPosition - player.transform.position;
             forceObject = Power * distance / Mathf.Pow(distance.magnitude, 3);
+
             if (Pole == player.GetPole())
             {
                 rb.AddForce(-forceObject, ForceMode2D.Force);
