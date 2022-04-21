@@ -135,5 +135,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Pole: 1
-  Power: 50
-  Distance: 5
+  PullPower: 400
+  ReleasePower: 400
+  Distance: 10
