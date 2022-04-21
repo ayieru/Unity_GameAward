@@ -8,13 +8,13 @@ public class Player : MagnetManager
     [SerializeField] Magnet_Pole Pole = Magnet_Pole.N;
 
     [Header("移動速度")]
-    [SerializeField] private float Speed = 5.0f;
+    [SerializeField] float Speed = 5.0f;
 
     [Header("ジャンプ力")]
-    [SerializeField] private float JumpPower = 10.0f;
+    [SerializeField] float JumpPower = 10.0f;
 
     [Header("ジャンプ回数の上限")]
-    [SerializeField] private int MaxJumpCount = 1;
+    [SerializeField] int MaxJumpCount = 1;
 
     private int JumpCount = 0;
 
@@ -156,6 +156,7 @@ public class Player : MagnetManager
             Rb.gravityScale = 1.0f;
         }
 
+        //簡易的に鉄を実装
         if (collision.gameObject.CompareTag("Iron"))
         {
             Debug.Log("離れた！！");

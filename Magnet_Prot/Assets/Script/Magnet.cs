@@ -8,13 +8,13 @@ public class Magnet : MagnetManager
     public Magnet_Pole Pole = Magnet_Pole.N;
 
     [Header("é•êŒÇÃà¯Ç≠óÕ")]
-    public float PullPower = 20.0f;
+    public float PullPower = 400.0f;
 
     [Header("é•êŒÇÃó£Ç∑óÕ")]
-    public float ReleasePower = 20.0f;
+    public float ReleasePower = 400.0f;
 
     [Header("é•êŒÇÃâeãøãóó£")]
-    public float Distance = 5.0f;
+    public float Distance = 10.0f;
 
     Vector3 distance;
     Vector3 centerPosition;
@@ -32,18 +32,33 @@ public class Magnet : MagnetManager
         playerGO = GameObject.Find("Player");
         rb = playerGO.GetComponent<Rigidbody2D>();
         player = playerGO.GetComponent<Player>();
+
+        if (Pole == Magnet_Pole.N)
+        {
+            var colorCode = "#FF0000";
+            if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
+                GetComponent<SpriteRenderer>().color = color;
+        }
+        else
+        {
+            var colorCode = "#0000FF";
+            if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
+                GetComponent<SpriteRenderer>().color = color;
+        }
+
     }
 
     void Update()
     {
+        //Ç±Ç±èdÇ¢
         float dis = Vector2.Distance(transform.position, player.transform.position);
 
         if (dis < Distance)
         {
             distance = centerPosition - player.transform.position;
 
-            pullObject = -PullPower * distance / Mathf.Pow(distance.magnitude, 3);
-            releaseObject = ReleasePower * distance / Mathf.Pow(distance.magnitude, 3);
+            pullObject = PullPower * distance / Mathf.Pow(distance.magnitude, 3);
+            releaseObject = -ReleasePower * distance / Mathf.Pow(distance.magnitude, 3);
 
             if (Pole == player.GetPole())
             {
