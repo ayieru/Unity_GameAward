@@ -35,7 +35,7 @@ public class FpsDisplay : MonoBehaviour
 
     private void OnGUI()
     {
-        GUI.skin.label.fontSize = 300;
+        GUI.skin.label.fontSize = 100;
         GUILayout.Label(fps.ToString("f1") + "fps");
     }
 }
