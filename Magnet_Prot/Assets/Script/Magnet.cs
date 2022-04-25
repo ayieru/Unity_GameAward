@@ -33,18 +33,7 @@ public class Magnet : MagnetManager
         rb = playerGO.GetComponent<Rigidbody2D>();
         player = playerGO.GetComponent<Player>();
 
-        if (Pole == Magnet_Pole.N)
-        {
-            var colorCode = "#FF0000";
-            if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
-                GetComponent<SpriteRenderer>().color = color;
-        }
-        else
-        {
-            var colorCode = "#0000FF";
-            if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
-                GetComponent<SpriteRenderer>().color = color;
-        }
+
 
     }
 
@@ -55,6 +44,7 @@ public class Magnet : MagnetManager
 
         if (dis < Distance)
         {
+            centerPosition = transform.position;
             distance = centerPosition - player.transform.position;
 
             pullObject = PullPower * distance / Mathf.Pow(distance.magnitude, 3);
@@ -68,6 +58,19 @@ public class Magnet : MagnetManager
             {
                 rb.AddForce(pullObject, ForceMode2D.Force);
             }
+        }
+
+        if (Pole == Magnet_Pole.N)
+        {
+            var colorCode = "#FF0000";
+            if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
+                GetComponent<SpriteRenderer>().color = color;
+        }
+        else
+        {
+            var colorCode = "#0000FF";
+            if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
+                GetComponent<SpriteRenderer>().color = color;
         }
     }
 }
