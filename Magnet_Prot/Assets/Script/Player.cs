@@ -23,9 +23,12 @@ public class Player : MagnetManager
     private bool HitJagde = false;// 何かとプレイヤーが当たった判定
     private bool TwoFlug = false;
 
+    Transform PlayerTransform;
+    
     void Awake()
     {
         Rb = GetComponent<Rigidbody2D>();
+        PlayerTransform = this.transform;// transformを取得
     }
 
     void Update()
@@ -132,6 +135,17 @@ public class Player : MagnetManager
 
                 HitJagde = true;
             }
+        }
+
+        if(collision.gameObject.CompareTag("Thorn"))
+        {
+            Vector2 worldPos = PlayerTransform.position;
+
+            // 通ったセーブポイントの座標に復活させる
+            worldPos.x = SavePoint.instance.GetSavePointPosX();
+            worldPos.y = SavePoint.instance.GetSavePointPosY();
+
+            PlayerTransform.position = worldPos;// 座標設定
         }
 
         if (collision.gameObject.CompareTag("Floor"))
