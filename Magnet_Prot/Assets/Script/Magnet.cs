@@ -79,6 +79,8 @@ public class Magnet : MagnetManager
             if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
                 GetComponent<SpriteRenderer>().color = color;
         }
+
+        currentPole = Pole;
     }
 
     public void ChangePole()
