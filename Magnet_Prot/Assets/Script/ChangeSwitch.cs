@@ -4,18 +4,8 @@ using UnityEngine;
 
 public class ChangeSwitch : MonoBehaviour
 {
-    [Header("�Ή����鎥��")]
+    [Header("‘Î‰ž‚·‚éŽ¥Î")]
     public GameObject MagnetObj;
-
-
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
