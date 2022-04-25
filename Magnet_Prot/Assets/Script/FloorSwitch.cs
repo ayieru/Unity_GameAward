@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FloorSwitch : MonoBehaviour
 {
-    [Header("‘Î‰‚·‚éƒhƒA")]
+    [Header("å¯¾å¿œã™ã‚‹ãƒ‰ã‚¢")]
     public GameObject DoorObj;
 
     private GameObject PlayerObj;
@@ -14,13 +14,13 @@ public class FloorSwitch : MonoBehaviour
 
     private void Update()
     {
-        //ƒvƒŒƒCƒ„[‚©¥ÎƒuƒƒbƒN‚ªã‚É‚¢‚½‚ç
+        //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‹ç£çŸ³ãƒ–ãƒ­ãƒƒã‚¯ãŒä¸Šã«ã„ãŸã‚‰
         if(FloorSwitchOn)
         {
-            //ƒhƒA‚ğŠJ‚­
+            //ãƒ‰ã‚¢ã‚’é–‹ã
             Transform myTransform = DoorObj.transform;
 
-            // À•W‚ğæ“¾
+            // åº§æ¨™ã‚’å–å¾—
             Vector3 pos = myTransform.position;
             pos.y += 0.01f;
         
@@ -33,10 +33,10 @@ public class FloorSwitch : MonoBehaviour
         }
         else
         {
-            //ƒhƒA‚ğ•Â‚¶‚é
+            //ãƒ‰ã‚¢ã‚’é–‰ã˜ã‚‹
             Transform myTransform = DoorObj.transform;
 
-            // À•W‚ğæ“¾
+            // åº§æ¨™ã‚’å–å¾—
             Vector3 pos = myTransform.position;
             pos.y -= 0.01f;
 
@@ -45,7 +45,7 @@ public class FloorSwitch : MonoBehaviour
                 pos.y = -2.5f;
             }
 
-            myTransform.position = pos;  //À•W‚ğİ’è
+            myTransform.position = pos;  //åº§æ¨™ã‚’è¨­å®š
         }
     }
 
@@ -53,7 +53,7 @@ public class FloorSwitch : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player")|| collision.gameObject.CompareTag("MagnetBlock"))
         {
-            //ƒtƒƒAƒXƒCƒbƒ`ƒIƒ“
+            //ãƒ•ãƒ­ã‚¢ã‚¹ã‚¤ãƒƒãƒã‚ªãƒ³
             FloorSwitchOn = true;
         }
     }
@@ -62,7 +62,7 @@ public class FloorSwitch : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player")|| collision.gameObject.CompareTag("MagnetBlock"))
         {
-            //ƒtƒƒAƒXƒCƒbƒ`ƒIƒt
+            //ãƒ•ãƒ­ã‚¢ã‚¹ã‚¤ãƒƒãƒã‚ªãƒ•
             FloorSwitchOn = false;
         }
     }
