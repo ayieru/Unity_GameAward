@@ -55,6 +55,7 @@ public class Magnet : MagnetManager
 
         if (dis < Distance)
         {
+            centerPosition = transform.position;
             distance = centerPosition - player.transform.position;
 
             pullObject = PullPower * distance / Mathf.Pow(distance.magnitude, 3);

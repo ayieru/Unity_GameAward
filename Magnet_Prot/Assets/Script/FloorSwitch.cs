@@ -12,10 +12,6 @@ public class FloorSwitch : MonoBehaviour
     private Player player;
     private bool FloorSwitchOn = false;
 
-    void Start()
-    {
-    }
-
     private void Update()
     {
         //プレイヤーか磁石ブロックが上にいたら
@@ -55,7 +51,7 @@ public class FloorSwitch : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "NPole" || collision.gameObject.tag == "SPole")
+        if (collision.gameObject.CompareTag("Player")|| collision.gameObject.CompareTag("MagnetBlock"))
         {
             //フロアスイッチオン
             FloorSwitchOn = true;
@@ -64,7 +60,7 @@ public class FloorSwitch : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "NPole" || collision.gameObject.tag == "SPole")
+        if (collision.gameObject.CompareTag("Player")|| collision.gameObject.CompareTag("MagnetBlock"))
         {
             //フロアスイッチオフ
             FloorSwitchOn = false;
