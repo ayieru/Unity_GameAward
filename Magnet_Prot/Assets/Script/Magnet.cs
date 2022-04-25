@@ -24,6 +24,7 @@ public class Magnet : MagnetManager
     private Rigidbody2D rb;
     private GameObject playerGO;
     private Player player;
+    private Magnet_Pole currentPole;
 
     void Awake()
     {
@@ -33,8 +34,8 @@ public class Magnet : MagnetManager
         rb = playerGO.GetComponent<Rigidbody2D>();
         player = playerGO.GetComponent<Player>();
 
-
-
+        currentPole = Pole;
+        ChangeColor();
     }
 
     void Update()
@@ -60,6 +61,12 @@ public class Magnet : MagnetManager
             }
         }
 
+        if (currentPole != Pole) ChangeColor();
+
+    }
+
+    private void ChangeColor()
+    {
         if (Pole == Magnet_Pole.N)
         {
             var colorCode = "#FF0000";
@@ -71,6 +78,18 @@ public class Magnet : MagnetManager
             var colorCode = "#0000FF";
             if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
                 GetComponent<SpriteRenderer>().color = color;
+        }
+    }
+
+    public void ChangePole()
+    {
+        if (Pole == Magnet_Pole.N)
+        {
+            Pole = Magnet_Pole.S;
+        }
+        else
+        {
+            Pole = Magnet_Pole.N;
         }
     }
 }
