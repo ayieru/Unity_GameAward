@@ -23,6 +23,10 @@ public class Player : MagnetManager
     private bool HitJagde = false;// 何かとプレイヤーが当たった判定
     private bool TwoFlug = false;
 
+    [Header("初期座標")]
+    public float PlayerPosX = 1.0f;
+    public float PlayerPosY = 1.0f;
+
     Transform PlayerTransform;
     
     void Awake()
@@ -161,6 +165,12 @@ public class Player : MagnetManager
                 // 通ったセーブポイントの座標に復活させる
                 worldPos.x = SavePoint.instance.GetSavePointPosX();
                 worldPos.y = SavePoint.instance.GetSavePointPosY();
+            }
+            // 通ってないなら初期座標に戻る
+            else
+            {
+                worldPos.x = PlayerPosX;
+                worldPos.y = PlayerPosY;
             }
            
             PlayerTransform.position = worldPos;// 座標設定

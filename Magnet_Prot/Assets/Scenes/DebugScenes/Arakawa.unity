@@ -1468,6 +1468,14 @@ PrefabInstance:
       propertyPath: jumpPower
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 7248939849960591275, guid: 0bbfbdc58f57efd45969034d1c85db99, type: 3}
+      propertyPath: PlayerPosX
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248939849960591275, guid: 0bbfbdc58f57efd45969034d1c85db99, type: 3}
+      propertyPath: PlayerPosY
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7248939849960591276, guid: 0bbfbdc58f57efd45969034d1c85db99, type: 3}
       propertyPath: m_Mass
       value: 1
@@ -1478,7 +1486,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7248939849960591277, guid: 0bbfbdc58f57efd45969034d1c85db99, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.08069995
+      value: -3.19
       objectReference: {fileID: 0}
     - target: {fileID: 7248939849960591277, guid: 0bbfbdc58f57efd45969034d1c85db99, type: 3}
       propertyPath: m_LocalPosition.y
