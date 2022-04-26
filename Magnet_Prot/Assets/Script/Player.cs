@@ -105,6 +105,20 @@ public class Player : MagnetManager
         {
             Rb.velocity = new Vector2(XSpeed, Rb.velocity.y);　// ジャンプ
         }
+
+
+        if (Pole == Magnet_Pole.N)
+        {
+            var colorCode = "#FF0000";
+            if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
+                GetComponent<SpriteRenderer>().color = color;
+        }
+        else
+        {
+            var colorCode = "#0000FF";
+            if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
+                GetComponent<SpriteRenderer>().color = color;
+        }
     }
 
     // あたったタイミングで処理が動く
