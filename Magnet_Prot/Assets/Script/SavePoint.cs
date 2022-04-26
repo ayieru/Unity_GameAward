@@ -11,15 +11,11 @@ public class SavePoint : SavePointManager
     void Awake()
     {
         SavePointTransform = this.transform;// transformを取得
-        if (instance == null)
-        {
-            instance = this;
-        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // セーブ実装
+        // セーブ実装（1回限り）
         if (collision.gameObject.CompareTag("Player") && SaveJudge == false)
         {
             Debug.Log("セーブ成功");
@@ -27,6 +23,7 @@ public class SavePoint : SavePointManager
             // セーブポイントが設置している座標をプレイヤーが復帰する座標に代入
             SavePointPos = SavePointTransform.position;
             SaveJudge = true;
+            instance = this;
         }
     }
 }

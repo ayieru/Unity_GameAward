@@ -155,10 +155,14 @@ public class Player : MagnetManager
         {
             Vector2 worldPos = PlayerTransform.position;
 
-            // 通ったセーブポイントの座標に復活させる
-            worldPos.x = SavePoint.instance.GetSavePointPosX();
-            worldPos.y = SavePoint.instance.GetSavePointPosY();
-
+            // セーブポイント通ったか
+            if (SavePoint.instance != null)
+            {
+                // 通ったセーブポイントの座標に復活させる
+                worldPos.x = SavePoint.instance.GetSavePointPosX();
+                worldPos.y = SavePoint.instance.GetSavePointPosY();
+            }
+           
             PlayerTransform.position = worldPos;// 座標設定
         }
 
