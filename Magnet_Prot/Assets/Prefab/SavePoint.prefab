@@ -95,7 +95,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -131,7 +131,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 7
 --- !u!114 &-9078211564604818290
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,5 +144,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9e55f300386ca945ad0be5da36d4940, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SavePointPos: {x: 0, y: 0}
+  SavePointPos: {x: 3, y: 0}
   SaveJudge: 0

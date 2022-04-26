@@ -13,10 +13,10 @@ public class SavePoint : SavePointManager
         SavePointTransform = this.transform;// transformを取得
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         // セーブ実装（1回限り）
-        if (collision.gameObject.CompareTag("Player") && SaveJudge == false)
+        if (other.gameObject.CompareTag("Player") && SaveJudge == false)
         {
             Debug.Log("セーブ成功");
 
