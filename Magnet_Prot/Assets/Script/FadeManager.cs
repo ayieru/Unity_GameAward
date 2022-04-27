@@ -30,8 +30,8 @@ public class FadeManager : MonoBehaviour
     public static bool IsFadeIn = false;
     public static bool IsFadeOut = false;
 
-    //フェードしたい時間（単位は秒）
-    private static float fadeTime = 0.2f;
+    //フェードの長さ（単位は秒）
+    private static float fadeTime = 0.4f;
 
     //遷移先のシーン番号
     private static int nextScene = 1;
