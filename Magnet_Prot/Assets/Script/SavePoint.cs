@@ -16,7 +16,9 @@ public class SavePoint : SavePointManager
     private void OnTriggerEnter2D(Collider2D other)
     {
         // セーブ実装（1回限り）
-        if (other.gameObject.CompareTag("Player") && SaveJudge == false)
+        if (SaveJudge) return;
+
+        if (other.gameObject.CompareTag("Player"))
         {
             Debug.Log("セーブ成功");
 
