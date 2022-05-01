@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Player : MagnetManager
 {
+    public enum State
+    {
+        Normal,//通常状態
+        CatchChain,//鎖に捕まってる状態
+    }
+
     [Header("極")]
     [SerializeField] Magnet_Pole Pole = Magnet_Pole.N;
 
@@ -16,91 +22,127 @@ public class Player : MagnetManager
     [Header("ジャンプ回数の上限")]
     [SerializeField] int MaxJumpCount = 1;
 
+    [Header("ChainObject格納用")]
+    [SerializeField] private MoveChain MoveChainObj;
+
+    [Header("ChainBase格納用")]
+    [SerializeField] private CatchTheChain ChainObj;
+
+    [Header("ロープの所定の位置までのスピード")]
+    [SerializeField] private float SpeedToRope = 5.0f;
+
+    private Quaternion PreRotation;//ロープを掴んでいる時のプレイヤーの角度格納用
+
     private int JumpCount = 0;
 
     private Rigidbody2D Rb;
 
     private bool HitJagde = false;// 何かとプレイヤーが当たった判定
     private bool TwoFlug = false;
+    private bool MoveFlag = false;//ロープの所定の位置に動いているか
+
+    private State PlayerState = State.Normal;
 
     void Awake()
     {
         Rb = GetComponent<Rigidbody2D>();
+
+        PlayerState = State.Normal;
+
+        MoveFlag = false;
     }
 
     void Update()
     {
-        float HorizontalKey = Input.GetAxisRaw("Horizontal");
-        float VerticalKey = Input.GetAxisRaw("Vertical");  // 縦入力反応変数
-        float XSpeed = 0.0f;
-        float YSpeed = 0.0f;                            // 縦移動のスピード変数
+        if (PlayerState == State.Normal)
+        {
+            float HorizontalKey = Input.GetAxisRaw("Horizontal");
+            float VerticalKey = Input.GetAxisRaw("Vertical");  // 縦入力反応変数
+            float XSpeed = 0.0f;
+            float YSpeed = 0.0f;                            // 縦移動のスピード変数
 
-        if (HorizontalKey > 0)
-        {
-            XSpeed = Speed;
-        }
-        else if (HorizontalKey < 0)
-        {
-            XSpeed = -Speed;
-        }
-        else
-        {
-            XSpeed = 0.0f;
-        }
-
-        // 縦入力反応処理
-        if (VerticalKey > 0)
-        {
-            YSpeed = Speed * 2.0f;
-        }
-        else if (VerticalKey < 0)
-        {
-            YSpeed = -Speed * 2.0f;
-        }
-        else
-        {
-            YSpeed = 0.0f;
-        }
-
-        //ジャンプ
-        if (Input.GetButtonDown("Jump") && !(Rb.velocity.y < -0.5f))
-        {
-            if (JumpCount < MaxJumpCount)
+            if (HorizontalKey > 0)
             {
-                Rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
-
-                JumpCount++;
+                XSpeed = Speed;
             }
-        }
-
-        //アクション
-        if (Input.GetButtonDown("Action"))
-        {
-            Debug.Log("アクション");
-        }
-
-        //極切り替え
-        if (Input.GetButtonDown("MagnetChange"))
-        {
-            if (Pole == Magnet_Pole.S)
+            else if (HorizontalKey < 0)
             {
-                Pole = Magnet_Pole.N;
-                Debug.Log("極切り替え：S → N");
+                XSpeed = -Speed;
             }
             else
             {
-                Pole = Magnet_Pole.S;
-                Debug.Log("極切り替え：N → S");
+                XSpeed = 0.0f;
+            }
+
+            // 縦入力反応処理
+            if (VerticalKey > 0)
+            {
+                YSpeed = Speed * 2.0f;
+            }
+            else if (VerticalKey < 0)
+            {
+                YSpeed = -Speed * 2.0f;
+            }
+            else
+            {
+                YSpeed = 0.0f;
+            }
+
+            //ジャンプ
+            if (Input.GetButtonDown("Jump") && !(Rb.velocity.y < -0.5f))
+            {
+                if (JumpCount < MaxJumpCount)
+                {
+                    Rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
+
+                    JumpCount++;
+                }
+            }
+
+            //アクション
+            if (Input.GetButtonDown("Action"))
+            {
+                Debug.Log("アクション");
+            }
+
+            //極切り替え
+            if (Input.GetButtonDown("MagnetChange"))
+            {
+                if (Pole == Magnet_Pole.S)
+                {
+                    Pole = Magnet_Pole.N;
+                    Debug.Log("極切り替え：S → N");
+                }
+                else
+                {
+                    Pole = Magnet_Pole.S;
+                    Debug.Log("極切り替え：N → S");
+                }
+            }
+
+            if (HitJagde == true)
+            {
+                Rb.velocity = new Vector2(XSpeed, YSpeed);      // 壁のぼり
+            }
+            else
+            {
+                Rb.velocity = new Vector2(XSpeed, Rb.velocity.y); // ジャンプ
             }
         }
-
-        if (HitJagde == true)
+        else if(PlayerState==State.CatchChain)
         {
-            Rb.velocity = new Vector2(XSpeed, YSpeed);      // 壁のぼり
-        }
-        else
-        {
-            Rb.velocity = new Vector2(XSpeed, Rb.velocity.y);　// ジャンプ
+            if(MoveFlag)
+            {
+                if (transform.position != ChainObj.GetArrivalPoint())
+                {
+                    //滑らかに決められた位置に移動させる
+                    transform.position = Vector3.Lerp(transform.position, ChainObj.GetArrivalPoint(), SpeedToRope * Time.deltaTime);
+                }
+                else
+                {
+                    MoveFlag = false;
+                }
+            }
         }
     }
 
@@ -174,4 +216,36 @@ public class Player : MagnetManager
     }
 
     public Magnet_Pole GetPole() { return Pole; }
+
+    public State GetPlayerState() { return PlayerState; }
+
+    public void SetPlayerState(State state, CatchTheChain catchTheChain = null)
+    {
+        PlayerState = state;
+
+        if (PlayerState == State.CatchChain)
+        {
+            //現在の角度を保持しておく
+            PreRotation = transform.rotation;
+
+            Rb.velocity = Vector3.zero;
+
+            //移動値等の初期化
+            float rot = transform.localEulerAngles.y;
+
+            //角度を設定し直す
+            transform.localRotation = Quaternion.Euler(0.0f, rot, 0.0f);
+
+            //キャラクターを到達点に動かすフラグオン
+            MoveFlag = true;
+
+            SetCatchTheRope(catchTheChain);
+        }
+    }
+    public void SetCatchTheRope(CatchTheChain chainBase)
+    {
+        //CatchTheChainとChainスクリプトの取得
+        this.ChainObj = chainBase;
+        MoveChainObj = this.ChainObj.GetComponent<MoveChain>();
+    }
 }

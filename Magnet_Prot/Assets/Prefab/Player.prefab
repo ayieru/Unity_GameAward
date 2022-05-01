@@ -149,6 +149,9 @@ MonoBehaviour:
   Speed: 5
   JumpPower: 10
   MaxJumpCount: 1
+  MoveChainObj: {fileID: 0}
+  ChainObj: {fileID: 0}
+  SpeedToRope: 5
 --- !u!1 &7248939851610570515
 GameObject:
   m_ObjectHideFlags: 0
@@ -160,6 +163,7 @@ GameObject:
   - component: {fileID: 7248939851610570735}
   - component: {fileID: 7248939851610570512}
   - component: {fileID: 7248939851610570514}
+  - component: {fileID: 7091430534397840481}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -232,3 +236,16 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7248939851610570515}
   m_Enabled: 1
+--- !u!114 &7091430534397840481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7248939851610570515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6629d44ec61dde54781e55b7d83da2b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerObj: {fileID: 0}
