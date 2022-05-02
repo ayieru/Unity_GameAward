@@ -11,6 +11,13 @@ public class CatchTheChain : MonoBehaviour
     [SerializeField]
     private Player PlayerObj = null;
 
+    private Vector3 DefaultScale;
+
+    void Start()
+    {
+        DefaultScale = PlayerObj.transform.lossyScale;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (PlayerObj == null)
@@ -23,13 +30,23 @@ public class CatchTheChain : MonoBehaviour
             if (collision.tag == "Player"
             && PlayerObj.GetPlayerState() != Player.State.CatchChain)
             {
-                //キャラクターの親を鎖にする
-                collision.transform.SetParent(transform);
+                Vector3 lossScale = PlayerObj.transform.lossyScale;
 
-                PlayerObj.gameObject.GetComponent<Rigidbody2D>().Sleep();
+                Vector3 localPlayer = PlayerObj.transform.localScale;
+
+                //大元の親を取得してプレイヤーをそこに親子付け
+                collision.transform.SetParent(transform.root);
+
+                PlayerObj.transform.localScale = new Vector3(
+                    localPlayer.x / lossScale.x * DefaultScale.x,
+                 localPlayer.y / lossScale.y * DefaultScale.y,
+                 localPlayer.z / lossScale.z * DefaultScale.z);
+                
 
                 //キャラクターにCatchTheChainスクリプトを渡し、状態を変更する
                 PlayerObj.SetPlayerState(Player.State.CatchChain, this);
+
+                PlayerObj.GetComponent<Rigidbody2D>().simulated = false;
 
             }
         }
@@ -39,10 +56,4 @@ public class CatchTheChain : MonoBehaviour
     {
         return ArrivalPoint.position;
     }
-
-    //ロープに記憶しておくキャラクターの状態をセット
-    //public void SetState(State sta)
-    //{
-    //    state = sta;
-    //}
 }

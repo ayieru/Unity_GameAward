@@ -137,6 +137,8 @@ public class Player : MagnetManager
                 {
                     //ŠŠ‚ç‚©‚ÉŒˆ‚ß‚ç‚ê‚½ˆÊ’u‚ÉˆÚ“®‚³‚¹‚é
                     transform.position = Vector3.Lerp(transform.position, ChainObj.GetArrivalPoint(), SpeedToRope * Time.deltaTime);
+
+                    //transform.position = ChainObj.GetArrivalPoint();
                 }
                 else
                 {
@@ -163,6 +165,8 @@ public class Player : MagnetManager
             HitJagde = true;
 
             Rb.gravityScale = 0.0f;
+
+            
         }
 
         if (collision.gameObject.CompareTag("NPole")|| collision.gameObject.CompareTag("SPole"))
