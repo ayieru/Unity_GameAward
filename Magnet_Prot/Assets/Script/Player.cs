@@ -10,6 +10,11 @@ public class Player : MagnetManager
         CatchChain,//鎖に捕まってる状態
         ReleaseChain,//鎖を離した状態
     }
+    public enum PlayerDirection
+    {
+        Right = 1,//右向き
+        Left = -1,//左向き
+    }
 
     [Header("極")]
     [SerializeField] Magnet_Pole Pole = Magnet_Pole.N;
@@ -23,6 +28,9 @@ public class Player : MagnetManager
     [Header("ジャンプ回数の上限")]
     [SerializeField] int MaxJumpCount = 1;
 
+    [Header("進んでいる向き")]
+    [SerializeField] private float DirectionX;
+
     /*鎖関連の変数*/
     [Header("鎖の所定の位置までのスピード")]
     [SerializeField] private float SpeedToRope = 5.0f;
@@ -30,9 +38,6 @@ public class Player : MagnetManager
     [Header("鎖を離したときにその向きに加える力")]
     [SerializeField]
     private float ReleasePower = 2.0f;
-
-    [Header("鎖が進んでいる向き")]
-    [SerializeField] private float DirectionX;
 
     [Header("鎖を離した時の力を減衰させる時間")]
     [SerializeField] private float DampingTime = 2.0f;
@@ -62,6 +67,8 @@ public class Player : MagnetManager
         Rb = GetComponent<Rigidbody2D>();
 
         PlayerState = State.Normal;
+
+        DirectionX = (int)PlayerDirection.Right;
     }
 
     void Update()
@@ -76,10 +83,14 @@ public class Player : MagnetManager
             if (HorizontalKey > 0)
             {
                 XSpeed = Speed;
+
+                DirectionX = (int)PlayerDirection.Right;
             }
             else if (HorizontalKey < 0)
             {
                 XSpeed = -Speed;
+
+                DirectionX = (int)PlayerDirection.Left;
             }
             else
             {
@@ -182,6 +193,8 @@ public class Player : MagnetManager
 
     public State GetPlayerState() { return PlayerState; }
 
+    public float GetDirectionX() { return DirectionX; } 
+
     public void SetPlayerState(State state, CatchTheChain catchTheChain = null)
     {
         PlayerState = state;
@@ -212,11 +225,11 @@ public class Player : MagnetManager
             //　ロープを離した時の向きを保持
             if (MoveChainObj.GetChainDirection() == 1)
             {
-                DirectionX = 1;
+                DirectionX = (float)PlayerDirection.Right;
             }
             else
             {
-                DirectionX = -1;
+                DirectionX = (float)PlayerDirection.Left;
             }
 
             MoveChainObj.SetMoveFlag(false);
@@ -253,8 +266,6 @@ public class Player : MagnetManager
             HitJagde = true;
 
             Rb.gravityScale = 0.0f;
-
-
         }
 
         if (collision.gameObject.CompareTag("NPole") || collision.gameObject.CompareTag("SPole"))

@@ -4,17 +4,13 @@ using UnityEngine;
 
 public class MoveChain : MonoBehaviour
 {
-    [Header("補間間隔")]
+    [Header("振り子の往復間隔(値が大きい程ゆっくり動く)")]
     [SerializeField]
     private float Duration = 5.0f;
 
-    [Header("Z軸で振り子をする角度")]
+    [Header("Z軸で振り子をする角度(初期の限界値)")]
     [SerializeField]
     private float MaxAngle = 90.0f;
-    
-    [Header("Z軸で振り子をする初期の限界角度")]
-    [SerializeField]
-    private float DefaultMaxAngle = 90.0f;
 
     [Header("ロープを元の位置に戻すスピード")]
     [SerializeField]
@@ -23,6 +19,8 @@ public class MoveChain : MonoBehaviour
     [Header("ロープが動いているか")]
     [SerializeField]
     private bool MoveFlag = false;
+
+    private float DefaultMaxAngle;
 
     //進んでいる方向
     private int ChainDirection = 1;
@@ -39,7 +37,7 @@ public class MoveChain : MonoBehaviour
     {
         StartTime = Time.time;
 
-        MaxAngle = DefaultMaxAngle;
+        DefaultMaxAngle = MaxAngle;
 
         MoveFlag = false;
 
@@ -82,10 +80,13 @@ public class MoveChain : MonoBehaviour
 
                 //　経過時間に合わせた割合を計算
                 float t = (Time.time - StartTime) / Duration;
+
                 //　スムーズに角度を計算
                 Angle = Mathf.SmoothStep(Angle, UndoDirection * MaxAngle, t);
+
                 //　角度を変更
                 transform.localEulerAngles = new Vector3(0f, 0f, Angle);
+
                 //　角度が指定した角度と1度の差になったら反転
                 if (Mathf.Abs(Mathf.DeltaAngle(Angle, UndoDirection * MaxAngle)) < 1f)
                 {
@@ -95,11 +96,10 @@ public class MoveChain : MonoBehaviour
             }
         }
     }
-    //進んでいる向きを返す(実際にはint値)
-    public int GetChainDirection()
-    {
-        return ChainDirection;
-    }
+    //進んでいる向きを返す
+    public int GetChainDirection(){ return ChainDirection; }
+
+    public void SetChainDirection(int dir) { ChainDirection = dir; }
 
     public void SetMoveFlag(bool enable)
     {
