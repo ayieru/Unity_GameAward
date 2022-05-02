@@ -25,9 +25,6 @@ public class Player : MagnetManager
     [Header("ジャンプ力")]
     [SerializeField] float JumpPower = 10.0f;
 
-    [Header("ジャンプ回数の上限")]
-    [SerializeField] int MaxJumpCount = 1;
-
     [Header("進んでいる向き")]
     [SerializeField] private float DirectionX;
 
