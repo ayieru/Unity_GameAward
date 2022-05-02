@@ -5,7 +5,7 @@ using UnityEngine;
 public class MoveChain : MonoBehaviour
 {
     //進んでいる方向
-    private int Direction = 1;
+    private int ChainDirection = 1;
 
     //Z軸の角度
     private float Angle = 0.0f;
@@ -33,21 +33,21 @@ public class MoveChain : MonoBehaviour
         float time = (Time.time - StartTime) / Duration;
 
         //スムーズに角度を計算
-        Angle = Mathf.SmoothStep(Angle, Direction * MaxAngle, time);
+        Angle = Mathf.SmoothStep(Angle, ChainDirection * MaxAngle, time);
 
         //角度を変更
         transform.localEulerAngles = new Vector3(0f, 0f, Angle);
 
         //角度が指定した角度と1度の差になったら反転
-        if (Mathf.Abs(Mathf.DeltaAngle(Angle, Direction * MaxAngle)) < 1.0f)
+        if (Mathf.Abs(Mathf.DeltaAngle(Angle, ChainDirection * MaxAngle)) < 1.0f)
         {
-            Direction *= -1;
+            ChainDirection *= -1;
             StartTime = Time.time;
         }
     }
     //進んでいる向きを返す(実際にはint値)
-    public int GetDirection()
+    public int GetChainDirection()
     {
-        return Direction;
+        return ChainDirection;
     }
 }
