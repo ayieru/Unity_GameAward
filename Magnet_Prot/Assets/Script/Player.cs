@@ -38,7 +38,7 @@ public class Player : MagnetManager
     [SerializeField] private float DampingTime = 2.0f;
 
     [Header("漕ぐ力(鎖を動かす力)")]
-    [SerializeField]  private float SwingPower = 200.0f;
+    [SerializeField] private float SwingPower = 200.0f;
 
     private MoveChain MoveChainObj;
 
@@ -46,23 +46,22 @@ public class Player : MagnetManager
 
     private Quaternion PreRotation;//ロープを掴んでいる時のプレイヤーの角度格納用
 
-    private int JumpCount = 0;
+    private bool IsGround = false;
 
     private Rigidbody2D Rb;
 
     private bool HitJagde = false;// 何かとプレイヤーが当たった判定
     private bool TwoFlug = false;
-    private bool MoveFlag = false;//ロープの所定の位置に動いているか
 
     private State PlayerState = State.Normal;
 
     void Awake()
     {
+        IsGround = false;
+
         Rb = GetComponent<Rigidbody2D>();
 
         PlayerState = State.Normal;
-
-        MoveFlag = false;
     }
 
     void Update()
@@ -104,11 +103,9 @@ public class Player : MagnetManager
             //ジャンプ
             if (Input.GetButtonDown("Jump") && !(Rb.velocity.y < -0.5f))
             {
-                if (JumpCount < MaxJumpCount)
+                if (IsGround)
                 {
                     Rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
-
-                    JumpCount++;
                 }
             }
 
@@ -142,48 +139,29 @@ public class Player : MagnetManager
                 Rb.velocity = new Vector2(XSpeed, Rb.velocity.y); // ジャンプ
             }
         }
-        else if(PlayerState==State.CatchChain)
+        else if (PlayerState == State.CatchChain)
         {
             if (Input.GetButtonDown("Jump"))
             {
-                transform.parent = null;
-
                 SetPlayerState(State.ReleaseChain);
-            }
 
-            if (MoveFlag)
-            {
+                Rb.simulated = true;
+            }
                 if (transform.localPosition != ChainObj.GetArrivalPoint())
                 {
                     //滑らかに決められた位置に移動させる
                     transform.localPosition = Vector3.Lerp(transform.localPosition, ChainObj.GetArrivalPoint(), SpeedToRope * Time.deltaTime);
-
-
                 }
-                else
-                {
-                    MoveFlag = false;
-                }
-            }
-            else
-            {
-                //if (Input.GetButtonDown("Jump"))
-                //{
-                //    SetPlayerState(State.ReleaseChain);
-                //}
-            }
         }
         else if (PlayerState == State.ReleaseChain)
         {
-            Rb.simulated = true;
-
             transform.localRotation = Quaternion.Lerp(transform.localRotation, PreRotation, SpeedToRope * Time.deltaTime);
 
             //ロープの動いている速度を取得
             Vector3 velocityXZ = (MoveChainObj.transform.right * DirectionX * ReleasePower);
 
             //Y軸方向は重力に任せる為0にする
-            velocityXZ.y = 0f;
+            velocityXZ.y = 0.0f;
 
             //ロープを離した時のロープが動いている速度と重力を足して全体の速度を計算
             Rb.velocity = velocityXZ + new Vector3(0.0f, Rb.velocity.y, 0.0f);
@@ -192,12 +170,70 @@ public class Player : MagnetManager
             DirectionX = Mathf.Lerp(DirectionX, 0.0f, DampingTime * Time.deltaTime);
 
             //重力を働かせる
-            Rb.velocity= new Vector3(
+            Rb.velocity = new Vector3(
                  Rb.velocity.x,
                  Rb.velocity.y + Physics.gravity.y * Time.deltaTime,
                 0.0f
                 );
         }
+    }
+
+    public Magnet_Pole GetPole() { return Pole; }
+
+    public State GetPlayerState() { return PlayerState; }
+
+    public void SetPlayerState(State state, CatchTheChain catchTheChain = null)
+    {
+        PlayerState = state;
+
+        if (PlayerState == State.CatchChain)
+        {
+            //現在の角度を保持しておく
+            PreRotation = transform.rotation;
+
+            Rb.velocity = Vector3.zero;
+
+            //移動値等の初期化
+            float rot = transform.localEulerAngles.y;
+
+            //角度を設定し直す
+            transform.localRotation = Quaternion.Euler(0.0f, rot, 0.0f);
+
+            SetCatchTheChain(catchTheChain);
+        }
+        else if (PlayerState == State.ReleaseChain)
+        {
+            transform.SetParent(null);
+
+            Rb.SetRotation(0.0f);
+
+            transform.Rotate(0.0f, 0.0f, 0.0f);
+
+            //　ロープを離した時の向きを保持
+            if (MoveChainObj.GetChainDirection() == 1)
+            {
+                DirectionX = 1;
+            }
+            else
+            {
+                DirectionX = -1;
+            }
+
+            MoveChainObj.SetMoveFlag(false);
+
+        }
+        else if (state == State.Normal)
+        {
+            ChainObj = null;
+            transform.rotation = PreRotation;
+        }
+
+    }
+    public void SetCatchTheChain(CatchTheChain chainBase)
+    {
+        //CatchTheChainとChainスクリプトの取得
+        this.ChainObj = chainBase;
+        MoveChainObj = chainBase.GetComponent<MoveChain>();
     }
 
     // あたったタイミングで処理が動く
@@ -218,10 +254,10 @@ public class Player : MagnetManager
 
             Rb.gravityScale = 0.0f;
 
-            
+
         }
 
-        if (collision.gameObject.CompareTag("NPole")|| collision.gameObject.CompareTag("SPole"))
+        if (collision.gameObject.CompareTag("NPole") || collision.gameObject.CompareTag("SPole"))
         {
             // 磁石によって引き寄せられてるか
             if (collision.gameObject.GetComponent<Magnet>().Pole != Pole)
@@ -234,12 +270,16 @@ public class Player : MagnetManager
 
         if (collision.gameObject.CompareTag("Floor"))
         {
-            JumpCount = 0;
+            IsGround = true;
+
+            SetPlayerState(State.Normal);
         }
 
         if (collision.gameObject.CompareTag("Block"))
         {
-            JumpCount = 0;
+            IsGround = true;
+
+            SetPlayerState(State.Normal);
         }
     }
 
@@ -269,39 +309,19 @@ public class Player : MagnetManager
                 TwoFlug = false;
             }
         }
-    }
 
-    public Magnet_Pole GetPole() { return Pole; }
-
-    public State GetPlayerState() { return PlayerState; }
-
-    public void SetPlayerState(State state, CatchTheChain catchTheChain = null)
-    {
-        PlayerState = state;
-
-        if (PlayerState == State.CatchChain)
+        if (collision.gameObject.CompareTag("Floor"))
         {
-            //現在の角度を保持しておく
-            PreRotation = transform.rotation;
+            IsGround = false;
 
-            Rb.velocity = Vector3.zero;
-
-            //移動値等の初期化
-            float rot = transform.localEulerAngles.y;
-
-            //角度を設定し直す
-            transform.localRotation = Quaternion.Euler(0.0f, rot, 0.0f);
-
-            //キャラクターを到達点に動かすフラグオン
-            MoveFlag = true;
-
-            SetCatchTheChain(catchTheChain);
+            SetPlayerState(State.Normal);
         }
-    }
-    public void SetCatchTheChain(CatchTheChain chainBase)
-    {
-        //CatchTheChainとChainスクリプトの取得
-        this.ChainObj = chainBase;
-        MoveChainObj = chainBase.GetComponent<MoveChain>();
+
+        if (collision.gameObject.CompareTag("Block"))
+        {
+            IsGround = false;
+
+            SetPlayerState(State.Normal);
+        }
     }
 }

@@ -6,12 +6,20 @@ public class CatchTheChain : MonoBehaviour
 {
     //キャラクターの到達点
     [SerializeField]
-    private Transform ArrivalPoint = null;
+    private Transform ArrivalPoint;
+
+    private MoveChain ChainObj;
+
+    void Start()
+    {
+        ChainObj = GetComponent<MoveChain>();
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
             if (collision.tag == "Player"
-            && collision.GetComponent<Player>().GetPlayerState() != Player.State.CatchChain)
+            && collision.GetComponent<Player>().GetPlayerState() != Player.State.CatchChain
+            && collision.GetComponent<Player>().GetPlayerState() != Player.State.ReleaseChain)
             {
             collision.GetComponent<Rigidbody2D>().simulated = false;
 
@@ -30,6 +38,8 @@ public class CatchTheChain : MonoBehaviour
 
             //キャラクターにCatchTheChainスクリプトを渡し、状態を変更する
             collision.GetComponent<Player>().SetPlayerState(Player.State.CatchChain, this);
+
+            ChainObj.SetMoveFlag(true);
             }
     }
 
