@@ -39,9 +39,6 @@ public class Player : MagnetManager
     [Header("½‚ğ—£‚µ‚½‚Ì—Í‚ğŒ¸Š‚³‚¹‚éŠÔ")]
     [SerializeField] private float DampingTime = 2.0f;
 
-    [Header("‘†‚®—Í(½‚ğ“®‚©‚·—Í)")]
-    [SerializeField] private float SwingPower = 200.0f;
-
     private MoveChain MoveChainObj;
 
     private CatchTheChain ChainObj;
