@@ -6,7 +6,7 @@ public class MoveChain : MonoBehaviour
 {
     [Header("振り子の往復間隔(値が大きい程ゆっくり動く)")]
     [SerializeField]
-    private float Duration = 5.0f;
+    private float RoundTripTime = 5.0f;
 
     [Header("Z軸で振り子をする角度(初期の限界値)")]
     [SerializeField]
@@ -50,7 +50,7 @@ public class MoveChain : MonoBehaviour
         if (MoveFlag)//ロープを掴んでいる時のロープの動き
         {
             //経過時間に合わせた割合を計算
-            float t = (Time.time - StartTime) / Duration;
+            float t = (Time.time - StartTime) / RoundTripTime;
 
             //　スムーズに角度を計算
             Angle = Mathf.SmoothStep(Angle, ChainDirection * MaxAngle, t);
@@ -79,7 +79,7 @@ public class MoveChain : MonoBehaviour
                 }
 
                 //　経過時間に合わせた割合を計算
-                float t = (Time.time - StartTime) / Duration;
+                float t = (Time.time - StartTime) / RoundTripTime;
 
                 //　スムーズに角度を計算
                 Angle = Mathf.SmoothStep(Angle, UndoDirection * MaxAngle, t);

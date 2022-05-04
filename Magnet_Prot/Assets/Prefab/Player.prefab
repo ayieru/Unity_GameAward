@@ -148,10 +148,10 @@ MonoBehaviour:
   Pole: 1
   Speed: 5
   JumpPower: 10
-  MaxJumpCount: 1
-  MoveChainObj: {fileID: 0}
-  ChainObj: {fileID: 0}
+  DirectionX: 0
   SpeedToRope: 5
+  ReleasePower: 2
+  DampingTime: 2
 --- !u!1 &7248939851610570515
 GameObject:
   m_ObjectHideFlags: 0
@@ -248,4 +248,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6629d44ec61dde54781e55b7d83da2b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerObj: {fileID: 0}
+  PlayerObj: {fileID: 7248939849960591275}
