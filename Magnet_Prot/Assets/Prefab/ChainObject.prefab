@@ -40,8 +40,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2683452375288314427}
   - component: {fileID: 2683452375288314425}
-  - component: {fileID: 2683452375288314428}
-  - component: {fileID: 2683452375288314426}
   m_Layer: 0
   m_Name: ChainObject
   m_TagString: Untagged
@@ -91,35 +89,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.95796585, y: 12.493295}
   m_EdgeRadius: 0
---- !u!114 &2683452375288314428
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2683452375288314429}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bf013bf81ac5b946af07fabf8a9b7a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Duration: 10
-  MaxAngle: 90
-  UndoSpeed: 10
-  MoveFlag: 0
---- !u!114 &2683452375288314426
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2683452375288314429}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13d11a226ee73c34c8c6c23966675f9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ArrivalPoint: {fileID: 2683452374369419235}
 --- !u!1 &2683452375917209564
 GameObject:
   m_ObjectHideFlags: 0
