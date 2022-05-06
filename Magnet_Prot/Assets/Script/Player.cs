@@ -6,50 +6,50 @@ public class Player : MagnetManager
 {
     public enum State
     {
-        Normal,//’Êíó‘Ô
-        CatchChain,//½‚É•ß‚Ü‚Á‚Ä‚éó‘Ô
-        ReleaseChain,//½‚ğ—£‚µ‚½ó‘Ô
+        Normal,//é€šå¸¸çŠ¶æ…‹
+        CatchChain,//é–ã«æ•ã¾ã£ã¦ã‚‹çŠ¶æ…‹
+        ReleaseChain,//é–ã‚’é›¢ã—ãŸçŠ¶æ…‹
     }
     public enum PlayerDirection
     {
-        Right = 1,//‰EŒü‚«
-        Left = -1,//¶Œü‚«
+        Right = 1,//å³å‘ã
+        Left = -1,//å·¦å‘ã
     }
 
-    [Header("‹É")]
+    [Header("æ¥µ")]
     [SerializeField] Magnet_Pole Pole = Magnet_Pole.N;
 
-    [Header("ˆÚ“®‘¬“x")]
+    [Header("ç§»å‹•é€Ÿåº¦")]
     [SerializeField] float Speed = 5.0f;
 
-    [Header("ƒWƒƒƒ“ƒv—Í")]
+    [Header("ã‚¸ãƒ£ãƒ³ãƒ—åŠ›")]
     [SerializeField] float JumpPower = 10.0f;
 
-    [Header("i‚ñ‚Å‚¢‚éŒü‚«")]
+    [Header("é€²ã‚“ã§ã„ã‚‹å‘ã")]
     [SerializeField] private float DirectionX;
 
-    /*½ŠÖ˜A‚Ì•Ï”*/
-    [Header("½‚ÌŠ’è‚ÌˆÊ’u‚Ü‚Å‚ÌƒXƒs[ƒh")]
+    /*é–é–¢é€£ã®å¤‰æ•°*/
+    [Header("é–ã®æ‰€å®šã®ä½ç½®ã¾ã§ã®ã‚¹ãƒ”ãƒ¼ãƒ‰")]
     [SerializeField] private float SpeedToRope = 5.0f;
 
-    [Header("½‚ğ—£‚µ‚½‚Æ‚«‚É‚»‚ÌŒü‚«‚É‰Á‚¦‚é—Í")]
+    [Header("é–ã‚’é›¢ã—ãŸã¨ãã«ãã®å‘ãã«åŠ ãˆã‚‹åŠ›")]
     [SerializeField]
     private float ReleasePower = 2.0f;
 
-    [Header("½‚ğ—£‚µ‚½‚Ì—Í‚ğŒ¸Š‚³‚¹‚éŠÔ")]
+    [Header("é–ã‚’é›¢ã—ãŸæ™‚ã®åŠ›ã‚’æ¸›è¡°ã•ã›ã‚‹æ™‚é–“")]
     [SerializeField] private float DampingTime = 2.0f;
 
     private MoveChain MoveChainObj;
 
     private CatchTheChain ChainObj;
 
-    private Quaternion PreRotation;//ƒ[ƒv‚ğ’Í‚ñ‚Å‚¢‚é‚ÌƒvƒŒƒCƒ„[‚ÌŠp“xŠi”[—p
+    private Quaternion PreRotation;//ãƒ­ãƒ¼ãƒ—ã‚’æ´ã‚“ã§ã„ã‚‹æ™‚ã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è§’åº¦æ ¼ç´ç”¨
 
     private bool IsGround = false;
 
     private Rigidbody2D Rb;
 
-    private bool HitJagde = false;// ‰½‚©‚ÆƒvƒŒƒCƒ„[‚ª“–‚½‚Á‚½”»’è
+    private bool HitJagde = false;// ä½•ã‹ã¨ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒå½“ãŸã£ãŸåˆ¤å®š
     private bool TwoFlug = false;
 
     private State PlayerState = State.Normal;
@@ -63,6 +63,7 @@ public class Player : MagnetManager
         PlayerState = State.Normal;
 
         DirectionX = (int)PlayerDirection.Right;
+
     }
 
     void Update()
@@ -70,9 +71,9 @@ public class Player : MagnetManager
         if (PlayerState == State.Normal)
         {
             float HorizontalKey = Input.GetAxisRaw("Horizontal");
-            float VerticalKey = Input.GetAxisRaw("Vertical");  // c“ü—Í”½‰•Ï”
+            float VerticalKey = Input.GetAxisRaw("Vertical");  // ç¸¦å…¥åŠ›åå¿œå¤‰æ•°
             float XSpeed = 0.0f;
-            float YSpeed = 0.0f;                            // cˆÚ“®‚ÌƒXƒs[ƒh•Ï”
+            float YSpeed = 0.0f;                            // ç¸¦ç§»å‹•ã®ã‚¹ãƒ”ãƒ¼ãƒ‰å¤‰æ•°
 
             if (HorizontalKey > 0)
             {
@@ -91,7 +92,7 @@ public class Player : MagnetManager
                 XSpeed = 0.0f;
             }
 
-            // c“ü—Í”½‰ˆ—
+            // ç¸¦å…¥åŠ›åå¿œå‡¦ç†
             if (VerticalKey > 0)
             {
                 YSpeed = Speed * 2.0f;
@@ -105,7 +106,7 @@ public class Player : MagnetManager
                 YSpeed = 0.0f;
             }
 
-            //ƒWƒƒƒ“ƒv
+            //ã‚¸ãƒ£ãƒ³ãƒ—
             if (Input.GetButtonDown("Jump") && !(Rb.velocity.y < -0.5f))
             {
                 if (IsGround)
@@ -114,34 +115,34 @@ public class Player : MagnetManager
                 }
             }
 
-            //ƒAƒNƒVƒ‡ƒ“
+            //ã‚¢ã‚¯ã‚·ãƒ§ãƒ³
             if (Input.GetButtonDown("Action"))
             {
-                Debug.Log("ƒAƒNƒVƒ‡ƒ“");
+                Debug.Log("ã‚¢ã‚¯ã‚·ãƒ§ãƒ³");
             }
 
-            //‹ÉØ‚è‘Ö‚¦
+            //æ¥µåˆ‡ã‚Šæ›¿ãˆ
             if (Input.GetButtonDown("MagnetChange"))
             {
                 if (Pole == Magnet_Pole.S)
                 {
                     Pole = Magnet_Pole.N;
-                    Debug.Log("‹ÉØ‚è‘Ö‚¦FS ¨ N");
+                    Debug.Log("æ¥µåˆ‡ã‚Šæ›¿ãˆï¼šS â†’ N");
                 }
                 else
                 {
                     Pole = Magnet_Pole.S;
-                    Debug.Log("‹ÉØ‚è‘Ö‚¦FN ¨ S");
+                    Debug.Log("æ¥µåˆ‡ã‚Šæ›¿ãˆï¼šN â†’ S");
                 }
             }
 
             if (HitJagde == true)
             {
-                Rb.velocity = new Vector2(XSpeed, YSpeed);      // •Ç‚Ì‚Ú‚è
+                Rb.velocity = new Vector2(XSpeed, YSpeed);      // å£ã®ã¼ã‚Š
             }
             else
             {
-                Rb.velocity = new Vector2(XSpeed, Rb.velocity.y); // ƒWƒƒƒ“ƒv
+                Rb.velocity = new Vector2(XSpeed, Rb.velocity.y); // ã‚¸ãƒ£ãƒ³ãƒ—
             }
         }
         else if (PlayerState == State.CatchChain)
@@ -154,7 +155,7 @@ public class Player : MagnetManager
             }
                 if (transform.localPosition != ChainObj.GetArrivalPoint())
                 {
-                    //ŠŠ‚ç‚©‚ÉŒˆ‚ß‚ç‚ê‚½ˆÊ’u‚ÉˆÚ“®‚³‚¹‚é
+                    //æ»‘ã‚‰ã‹ã«æ±ºã‚ã‚‰ã‚ŒãŸä½ç½®ã«ç§»å‹•ã•ã›ã‚‹
                     transform.localPosition = Vector3.Lerp(transform.localPosition, ChainObj.GetArrivalPoint(), SpeedToRope * Time.deltaTime);
                 }
         }
@@ -162,19 +163,19 @@ public class Player : MagnetManager
         {
             transform.localRotation = Quaternion.Lerp(transform.localRotation, PreRotation, SpeedToRope * Time.deltaTime);
 
-            //ƒ[ƒv‚Ì“®‚¢‚Ä‚¢‚é‘¬“x‚ğæ“¾
+            //ãƒ­ãƒ¼ãƒ—ã®å‹•ã„ã¦ã„ã‚‹é€Ÿåº¦ã‚’å–å¾—
             Vector3 velocityXZ = (MoveChainObj.transform.right * DirectionX * ReleasePower);
 
-            //Y²•ûŒü‚Íd—Í‚É”C‚¹‚éˆ×0‚É‚·‚é
+            //Yè»¸æ–¹å‘ã¯é‡åŠ›ã«ä»»ã›ã‚‹ç‚º0ã«ã™ã‚‹
             velocityXZ.y = 0.0f;
 
-            //ƒ[ƒv‚ğ—£‚µ‚½‚Ìƒ[ƒv‚ª“®‚¢‚Ä‚¢‚é‘¬“x‚Æd—Í‚ğ‘«‚µ‚Ä‘S‘Ì‚Ì‘¬“x‚ğŒvZ
+            //ãƒ­ãƒ¼ãƒ—ã‚’é›¢ã—ãŸæ™‚ã®ãƒ­ãƒ¼ãƒ—ãŒå‹•ã„ã¦ã„ã‚‹é€Ÿåº¦ã¨é‡åŠ›ã‚’è¶³ã—ã¦å…¨ä½“ã®é€Ÿåº¦ã‚’è¨ˆç®—
             Rb.velocity = velocityXZ + new Vector3(0.0f, Rb.velocity.y, 0.0f);
 
-            //ˆÚ“®’l‚ğŒ¸­‚³‚¹‚é
+            //ç§»å‹•å€¤ã‚’æ¸›å°‘ã•ã›ã‚‹
             DirectionX = Mathf.Lerp(DirectionX, 0.0f, DampingTime * Time.deltaTime);
 
-            //d—Í‚ğ“­‚©‚¹‚é
+            //é‡åŠ›ã‚’åƒã‹ã›ã‚‹
             Rb.velocity = new Vector3(
                  Rb.velocity.x,
                  Rb.velocity.y + Physics.gravity.y * Time.deltaTime,
@@ -195,15 +196,15 @@ public class Player : MagnetManager
 
         if (PlayerState == State.CatchChain)
         {
-            //Œ»İ‚ÌŠp“x‚ğ•Û‚µ‚Ä‚¨‚­
+            //ç¾åœ¨ã®è§’åº¦ã‚’ä¿æŒã—ã¦ãŠã
             PreRotation = transform.rotation;
 
             Rb.velocity = Vector3.zero;
 
-            //ˆÚ“®’l“™‚Ì‰Šú‰»
+            //ç§»å‹•å€¤ç­‰ã®åˆæœŸåŒ–
             float rot = transform.localEulerAngles.y;
 
-            //Šp“x‚ğİ’è‚µ’¼‚·
+            //è§’åº¦ã‚’è¨­å®šã—ç›´ã™
             transform.localRotation = Quaternion.Euler(0.0f, rot, 0.0f);
 
             SetCatchTheChain(catchTheChain);
@@ -216,7 +217,7 @@ public class Player : MagnetManager
 
             transform.Rotate(0.0f, 0.0f, 0.0f);
 
-            //@ƒ[ƒv‚ğ—£‚µ‚½‚ÌŒü‚«‚ğ•Û
+            //ã€€ãƒ­ãƒ¼ãƒ—ã‚’é›¢ã—ãŸæ™‚ã®å‘ãã‚’ä¿æŒ
             if (MoveChainObj.GetChainDirection() == 1)
             {
                 DirectionX = (float)PlayerDirection.Right;
@@ -234,24 +235,23 @@ public class Player : MagnetManager
             ChainObj = null;
             transform.rotation = PreRotation;
         }
-
     }
     public void SetCatchTheChain(CatchTheChain chainBase)
     {
-        //CatchTheChain‚ÆChainƒXƒNƒŠƒvƒg‚Ìæ“¾
+        //CatchTheChainã¨Chainã‚¹ã‚¯ãƒªãƒ—ãƒˆã®å–å¾—
         this.ChainObj = chainBase;
         MoveChainObj = chainBase.GetComponent<MoveChain>();
     }
 
-    // ‚ ‚½‚Á‚½ƒ^ƒCƒ~ƒ“ƒO‚Åˆ—‚ª“®‚­
+    // ã‚ãŸã£ãŸã‚¿ã‚¤ãƒŸãƒ³ã‚°ã§å‡¦ç†ãŒå‹•ã
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //ŠÈˆÕ“I‚É“S‚ğÀ‘•
+        //ç°¡æ˜“çš„ã«é‰„ã‚’å®Ÿè£…
         if (collision.gameObject.CompareTag("Iron"))
         {
-            Debug.Log("“S‚É‚­‚Á‚Â‚¢‚½II");
+            Debug.Log("é‰„ã«ãã£ã¤ã„ãŸï¼ï¼");
 
-            //Šù‚ÉTure
+            //æ—¢ã«Ture
             if (HitJagde)
             {
                 TwoFlug = true;
@@ -264,13 +264,34 @@ public class Player : MagnetManager
 
         if (collision.gameObject.CompareTag("NPole") || collision.gameObject.CompareTag("SPole"))
         {
-            // ¥Î‚É‚æ‚Á‚Äˆø‚«Šñ‚¹‚ç‚ê‚Ä‚é‚©
+            // ç£çŸ³ã«ã‚ˆã£ã¦å¼•ãå¯„ã›ã‚‰ã‚Œã¦ã‚‹ã‹
             if (collision.gameObject.GetComponent<Magnet>().Pole != Pole)
             {
-                Debug.Log("¥Î‚É‚­‚Á‚Â‚¢‚½II");
+                Debug.Log("ç£çŸ³ã«ãã£ã¤ã„ãŸï¼ï¼");
 
                 HitJagde = true;
             }
+        }
+
+        if(collision.gameObject.CompareTag("Thorn"))
+        {
+            Vector2 worldPos = PlayerTransform.position;
+
+            // ã‚»ãƒ¼ãƒ–ãƒã‚¤ãƒ³ãƒˆé€šã£ãŸã‹
+            if (SavePoint.instance != null)
+            {
+                // é€šã£ãŸã‚»ãƒ¼ãƒ–ãƒã‚¤ãƒ³ãƒˆã®åº§æ¨™ã«å¾©æ´»ã•ã›ã‚‹
+                worldPos.x = SavePoint.instance.GetSavePointPosX();
+                worldPos.y = SavePoint.instance.GetSavePointPosY();
+            }
+            // é€šã£ã¦ãªã„ãªã‚‰åˆæœŸåº§æ¨™ã«æˆ»ã‚‹
+            else
+            {
+                worldPos.x = PlayerPosX;
+                worldPos.y = PlayerPosY;
+            }
+           
+            PlayerTransform.position = worldPos;// åº§æ¨™è¨­å®š
         }
 
         if (collision.gameObject.CompareTag("Floor"))
@@ -288,21 +309,21 @@ public class Player : MagnetManager
         }
     }
 
-    // —£‚ê‚½‚çˆ—‚ª“®‚­
+    // é›¢ã‚ŒãŸã‚‰å‡¦ç†ãŒå‹•ã
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("NPole") || collision.gameObject.CompareTag("SPole"))
         {
-            Debug.Log("—£‚ê‚½II");
+            Debug.Log("é›¢ã‚ŒãŸï¼ï¼");
             HitJagde = false;
 
             Rb.gravityScale = 1.0f;
         }
 
-        //ŠÈˆÕ“I‚É“S‚ğÀ‘•
+        //ç°¡æ˜“çš„ã«é‰„ã‚’å®Ÿè£…
         if (collision.gameObject.CompareTag("Iron"))
         {
-            Debug.Log("—£‚ê‚½II");
+            Debug.Log("é›¢ã‚ŒãŸï¼ï¼");
 
             if (!TwoFlug)
             {

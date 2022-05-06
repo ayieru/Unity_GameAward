@@ -9,6 +9,8 @@ TagManager:
   - SPole
   - Block
   - Floor
+  - Thorn
+  - SavePoint
   layers:
   - Default
   - TransparentFX
