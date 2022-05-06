@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class Gear : MagnetManager
 {
-
-    [Header("対応している極")]
-    public Magnet_Pole Pole = Magnet_Pole.N;
-
     [Header("歯車オブジェクト(大)")]
     public GameObject BigGearObj;
 
@@ -27,13 +23,11 @@ public class Gear : MagnetManager
     private bool PlayerStay = false;
 
     private GameObject PlayerObj;
-    private Rigidbody2D Rb;
     private Player player;
 
     void Awake()
     {
         PlayerObj = GameObject.Find("Player");
-        Rb = PlayerObj.GetComponent<Rigidbody2D>();
         player = PlayerObj.GetComponent<Player>();
 
         Power = 0;
@@ -42,28 +36,34 @@ public class Gear : MagnetManager
 
     private void Update()
     {
-        if(PlayerStay == true && Pole == player.GetPole())
+        if (PlayerStay)
         {
-            //最大値まで発電する
-            if (Power < MaxPower)
+            if (Pole == player.GetPole())
             {
-                Power += 1;
+                //最大値まで発電する
+                if (Power < MaxPower)
+                {
+                    Power += 1;
+                }
+                else
+                {
+                    //溜まったら止める　確認用にコメントアウト
+                    //return;
+                }
+
+                //歯車（大）
+                BigGearObj.gameObject.transform.Rotate(new Vector3(0, 0, -180) * Time.deltaTime * RotSpeed, Space.World);
+
+                //歯車（小）
+                SmallGearObj.gameObject.transform.Rotate(new Vector3(0, 0, 180) * Time.deltaTime * RotSpeed, Space.World);
+
             }
-
-            //範囲内にいるときに回転
-
-            //歯車（大）
-            BigGearObj.gameObject.transform.Rotate(new Vector3(0, 0, -180) * Time.deltaTime * RotSpeed, Space.World);
-
-            //歯車（小）
-            SmallGearObj.gameObject.transform.Rotate(new Vector3(0, 0, 180) * Time.deltaTime * RotSpeed, Space.World);
-
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player" && Pole == player.GetPole())
+        if (collision.gameObject.CompareTag("Player"))
         {
             //プレイヤーが入った
             PlayerStay = true;
@@ -72,7 +72,7 @@ public class Gear : MagnetManager
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player" && Pole == player.GetPole())
+        if (collision.gameObject.CompareTag("Player"))
         {
             //プレイヤーが出た
             PlayerStay = false;

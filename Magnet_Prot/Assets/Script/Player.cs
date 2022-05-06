@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class Player : MagnetManager
 {
-    [Header("極")]
-    [SerializeField] Magnet_Pole Pole = Magnet_Pole.N;
-
     [Header("移動速度")]
     [SerializeField] float Speed = 5.0f;
 
@@ -22,10 +19,12 @@ public class Player : MagnetManager
 
     private bool HitJagde = false;// 何かとプレイヤーが当たった判定
     private bool TwoFlug = false;
+    private Magnet_Pole currentPole;
 
-    [Header("初期座標")]
-    public float PlayerPosX = 1.0f;
-    public float PlayerPosY = 1.0f;
+    private float PlayerPosX;
+    private float PlayerPosY;
+
+    [SerializeField] LayerMask layer;
 
     Transform PlayerTransform;
     
@@ -33,6 +32,12 @@ public class Player : MagnetManager
     {
         Rb = GetComponent<Rigidbody2D>();
         PlayerTransform = this.transform;// transformを取得
+
+        currentPole = this.Pole;
+        ChangeColor();
+
+        PlayerPosX = this.transform.position.x;
+        PlayerPosY = this.transform.position.y;
     }
 
     void Update()
@@ -97,35 +102,33 @@ public class Player : MagnetManager
             else
             {
                 Pole = Magnet_Pole.S;
-                Debug.Log("極切り替え：N → S");
+                Debug.Log("極切り替え：N → S"); 
             }
+        }
+
+        RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, Vector2.right, 0.6f, layer);
+        if (hitInfo.collider)
+        {
+            Debug.Log("磁石にくっついた！！");
+            HitJagde = true;
+        }
+        else
+        {
+            HitJagde = false;
         }
 
         if (HitJagde == true)
         {
-            Rb.velocity = new Vector2(XSpeed, YSpeed);      // 壁のぼり
+            Rb.velocity = new Vector2(XSpeed, YSpeed * 1.4f);      // 壁のぼり
         }
         else
         {
             Rb.velocity = new Vector2(XSpeed, Rb.velocity.y);　// ジャンプ
         }
 
-
-        if (Pole == Magnet_Pole.N)
-        {
-            var colorCode = "#FF0000";
-            if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
-                GetComponent<SpriteRenderer>().color = color;
-        }
-        else
-        {
-            var colorCode = "#0000FF";
-            if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
-                GetComponent<SpriteRenderer>().color = color;
-        }
+        if (currentPole != Pole) ChangeColor();
     }
 
-    // あたったタイミングで処理が動く
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //簡易的に鉄を実装
@@ -149,9 +152,9 @@ public class Player : MagnetManager
             // 磁石によって引き寄せられてるか
             if (collision.gameObject.GetComponent<Magnet>().Pole != Pole)
             {
-                Debug.Log("磁石にくっついた！！");
 
-                HitJagde = true;
+
+                //HitJagde = true;
             }
         }
 
@@ -187,7 +190,6 @@ public class Player : MagnetManager
         }
     }
 
-    // 離れたら処理が動く
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("NPole") || collision.gameObject.CompareTag("SPole"))
@@ -214,6 +216,21 @@ public class Player : MagnetManager
             }
         }
     }
+    private void ChangeColor()
+    {
+        if (Pole == Magnet_Pole.N)
+        {
+            var colorCode = "#FF0000";
+            if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
+                GetComponent<SpriteRenderer>().color = color;
+        }
+        else
+        {
+            var colorCode = "#0000FF";
+            if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
+                GetComponent<SpriteRenderer>().color = color;
+        }
 
-    public Magnet_Pole GetPole() { return Pole; }
+        currentPole = Pole;
+    }
 }

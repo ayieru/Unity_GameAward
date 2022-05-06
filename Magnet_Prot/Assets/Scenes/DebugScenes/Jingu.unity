@@ -174,6 +174,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1184413921441135489, guid: 795e9833aa4c0b4448fbdede5a4ac9a5, type: 3}
+      propertyPath: PullPower
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1184413921441135489, guid: 795e9833aa4c0b4448fbdede5a4ac9a5, type: 3}
+      propertyPath: ReleasePower
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 3590380994185723307, guid: 795e9833aa4c0b4448fbdede5a4ac9a5, type: 3}
       propertyPath: m_Name
       value: mag
@@ -309,6 +317,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1159253589317391840, guid: d676cdfc4ebe5004a93887071d88569a, type: 3}
+      propertyPath: PullPower
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 1159253589317391840, guid: d676cdfc4ebe5004a93887071d88569a, type: 3}
+      propertyPath: ReleasePower
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 1159253589317391841, guid: d676cdfc4ebe5004a93887071d88569a, type: 3}
       propertyPath: m_Name
       value: MagnetBlock
@@ -366,6 +382,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5754467526990713000, guid: 9c65ede3bf8a9df429b2e9417a6381e4, type: 3}
+      propertyPath: PullPower
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5754467526990713000, guid: 9c65ede3bf8a9df429b2e9417a6381e4, type: 3}
+      propertyPath: ReleasePower
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 5754467526990713001, guid: 9c65ede3bf8a9df429b2e9417a6381e4, type: 3}
       propertyPath: m_Name
       value: mag1
@@ -787,6 +811,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7248939849960591275, guid: 0bbfbdc58f57efd45969034d1c85db99, type: 3}
+      propertyPath: Speed
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7248939849960591275, guid: 0bbfbdc58f57efd45969034d1c85db99, type: 3}
       propertyPath: speed
       value: 5

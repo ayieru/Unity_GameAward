@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class Magnet : MagnetManager
 {
-    [Header("‹É")]
-    public Magnet_Pole Pole = Magnet_Pole.N;
-
     [Header("¥Î‚Ìˆø‚­—Í")]
     public float PullPower = 400.0f;
 
