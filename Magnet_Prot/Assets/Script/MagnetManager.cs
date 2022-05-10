@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +11,7 @@ public class MagnetManager : MonoBehaviour
         None,
     }
 
-    float magForce;         //¥—Í‚ğó‚¯‚éƒIƒuƒWƒFƒNƒg‚É‚©‚©‚é—Í
+    float magForce;         //ç£åŠ›ã‚’å—ã‘ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ã‹ã‹ã‚‹åŠ›
     float magForceX;
     float magForceY;
 }

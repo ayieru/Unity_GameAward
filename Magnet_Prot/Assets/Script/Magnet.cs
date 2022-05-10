@@ -1,19 +1,19 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Magnet : MagnetManager
 {
-    [Header("‹É")]
+    [Header("æ¥µ")]
     public Magnet_Pole Pole = Magnet_Pole.N;
 
-    [Header("¥Î‚Ìˆø‚­—Í")]
+    [Header("ç£çŸ³ã®å¼•ãåŠ›")]
     public float PullPower = 400.0f;
 
-    [Header("¥Î‚Ì—£‚·—Í")]
+    [Header("ç£çŸ³ã®é›¢ã™åŠ›")]
     public float ReleasePower = 400.0f;
 
-    [Header("¥Î‚Ì‰e‹¿‹——£")]
+    [Header("ç£çŸ³ã®å½±éŸ¿è·é›¢")]
     public float Distance = 10.0f;
 
     Vector3 distance;
@@ -40,7 +40,7 @@ public class Magnet : MagnetManager
 
     void Update()
     {
-        //‚±‚±d‚¢
+        //ã“ã“é‡ã„
         float dis = Vector2.Distance(transform.position, player.transform.position);
 
         if (dis < Distance)

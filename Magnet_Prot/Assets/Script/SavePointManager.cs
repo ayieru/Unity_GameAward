@@ -1,11 +1,11 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SavePointManager : MonoBehaviour
 {
-    [Header("ƒvƒŒƒCƒ„[‚Ì‰ŠúÀ•W“ü—Í")]
-    public Vector2 SavePointPos;// ƒvƒŒƒCƒ„[‚ª•œ‹A‚·‚éƒZ[ƒuƒ|ƒCƒ“ƒgÀ•W
+    [Header("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åˆæœŸåº§æ¨™å…¥åŠ›")]
+    public Vector2 SavePointPos;// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒå¾©å¸°ã™ã‚‹ã‚»ãƒ¼ãƒ–ãƒã‚¤ãƒ³ãƒˆåº§æ¨™
 
     public bool SaveJudge = false;
 
