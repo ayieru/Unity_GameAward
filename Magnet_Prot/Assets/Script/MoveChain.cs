@@ -1,36 +1,36 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MoveChain : MonoBehaviour
 {
-    [Header("U‚èq‚Ì‰•œŠÔŠu(’l‚ª‘å‚«‚¢’ö‚ä‚Á‚­‚è“®‚­)")]
+    [Header("æŒ¯ã‚Šå­ã®å¾€å¾©é–“éš”(å€¤ãŒå¤§ãã„ç¨‹ã‚†ã£ãã‚Šå‹•ã)")]
     [SerializeField]
     private float RoundTripTime = 5.0f;
 
-    [Header("Z²‚ÅU‚èq‚ğ‚·‚éŠp“x(‰Šú‚ÌŒÀŠE’l)")]
+    [Header("Zè»¸ã§æŒ¯ã‚Šå­ã‚’ã™ã‚‹è§’åº¦(åˆæœŸã®é™ç•Œå€¤)")]
     [SerializeField]
     private float MaxAngle = 90.0f;
 
-    [Header("ƒ[ƒv‚ğŒ³‚ÌˆÊ’u‚É–ß‚·ƒXƒs[ƒh")]
+    [Header("ãƒ­ãƒ¼ãƒ—ã‚’å…ƒã®ä½ç½®ã«æˆ»ã™ã‚¹ãƒ”ãƒ¼ãƒ‰")]
     [SerializeField]
     private float UndoSpeed = 2.0f;
 
-    [Header("ƒ[ƒv‚ª“®‚¢‚Ä‚¢‚é‚©")]
+    [Header("ãƒ­ãƒ¼ãƒ—ãŒå‹•ã„ã¦ã„ã‚‹ã‹")]
     [SerializeField]
     private bool MoveFlag = false;
 
     private float DefaultMaxAngle;
 
-    //i‚ñ‚Å‚¢‚é•ûŒü
+    //é€²ã‚“ã§ã„ã‚‹æ–¹å‘
     private int ChainDirection = 1;
 
     private int UndoDirection;
 
-    //Z²‚ÌŠp“x
+    //Zè»¸ã®è§’åº¦
     private float Angle = 0.0f;
 
-    //“®‚«n‚ß‚é‚ÌŠÔ
+    //å‹•ãå§‹ã‚ã‚‹æ™‚ã®æ™‚é–“
     private float StartTime;
 
     void Start()
@@ -47,18 +47,18 @@ public class MoveChain : MonoBehaviour
     void FixedUpdate()
     {
         
-        if (MoveFlag)//ƒ[ƒv‚ğ’Í‚ñ‚Å‚¢‚é‚Ìƒ[ƒv‚Ì“®‚«
+        if (MoveFlag)//ãƒ­ãƒ¼ãƒ—ã‚’æ´ã‚“ã§ã„ã‚‹æ™‚ã®ãƒ­ãƒ¼ãƒ—ã®å‹•ã
         {
-            //Œo‰ßŠÔ‚É‡‚í‚¹‚½Š„‡‚ğŒvZ
+            //çµŒéæ™‚é–“ã«åˆã‚ã›ãŸå‰²åˆã‚’è¨ˆç®—
             float t = (Time.time - StartTime) / RoundTripTime;
 
-            //@ƒXƒ€[ƒY‚ÉŠp“x‚ğŒvZ
+            //ã€€ã‚¹ãƒ ãƒ¼ã‚ºã«è§’åº¦ã‚’è¨ˆç®—
             Angle = Mathf.SmoothStep(Angle, ChainDirection * MaxAngle, t);
 
-            //Šp“x‚ğ•ÏX
+            //è§’åº¦ã‚’å¤‰æ›´
             transform.localEulerAngles = new Vector3(0f, 0f, Angle);
 
-            //Šp“x‚ªw’è‚µ‚½Šp“x‚Æ1“x‚Ì·‚É‚È‚Á‚½‚ç”½“]
+            //è§’åº¦ãŒæŒ‡å®šã—ãŸè§’åº¦ã¨1åº¦ã®å·®ã«ãªã£ãŸã‚‰åè»¢
             if (Mathf.Abs(Mathf.DeltaAngle(Angle, ChainDirection * MaxAngle)) < 1f)
             {
                 ChainDirection *= -1;
@@ -66,28 +66,28 @@ public class MoveChain : MonoBehaviour
             }
             
         }
-        else//ƒ[ƒv‚ğ—£‚µ‚Ä‚¢‚é
+        else//ãƒ­ãƒ¼ãƒ—ã‚’é›¢ã—ã¦ã„ã‚‹æ™‚
         {
-            //‰Šú‚ÌŠp“x‚É‚È‚é‚Ü‚ÅU‚èq‚ğŒJ‚è•Ô‚·
+            //åˆæœŸã®è§’åº¦ã«ãªã‚‹ã¾ã§æŒ¯ã‚Šå­ã‚’ç¹°ã‚Šè¿”ã™
             if (transform.localEulerAngles.z != 0)
             {
 
-                //@™X‚ÉŒÀŠEŠp“x‚ğ¬‚³‚­‚·‚é
+                //ã€€å¾ã€…ã«é™ç•Œè§’åº¦ã‚’å°ã•ãã™ã‚‹
                 if (MaxAngle > 0f)
                 {
                     MaxAngle -= UndoSpeed * Time.deltaTime;
                 }
 
-                //@Œo‰ßŠÔ‚É‡‚í‚¹‚½Š„‡‚ğŒvZ
+                //ã€€çµŒéæ™‚é–“ã«åˆã‚ã›ãŸå‰²åˆã‚’è¨ˆç®—
                 float t = (Time.time - StartTime) / RoundTripTime;
 
-                //@ƒXƒ€[ƒY‚ÉŠp“x‚ğŒvZ
+                //ã€€ã‚¹ãƒ ãƒ¼ã‚ºã«è§’åº¦ã‚’è¨ˆç®—
                 Angle = Mathf.SmoothStep(Angle, UndoDirection * MaxAngle, t);
 
-                //@Šp“x‚ğ•ÏX
+                //ã€€è§’åº¦ã‚’å¤‰æ›´
                 transform.localEulerAngles = new Vector3(0f, 0f, Angle);
 
-                //@Šp“x‚ªw’è‚µ‚½Šp“x‚Æ1“x‚Ì·‚É‚È‚Á‚½‚ç”½“]
+                //ã€€è§’åº¦ãŒæŒ‡å®šã—ãŸè§’åº¦ã¨1åº¦ã®å·®ã«ãªã£ãŸã‚‰åè»¢
                 if (Mathf.Abs(Mathf.DeltaAngle(Angle, UndoDirection * MaxAngle)) < 1f)
                 {
                     UndoDirection *= -1;
@@ -96,7 +96,7 @@ public class MoveChain : MonoBehaviour
             }
         }
     }
-    //i‚ñ‚Å‚¢‚éŒü‚«‚ğ•Ô‚·
+    //é€²ã‚“ã§ã„ã‚‹å‘ãã‚’è¿”ã™
     public int GetChainDirection(){ return ChainDirection; }
 
     public void SetChainDirection(int dir) { ChainDirection = dir; }
@@ -106,13 +106,13 @@ public class MoveChain : MonoBehaviour
         MoveFlag = enable;
         MaxAngle = DefaultMaxAngle;
         
-        if (!MoveFlag)//ƒ[ƒv‚ğ—£‚µ‚½
+        if (!MoveFlag)//ãƒ­ãƒ¼ãƒ—ã‚’é›¢ã—ãŸæ™‚
         {
-            //ƒ[ƒv‚ğ—£‚µ‚½—p‚Ì•ûŒü’l‚Édirection‚ğ“ü‚ê‚é
+            //ãƒ­ãƒ¼ãƒ—ã‚’é›¢ã—ãŸæ™‚ç”¨ã®æ–¹å‘å€¤ã«directionã‚’å…¥ã‚Œã‚‹
             UndoDirection = ChainDirection;
             
         }
-        else//ƒ[ƒv‚ğ’Í‚ñ‚¾
+        else//ãƒ­ãƒ¼ãƒ—ã‚’æ´ã‚“ã æ™‚
         {
             StartTime = Time.time;
         }

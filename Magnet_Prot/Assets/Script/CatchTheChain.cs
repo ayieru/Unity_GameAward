@@ -1,10 +1,10 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CatchTheChain : MonoBehaviour
 {
-    //ƒLƒƒƒ‰ƒNƒ^[‚Ì“’B“_
+    //ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®åˆ°é”ç‚¹
     [SerializeField]
     private Transform ArrivalPoint;
 
@@ -29,7 +29,7 @@ public class CatchTheChain : MonoBehaviour
 
                 Vector3 localPlayer = player.transform.localScale;
 
-                //‘åŒ³‚Ìe‚ğæ“¾‚µ‚ÄƒvƒŒƒCƒ„[‚ğ‚»‚±‚Éeq•t‚¯
+                //å¤§å…ƒã®è¦ªã‚’å–å¾—ã—ã¦ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ãã“ã«è¦ªå­ä»˜ã‘
                 collision.transform.SetParent(transform.root);
 
                 player.transform.localScale = new Vector3(
@@ -38,7 +38,7 @@ public class CatchTheChain : MonoBehaviour
                  localPlayer.z / lossyScale.z * lossyScale.z);
 
 
-            //ƒLƒƒƒ‰ƒNƒ^[‚ÉCatchTheChainƒXƒNƒŠƒvƒg‚ğ“n‚µAó‘Ô‚ğ•ÏX‚·‚é
+            //ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã«CatchTheChainã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’æ¸¡ã—ã€çŠ¶æ…‹ã‚’å¤‰æ›´ã™ã‚‹
             player.SetPlayerState(Player.State.CatchChain, this);
 
             ChainObj.SetMoveFlag(true);

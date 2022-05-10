@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -54,6 +54,12 @@ public class Player : MagnetManager
 
     private State PlayerState = State.Normal;
 
+    //初期座標
+    private float PlayerPosX;
+    private float PlayerPosY;
+
+    private Transform PlayerTransform;
+
     void Awake()
     {
         IsGround = false;
@@ -63,6 +69,9 @@ public class Player : MagnetManager
         PlayerState = State.Normal;
 
         DirectionX = (int)PlayerDirection.Right;
+
+        PlayerPosX = this.transform.position.x;
+        PlayerPosY = this.transform.position.y;
 
     }
 

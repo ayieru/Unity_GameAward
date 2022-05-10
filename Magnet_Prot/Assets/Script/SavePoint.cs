@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,19 +10,19 @@ public class SavePoint : SavePointManager
 
     void Awake()
     {
-        SavePointTransform = this.transform;// transform‚ğæ“¾
+        SavePointTransform = this.transform;// transformã‚’å–å¾—
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // ƒZ[ƒuÀ‘•i1‰ñŒÀ‚èj
+        // ã‚»ãƒ¼ãƒ–å®Ÿè£…ï¼ˆ1å›é™ã‚Šï¼‰
         if (SaveJudge) return;
 
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("ƒZ[ƒu¬Œ÷");
+            Debug.Log("ã‚»ãƒ¼ãƒ–æˆåŠŸ");
 
-            // ƒZ[ƒuƒ|ƒCƒ“ƒg‚ªİ’u‚µ‚Ä‚¢‚éÀ•W‚ğƒvƒŒƒCƒ„[‚ª•œ‹A‚·‚éÀ•W‚É‘ã“ü
+            // ã‚»ãƒ¼ãƒ–ãƒã‚¤ãƒ³ãƒˆãŒè¨­ç½®ã—ã¦ã„ã‚‹åº§æ¨™ã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒå¾©å¸°ã™ã‚‹åº§æ¨™ã«ä»£å…¥
             SavePointPos = SavePointTransform.position;
             SaveJudge = true;
             instance = this;

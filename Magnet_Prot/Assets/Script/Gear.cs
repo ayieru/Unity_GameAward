@@ -1,29 +1,29 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Gear : MagnetManager
 {
 
-    [Header("‘Î‰‚µ‚Ä‚¢‚é‹É")]
+    [Header("å¯¾å¿œã—ã¦ã„ã‚‹æ¥µ")]
     public Magnet_Pole Pole = Magnet_Pole.N;
 
-    [Header("•ÔƒIƒuƒWƒFƒNƒg(‘å)")]
+    [Header("æ­¯è»Šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ(å¤§)")]
     public GameObject BigGearObj;
 
-    [Header("•ÔƒIƒuƒWƒFƒNƒg(¬)")]
+    [Header("æ­¯è»Šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ(å°)")]
     public GameObject SmallGearObj;
 
-    [Header("‰ñ“]‘¬“x")]
+    [Header("å›è»¢é€Ÿåº¦")]
     public float RotSpeed;
 
-    [Header("”­“d—Ê‚ÌÅ‘å’l")]
+    [Header("ç™ºé›»é‡ã®æœ€å¤§å€¤")]
     public int MaxPower = 20;
 
-    [Header("”­“d—Ê")]
+    [Header("ç™ºé›»é‡")]
     private int Power = 0;
 
-    [Header("ƒvƒŒƒCƒ„[‚ª”ÍˆÍ“à‚É‚¢‚é‚©")]
+    [Header("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒç¯„å›²å†…ã«ã„ã‚‹ã‹")]
     private bool PlayerStay = false;
 
     private GameObject PlayerObj;
@@ -44,18 +44,18 @@ public class Gear : MagnetManager
     {
         if(PlayerStay == true && Pole == player.GetPole())
         {
-            //Å‘å’l‚Ü‚Å”­“d‚·‚é
+            //æœ€å¤§å€¤ã¾ã§ç™ºé›»ã™ã‚‹
             if (Power < MaxPower)
             {
                 Power += 1;
             }
 
-            //”ÍˆÍ“à‚É‚¢‚é‚Æ‚«‚É‰ñ“]
+            //ç¯„å›²å†…ã«ã„ã‚‹ã¨ãã«å›è»¢
 
-            //•Ôi‘åj
+            //æ­¯è»Šï¼ˆå¤§ï¼‰
             BigGearObj.gameObject.transform.Rotate(new Vector3(0, 0, -180) * Time.deltaTime * RotSpeed, Space.World);
 
-            //•Ôi¬j
+            //æ­¯è»Šï¼ˆå°ï¼‰
             SmallGearObj.gameObject.transform.Rotate(new Vector3(0, 0, 180) * Time.deltaTime * RotSpeed, Space.World);
 
         }
@@ -65,7 +65,7 @@ public class Gear : MagnetManager
     {
         if (collision.gameObject.tag == "Player" && Pole == player.GetPole())
         {
-            //ƒvƒŒƒCƒ„[‚ª“ü‚Á‚½
+            //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒå…¥ã£ãŸ
             PlayerStay = true;
         }
     }
@@ -74,7 +74,7 @@ public class Gear : MagnetManager
     {
         if (collision.gameObject.tag == "Player" && Pole == player.GetPole())
         {
-            //ƒvƒŒƒCƒ„[‚ªo‚½
+            //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒå‡ºãŸ
             PlayerStay = false;
         }
 

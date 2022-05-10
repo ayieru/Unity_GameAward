@@ -1,13 +1,13 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//QÆF http://blawat2015.no-ip.com/~mieki256/diary/201401303.html
-//‰æ‘œ‚ğƒ‹[ƒv‚³‚¹‚½‚¢c‚¯‚Ç“ï‚µ‚¢c
+//å‚ç…§ï¼š http://blawat2015.no-ip.com/~mieki256/diary/201401303.html
+//ç”»åƒã‚’ãƒ«ãƒ¼ãƒ—ã•ã›ãŸã„â€¦ã‘ã©é›£ã—ã„â€¦
 
 public class BackGroundManager : MonoBehaviour
 {
-    [Header("ƒIƒtƒZƒbƒg")]
+    [Header("ã‚ªãƒ•ã‚»ãƒƒãƒˆ")]
     public float Offset;
 
     private Vector3 Oldpos;

@@ -1,64 +1,64 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-//QÆFhttps://kenko-san.com/unity-fade/#toc4
+//å‚ç…§ï¼šhttps://kenko-san.com/unity-fade/#toc4
 
-/*@Z“Á’è‚ÌƒV[ƒ“‚ğƒtƒF[ƒhƒCƒ“‚Ån‚ß‚½‚¢ê‡
- *    ‚»‚ÌƒV[ƒ““à‚É‚ ‚é‰½‚ê‚©‚ÌƒXƒNƒŠƒvƒg‚ÌStart()“à‚ÉˆÈ‰º‚Ì1s‚ğ’Ç‰Á
- *     FadeManager.FadeIn()G
+/*ã€€ã€‡ç‰¹å®šã®ã‚·ãƒ¼ãƒ³ã‚’ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³ã§å§‹ã‚ãŸã„å ´åˆ
+ *    ãã®ã‚·ãƒ¼ãƒ³å†…ã«ã‚ã‚‹ä½•ã‚Œã‹ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®Start()å†…ã«ä»¥ä¸‹ã®1è¡Œã‚’è¿½åŠ 
+ *     FadeManager.FadeIn()ï¼›
  *  
- *  ZŒ»İ‚ÌƒV[ƒ“‚ğƒtƒF[ƒhƒAƒEƒg‚ÅI‚í‚Á‚ÄAŸ‚ÌƒV[ƒ“‚ÉƒtƒF[ƒhƒCƒ“‚µ‚½ê‡
- *    ”CˆÓ‚Ìƒ^ƒCƒ~ƒ“ƒO‚ÅˆÈ‰º‚Ìˆês‚ğ’Ç‰Á
- *    FadeManager.FadeOut(‘JˆÚ‚µ‚½‚¢ƒV[ƒ“”Ô†);
+ *  ã€‡ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã‚’ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆã§çµ‚ã‚ã£ã¦ã€æ¬¡ã®ã‚·ãƒ¼ãƒ³ã«ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³ã—ãŸå ´åˆ
+ *    ä»»æ„ã®ã‚¿ã‚¤ãƒŸãƒ³ã‚°ã§ä»¥ä¸‹ã®ä¸€è¡Œã‚’è¿½åŠ 
+ *    FadeManager.FadeOut(é·ç§»ã—ãŸã„ã‚·ãƒ¼ãƒ³ç•ªå·);
  *    
- *    ƒV[ƒ“‘JˆÚ‚à“¯‚Éo—ˆ‚Ü‚·B
+ *    ã‚·ãƒ¼ãƒ³é·ç§»ã‚‚åŒæ™‚ã«å‡ºæ¥ã¾ã™ã€‚
  */
 
 public class FadeManager : MonoBehaviour
 {
-    //ƒtƒF[ƒh—p‚ÌCanvas‚ÆImage
+    //ãƒ•ã‚§ãƒ¼ãƒ‰ç”¨ã®Canvasã¨Image
     private static Canvas fadeCanvas;
     private static Image fadeImage;
 
-    //ƒtƒF[ƒh—pImage‚Ì“§–¾“x
+    //ãƒ•ã‚§ãƒ¼ãƒ‰ç”¨Imageã®é€æ˜åº¦
     private static float alpha = 0.0f;
 
-    //ƒtƒF[ƒhƒCƒ“ƒAƒEƒg‚Ìƒtƒ‰ƒO
+    //ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³ã‚¢ã‚¦ãƒˆã®ãƒ•ãƒ©ã‚°
     public static bool IsFadeIn = false;
     public static bool IsFadeOut = false;
 
-    //ƒtƒF[ƒh‚Ì’·‚³i’PˆÊ‚Í•bj
+    //ãƒ•ã‚§ãƒ¼ãƒ‰ã®é•·ã•ï¼ˆå˜ä½ã¯ç§’ï¼‰
     private static float fadeTime = 0.4f;
 
-    //‘JˆÚæ‚ÌƒV[ƒ“”Ô†
+    //é·ç§»å…ˆã®ã‚·ãƒ¼ãƒ³ç•ªå·
     private static int nextScene = 1;
 
-    //ƒtƒF[ƒh—p‚ÌCanvas‚ÆImage¶¬
+    //ãƒ•ã‚§ãƒ¼ãƒ‰ç”¨ã®Canvasã¨Imageç”Ÿæˆ
     static void Init()
     {
-        //ƒtƒF[ƒh—p‚ÌCanvas¶¬
+        //ãƒ•ã‚§ãƒ¼ãƒ‰ç”¨ã®Canvasç”Ÿæˆ
         GameObject FadeCanvasObject = new GameObject("CanvasFade");
         fadeCanvas = FadeCanvasObject.AddComponent<Canvas>();
         FadeCanvasObject.AddComponent<GraphicRaycaster>();
         fadeCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
         FadeCanvasObject.AddComponent<FadeManager>();
 
-        //Å‘O–Ê‚É‚È‚é‚æ‚¤“K“–‚Èƒ\[ƒgƒI[ƒ_[İ’è
+        //æœ€å‰é¢ã«ãªã‚‹ã‚ˆã†é©å½“ãªã‚½ãƒ¼ãƒˆã‚ªãƒ¼ãƒ€ãƒ¼è¨­å®š
         fadeCanvas.sortingOrder = 100;
 
-        //ƒtƒF[ƒh—p‚ÌImage¶¬
+        //ãƒ•ã‚§ãƒ¼ãƒ‰ç”¨ã®Imageç”Ÿæˆ
         fadeImage = new GameObject("ImageFade").AddComponent<Image>();
         fadeImage.transform.SetParent(fadeCanvas.transform, false);
         fadeImage.rectTransform.anchoredPosition = Vector3.zero;
 
-        //ImageƒTƒCƒY‚Í“K“–‚É‘å‚«‚­İ’è
+        //Imageã‚µã‚¤ã‚ºã¯é©å½“ã«å¤§ããè¨­å®š
         fadeImage.rectTransform.sizeDelta = new Vector2(9999, 9999);
     }
 
-    //ƒtƒF[ƒhƒCƒ“ŠJn
+    //ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³é–‹å§‹
     public static void FadeIn()
     {
         if (fadeImage == null) Init();
@@ -66,8 +66,8 @@ public class FadeManager : MonoBehaviour
         IsFadeIn = true;
     }
 
-    //ƒtƒF[ƒhƒAƒEƒgŠJn
-    //ˆø”‚Í‘JˆÚ‚µ‚½‚¢ƒV[ƒ“‚ÌƒV[ƒ“”Ô†
+    //ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆé–‹å§‹
+    //å¼•æ•°ã¯é·ç§»ã—ãŸã„ã‚·ãƒ¼ãƒ³ã®ã‚·ãƒ¼ãƒ³ç•ªå·
     public static void FadeOut(int n)
     {
         if (fadeImage == null) Init();
@@ -79,13 +79,13 @@ public class FadeManager : MonoBehaviour
 
     void Update()
     {
-        //ƒtƒ‰ƒO—LŒø‚È‚ç–ˆƒtƒŒ[ƒ€ƒtƒF[ƒhƒCƒ“/ƒAƒEƒgˆ—
+        //ãƒ•ãƒ©ã‚°æœ‰åŠ¹ãªã‚‰æ¯ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³/ã‚¢ã‚¦ãƒˆå‡¦ç†
         if (IsFadeIn)
         {
-            //Œo‰ßŠÔ‚©‚ç“§–¾“xŒvZ
+            //çµŒéæ™‚é–“ã‹ã‚‰é€æ˜åº¦è¨ˆç®—
             alpha -= Time.deltaTime / fadeTime;
 
-            //ƒtƒF[ƒhƒCƒ“I—¹”»’è
+            //ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³çµ‚äº†åˆ¤å®š
             if (alpha <= 0.0f)
             {
                 IsFadeIn = false;
@@ -93,25 +93,25 @@ public class FadeManager : MonoBehaviour
                 fadeCanvas.enabled = false;
             }
 
-            //ƒtƒF[ƒh—pImage‚ÌFE“§–¾“xİ’è
+            //ãƒ•ã‚§ãƒ¼ãƒ‰ç”¨Imageã®è‰²ãƒ»é€æ˜åº¦è¨­å®š
             fadeImage.color = new Color(0.0f, 0.0f, 0.0f, alpha);
         }
         else if (IsFadeOut)
         {
-            //Œo‰ßŠÔ‚©‚ç“§–¾“xŒvZ
+            //çµŒéæ™‚é–“ã‹ã‚‰é€æ˜åº¦è¨ˆç®—
             alpha += Time.deltaTime / fadeTime;
 
-            //ƒtƒF[ƒhƒAƒEƒgI—¹”»’è
+            //ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆçµ‚äº†åˆ¤å®š
             if (alpha >= 1.0f)
             {
                 IsFadeOut = false;
                 alpha = 1.0f;
 
-                //Ÿ‚ÌƒV[ƒ“‚Ö‘JˆÚ
+                //æ¬¡ã®ã‚·ãƒ¼ãƒ³ã¸é·ç§»
                 SceneManager.LoadScene(nextScene);
             }
 
-            //ƒtƒF[ƒh—pImage‚ÌFE“§–¾“xİ’è
+            //ãƒ•ã‚§ãƒ¼ãƒ‰ç”¨Imageã®è‰²ãƒ»é€æ˜åº¦è¨­å®š
             fadeImage.color = new Color(0.0f, 0.0f, 0.0f, alpha);
         }
     }
