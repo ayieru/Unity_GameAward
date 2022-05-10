@@ -10,13 +10,14 @@ public class SavePoint : SavePointManager
 
     void Awake()
     {
+        SetSaveJadge(false);
         SavePointTransform = this.transform;// transformを取得
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         // セーブ実装（1回限り）
-        if (SaveJudge) return;
+        if (GetSaveJadge()) return;
 
         if (other.gameObject.CompareTag("Player"))
         {
@@ -24,7 +25,7 @@ public class SavePoint : SavePointManager
 
             // セーブポイントが設置している座標をプレイヤーが復帰する座標に代入
             SavePointPos = SavePointTransform.position;
-            SaveJudge = true;
+            SetSaveJadge(true);
             instance = this;
         }
     }

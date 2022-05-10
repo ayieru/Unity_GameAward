@@ -58,8 +58,6 @@ public class Player : MagnetManager
     private float PlayerPosX;
     private float PlayerPosY;
 
-    private Transform PlayerTransform;
-
     void Awake()
     {
         IsGround = false;
@@ -284,7 +282,7 @@ public class Player : MagnetManager
 
         if(collision.gameObject.CompareTag("Thorn"))
         {
-            Vector2 worldPos = PlayerTransform.position;
+            Vector2 worldPos = transform.position;
 
             // セーブポイント通ったか
             if (SavePoint.instance != null)
@@ -299,8 +297,8 @@ public class Player : MagnetManager
                 worldPos.x = PlayerPosX;
                 worldPos.y = PlayerPosY;
             }
-           
-            PlayerTransform.position = worldPos;// 座標設定
+
+            transform.position = worldPos;// 座標設定
         }
 
         if (collision.gameObject.CompareTag("Floor"))
