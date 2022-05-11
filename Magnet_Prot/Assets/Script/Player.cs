@@ -49,6 +49,8 @@ public class Player : MagnetManager
 
     private Rigidbody2D Rb;
 
+    private Animator PlayerAnim;
+
     private bool HitJagde = false;// 何かとプレイヤーが当たった判定
     private bool TwoFlug = false;
 
@@ -64,6 +66,10 @@ public class Player : MagnetManager
 
         Rb = GetComponent<Rigidbody2D>();
 
+        PlayerAnim = GetComponent<Animator>();
+
+        PlayerAnim.SetTrigger("IdleBlue");
+
         PlayerState = State.Normal;
 
         DirectionX = (int)PlayerDirection.Right;
@@ -75,6 +81,8 @@ public class Player : MagnetManager
 
     void Update()
     {
+        Vector3 localScale = transform.localScale;
+
         if (PlayerState == State.Normal)
         {
             float HorizontalKey = Input.GetAxisRaw("Horizontal");
@@ -87,16 +95,30 @@ public class Player : MagnetManager
                 XSpeed = Speed;
 
                 DirectionX = (int)PlayerDirection.Right;
+
+                PlayerAnim.SetTrigger("WalkBlue");
+
+                localScale.x = 1.0f;
+
+                transform.localScale = localScale;
             }
             else if (HorizontalKey < 0)
             {
                 XSpeed = -Speed;
 
                 DirectionX = (int)PlayerDirection.Left;
+
+                PlayerAnim.SetTrigger("WalkBlue");
+
+                localScale.x = -1.0f;
+
+                transform.localScale = localScale;
             }
             else
             {
                 XSpeed = 0.0f;
+
+                PlayerAnim.SetTrigger("IdleBlue");
             }
 
             // 縦入力反応処理
