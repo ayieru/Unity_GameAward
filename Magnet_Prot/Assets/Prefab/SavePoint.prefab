@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -9078211564604818290}
   m_Layer: 0
   m_Name: SavePoint
-  m_TagString: Untagged
+  m_TagString: SavePoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -145,4 +145,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SavePointPos: {x: 3, y: 0}
-  SaveJudge: 0
