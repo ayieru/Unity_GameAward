@@ -14,8 +14,14 @@ public class Gear : MagnetManager
     [Header("歯車オブジェクト(小)")]
     public GameObject SmallGearObj;
 
-    [Header("回転速度")]
+    [Header("ドアオブジェクト")]
+    public GameObject DoorObj;
+
+    [Header("歯車の回転速度")]
     public float RotSpeed;
+
+    [Header("ドアの移動速度")]
+    public float DoorSpeed = 0.01f;
 
     [Header("発電量の最大値")]
     public int MaxPower = 20;
@@ -42,6 +48,7 @@ public class Gear : MagnetManager
 
     private void Update()
     {
+        //歯車が稼働している際の処理
         if(PlayerStay == true && Pole == player.GetPole())
         {
             //最大値まで発電する
@@ -58,7 +65,41 @@ public class Gear : MagnetManager
             //歯車（小）
             SmallGearObj.gameObject.transform.Rotate(new Vector3(0, 0, 180) * Time.deltaTime * RotSpeed, Space.World);
 
+            //ドアを開く
+            Transform myTransform = DoorObj.transform;
+
+            // 座標を取得
+            Vector3 pos = myTransform.position;
+            pos.y += DoorSpeed;
+
+            if (pos.y > 0.0f)
+            {
+                pos.y = 0.0f;
+            }
+
+            myTransform.position = pos;
+
         }
+
+        //歯車が停止した際の処理
+        if (PlayerStay == false && Pole == player.GetPole())
+        {
+            //ドアを閉じる
+            Transform myTransform = DoorObj.transform;
+
+            // 座標を取得
+            Vector3 pos = myTransform.position;
+            pos.y -= DoorSpeed;
+
+            if (pos.y < -2.5f)
+            {
+                pos.y = -2.5f;
+            }
+
+            myTransform.position = pos;  //座標を設定
+
+        }
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
