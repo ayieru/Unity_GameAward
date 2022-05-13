@@ -16,6 +16,12 @@ public class Magnet : MagnetManager
     [Header("磁石の影響距離")]
     public float Distance = 10.0f;
 
+    [Header("S極のテクスチャ(Sprite)")]
+    public Sprite S_Magnet;
+
+    [Header("N極のテクスチャ(Sprite)")]
+    public Sprite N_Magnet;
+
     Vector3 distance;
     Vector3 centerPosition;
     Vector3 pullObject;
@@ -69,15 +75,11 @@ public class Magnet : MagnetManager
     {
         if (Pole == Magnet_Pole.N)
         {
-            var colorCode = "#FF0000";
-            if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
-                GetComponent<SpriteRenderer>().color = color;
+            gameObject.GetComponent<SpriteRenderer>().sprite = N_Magnet;// Sprite RendererをN_Magnetに変更している
         }
         else
         {
-            var colorCode = "#0000FF";
-            if (ColorUtility.TryParseHtmlString(colorCode, out Color color))
-                GetComponent<SpriteRenderer>().color = color;
+            gameObject.GetComponent<SpriteRenderer>().sprite = S_Magnet;// Sprite RendererをS_Magnetに変更している
         }
 
         currentPole = Pole;
