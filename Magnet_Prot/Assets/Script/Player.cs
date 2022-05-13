@@ -68,7 +68,16 @@ public class Player : MagnetManager
 
         PlayerAnim = GetComponent<Animator>();
 
-        PlayerAnim.SetTrigger("IdleBlue");
+        PlayerAnim.SetTrigger("Idle");
+
+        if (Pole == Magnet_Pole.S)
+        {
+            PlayerAnim.SetBool("MagnetSwitch", false);
+        }
+        else
+        {
+            PlayerAnim.SetBool("MagnetSwitch", true);
+        }
 
         PlayerState = State.Normal;
 
@@ -96,7 +105,7 @@ public class Player : MagnetManager
 
                 DirectionX = (int)PlayerDirection.Right;
 
-                PlayerAnim.SetTrigger("WalkBlue");
+                PlayerAnim.SetTrigger("Walk");
 
                 localScale.x = 1.0f;
 
@@ -108,7 +117,7 @@ public class Player : MagnetManager
 
                 DirectionX = (int)PlayerDirection.Left;
 
-                PlayerAnim.SetTrigger("WalkBlue");
+                PlayerAnim.SetTrigger("Walk");
 
                 localScale.x = -1.0f;
 
@@ -118,7 +127,7 @@ public class Player : MagnetManager
             {
                 XSpeed = 0.0f;
 
-                PlayerAnim.SetTrigger("IdleBlue");
+                PlayerAnim.SetTrigger("Idle");
             }
 
             // 縦入力反応処理
@@ -157,11 +166,13 @@ public class Player : MagnetManager
                 {
                     Pole = Magnet_Pole.N;
                     Debug.Log("極切り替え：S → N");
+                    PlayerAnim.SetBool("MagnetSwitch", true);
                 }
                 else
                 {
                     Pole = Magnet_Pole.S;
                     Debug.Log("極切り替え：N → S");
+                    PlayerAnim.SetBool("MagnetSwitch", false);
                 }
             }
 
@@ -176,6 +187,8 @@ public class Player : MagnetManager
         }
         else if (PlayerState == State.CatchChain)
         {
+            PlayerAnim.SetTrigger("Idle");
+
             if (Input.GetButtonDown("Jump"))
             {
                 SetPlayerState(State.ReleaseChain);
@@ -190,6 +203,8 @@ public class Player : MagnetManager
         }
         else if (PlayerState == State.ReleaseChain)
         {
+            PlayerAnim.SetTrigger("Walk");
+
             transform.localRotation = Quaternion.Lerp(transform.localRotation, PreRotation, SpeedToRope * Time.deltaTime);
 
             //ロープの動いている速度を取得
