@@ -49,6 +49,8 @@ public class Player : MagnetManager
 
     private Rigidbody2D Rb;
 
+    private Animator PlayerAnim;
+
     private bool HitJagde = false;// 何かとプレイヤーが当たった判定
     private bool TwoFlug = false;
 
@@ -64,6 +66,19 @@ public class Player : MagnetManager
 
         Rb = GetComponent<Rigidbody2D>();
 
+        PlayerAnim = GetComponent<Animator>();
+
+        PlayerAnim.SetTrigger("Idle");
+
+        if (Pole == Magnet_Pole.S)
+        {
+            PlayerAnim.SetBool("MagnetSwitch", false);
+        }
+        else
+        {
+            PlayerAnim.SetBool("MagnetSwitch", true);
+        }
+
         PlayerState = State.Normal;
 
         DirectionX = (int)PlayerDirection.Right;
@@ -75,6 +90,8 @@ public class Player : MagnetManager
 
     void Update()
     {
+        Vector3 localScale = transform.localScale;
+
         if (PlayerState == State.Normal)
         {
             float HorizontalKey = Input.GetAxisRaw("Horizontal");
@@ -87,16 +104,30 @@ public class Player : MagnetManager
                 XSpeed = Speed;
 
                 DirectionX = (int)PlayerDirection.Right;
+
+                PlayerAnim.SetTrigger("Walk");
+
+                localScale.x = 1.0f;
+
+                transform.localScale = localScale;
             }
             else if (HorizontalKey < 0)
             {
                 XSpeed = -Speed;
 
                 DirectionX = (int)PlayerDirection.Left;
+
+                PlayerAnim.SetTrigger("Walk");
+
+                localScale.x = -1.0f;
+
+                transform.localScale = localScale;
             }
             else
             {
                 XSpeed = 0.0f;
+
+                PlayerAnim.SetTrigger("Idle");
             }
 
             // 縦入力反応処理
@@ -135,11 +166,13 @@ public class Player : MagnetManager
                 {
                     Pole = Magnet_Pole.N;
                     Debug.Log("極切り替え：S → N");
+                    PlayerAnim.SetBool("MagnetSwitch", true);
                 }
                 else
                 {
                     Pole = Magnet_Pole.S;
                     Debug.Log("極切り替え：N → S");
+                    PlayerAnim.SetBool("MagnetSwitch", false);
                 }
             }
 
@@ -154,6 +187,8 @@ public class Player : MagnetManager
         }
         else if (PlayerState == State.CatchChain)
         {
+            PlayerAnim.SetTrigger("Idle");
+
             if (Input.GetButtonDown("Jump"))
             {
                 SetPlayerState(State.ReleaseChain);
@@ -168,6 +203,8 @@ public class Player : MagnetManager
         }
         else if (PlayerState == State.ReleaseChain)
         {
+            PlayerAnim.SetTrigger("Walk");
+
             transform.localRotation = Quaternion.Lerp(transform.localRotation, PreRotation, SpeedToRope * Time.deltaTime);
 
             //ロープの動いている速度を取得

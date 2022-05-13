@@ -27,15 +27,15 @@ public class CatchTheChain : MonoBehaviour
 
                 Vector3 lossyScale = player.transform.lossyScale;
 
-                Vector3 localPlayer = player.transform.localScale;
+                Vector3 localScale = player.transform.localScale;
 
                 //大元の親を取得してプレイヤーをそこに親子付け
                 collision.transform.SetParent(transform.root);
 
                 player.transform.localScale = new Vector3(
-                 localPlayer.x / lossyScale.x * lossyScale.x,
-                 localPlayer.y / lossyScale.y * lossyScale.y,
-                 localPlayer.z / lossyScale.z * lossyScale.z);
+                 localScale.x / lossyScale.x * lossyScale.x,
+                 localScale.y / lossyScale.y * lossyScale.y,
+                 localScale.z / lossyScale.z * lossyScale.z);
 
 
             //キャラクターにCatchTheChainスクリプトを渡し、状態を変更する

@@ -7,7 +7,6 @@ public class CameraLockRotate : MonoBehaviour
     [SerializeField]
     private Player PlayerObj;
 
-
     private void Awake()
     {
         PlayerObj = PlayerObj.GetComponent<Player>();
