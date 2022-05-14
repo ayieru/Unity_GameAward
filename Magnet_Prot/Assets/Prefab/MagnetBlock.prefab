@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1159253589317391840}
   m_Layer: 0
   m_Name: MagnetBlock
-  m_TagString: MagnetBlock
+  m_TagString: NPole
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

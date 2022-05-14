@@ -99,64 +99,72 @@ public class Player : MagnetManager
             float XSpeed = 0.0f;
             float YSpeed = 0.0f;                            // 縦移動のスピード変数
 
-            if (HorizontalKey > 0)
+            if (HitJagde == true)// 壁のぼりの処理
             {
-                XSpeed = Speed;
-
-                DirectionX = (int)PlayerDirection.Right;
-
-                PlayerAnim.SetTrigger("Walk");
-
-                localScale.x = 1.0f;
-
-                transform.localScale = localScale;
-            }
-            else if (HorizontalKey < 0)
-            {
-                XSpeed = -Speed;
-
-                DirectionX = (int)PlayerDirection.Left;
-
-                PlayerAnim.SetTrigger("Walk");
-
-                localScale.x = -1.0f;
-
-                transform.localScale = localScale;
-            }
-            else
-            {
-                XSpeed = 0.0f;
-
-                PlayerAnim.SetTrigger("Idle");
-            }
-
-            // 縦入力反応処理
-            if (VerticalKey > 0)
-            {
-                YSpeed = Speed * 2.0f;
-            }
-            else if (VerticalKey < 0)
-            {
-                YSpeed = -Speed * 2.0f;
-            }
-            else
-            {
-                YSpeed = 0.0f;
-            }
-
-            //ジャンプ
-            if (Input.GetButtonDown("Jump") && !(Rb.velocity.y < -0.5f))
-            {
-                if (IsGround)
+                // 縦入力反応処理
+                if (VerticalKey > 0)
                 {
-                    Rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
-                }
-            }
+                    YSpeed = Speed * 2.0f;
 
-            //アクション
-            if (Input.GetButtonDown("Action"))
+                    PlayerAnim.SetTrigger("Climbing");
+                }
+                else if (VerticalKey < 0)
+                {
+                    YSpeed = -Speed * 2.0f;
+
+                    PlayerAnim.SetTrigger("Climbing");
+                }
+                else
+                {
+                    YSpeed = 0.0f;
+                }
+
+                Rb.velocity = new Vector2(XSpeed, YSpeed);
+            }
+            else//壁のぼりでない時(通常時)の処理
             {
-                Debug.Log("アクション");
+                //横入力反応処理
+                if (HorizontalKey > 0)
+                {
+                    XSpeed = Speed;
+
+                    DirectionX = (int)PlayerDirection.Right;
+
+                    PlayerAnim.SetTrigger("Walk");
+
+                    localScale.x = 1.0f;
+
+                    transform.localScale = localScale;
+                }
+                else if (HorizontalKey < 0)
+                {
+                    XSpeed = -Speed;
+
+                    DirectionX = (int)PlayerDirection.Left;
+
+                    PlayerAnim.SetTrigger("Walk");
+
+                    localScale.x = -1.0f;
+
+                    transform.localScale = localScale;
+                }
+                else
+                {
+                    XSpeed = 0.0f;
+
+                    PlayerAnim.SetTrigger("Idle");
+                }
+
+                //ジャンプ
+                if (Input.GetButtonDown("Jump") && !(Rb.velocity.y < -0.5f))
+                {
+                    if (IsGround)
+                    {
+                        Rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
+                    }
+                }
+
+                Rb.velocity = new Vector2(XSpeed, Rb.velocity.y);
             }
 
             //極切り替え
@@ -174,15 +182,6 @@ public class Player : MagnetManager
                     Debug.Log("極切り替え：N → S");
                     PlayerAnim.SetBool("MagnetSwitch", false);
                 }
-            }
-
-            if (HitJagde == true)
-            {
-                Rb.velocity = new Vector2(XSpeed, YSpeed);      // 壁のぼり
-            }
-            else
-            {
-                Rb.velocity = new Vector2(XSpeed, Rb.velocity.y); // ジャンプ
             }
         }
         else if (PlayerState == State.CatchChain)
