@@ -31,6 +31,7 @@ public class Magnet : MagnetManager
     private GameObject playerGO;
     private Player player;
     private Magnet_Pole currentPole;
+    private Sprite sprite;
 
     void Awake()
     {
@@ -39,6 +40,8 @@ public class Magnet : MagnetManager
         playerGO = GameObject.Find("Player");
         rb = playerGO.GetComponent<Rigidbody2D>();
         player = playerGO.GetComponent<Player>();
+
+        sprite = GetComponent<SpriteRenderer>().sprite;
 
         currentPole = Pole;
         ChangeColor();
@@ -73,13 +76,16 @@ public class Magnet : MagnetManager
 
     private void ChangeColor()
     {
-        if (Pole == Magnet_Pole.N)
+        if (N_Magnet && S_Magnet)
         {
-            gameObject.GetComponent<SpriteRenderer>().sprite = N_Magnet;// Sprite RendererをN_Magnetに変更している
-        }
-        else
-        {
-            gameObject.GetComponent<SpriteRenderer>().sprite = S_Magnet;// Sprite RendererをS_Magnetに変更している
+            if (Pole == Magnet_Pole.N)
+            {
+                sprite = N_Magnet;// Sprite RendererをN_Magnetに変更している
+            }
+            else
+            {
+                sprite = S_Magnet;// Sprite RendererをS_Magnetに変更している
+            }
         }
 
         currentPole = Pole;
