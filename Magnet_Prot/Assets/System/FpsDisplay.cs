@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +10,9 @@ public class FpsDisplay : MonoBehaviour
 
     [SerializeField]
     int FpsLimit = 60;
+
+    [SerializeField]
+    int FontSize = 50;
 
     private void Start()
     {
@@ -35,7 +38,7 @@ public class FpsDisplay : MonoBehaviour
 
     private void OnGUI()
     {
-        GUI.skin.label.fontSize = 100;
+        GUI.skin.label.fontSize = FontSize;
         GUILayout.Label(fps.ToString("f1") + "fps");
     }
 }
