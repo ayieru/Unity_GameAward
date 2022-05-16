@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6460900676407027896}
   - component: {fileID: 6460900676407027897}
   - component: {fileID: 6460900676407027898}
+  - component: {fileID: 5200208854478397848}
   - component: {fileID: 6460900676407027899}
   m_Layer: 0
   m_Name: Player
@@ -153,6 +154,18 @@ MonoBehaviour:
   SpeedToRope: 5
   ReleasePower: 70
   DampingTime: 2
+--- !u!114 &5200208854478397848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6460900676407027900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69ad2b88520f98349b96b38d7a6b52ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!95 &6460900676407027899
 Animator:
   serializedVersion: 3
