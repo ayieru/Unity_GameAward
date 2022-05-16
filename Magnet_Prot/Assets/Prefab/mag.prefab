@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3480066526194883464}
   m_Layer: 0
   m_Name: mag
-  m_TagString: Untagged
+  m_TagString: NPole
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -74,8 +74,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: db750325989564987a34393247d883b4, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 7e995c4901dbef049a084ff2923d5c0d, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -105,7 +105,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 3
+  m_Constraints: 7
 --- !u!114 &1184413921441135489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,11 +119,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Pole: 1
-  PullPower: 400
-  ReleasePower: 400
-  Distance: 10
-  S_Magnet: {fileID: 0}
-  N_Magnet: {fileID: 0}
+  PullPower: 75
+  ReleasePower: 75
+  Distance: 3
+  S_Magnet: {fileID: 21300000, guid: 7e995c4901dbef049a084ff2923d5c0d, type: 3}
+  N_Magnet: {fileID: 21300000, guid: 2f8f6a427a1e5d940ac401812daf9a75, type: 3}
 --- !u!61 &3480066526194883464
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -141,7 +141,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 1.0536, y: 1.0536}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
