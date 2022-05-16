@@ -49,10 +49,6 @@ public class Player : MagnetManager
 
     private Rigidbody2D Rb;
 
-    Vector3 localScale;
-
-    Vector2 PlayerSpeed;
-
     private Animator PlayerAnim;
 
     private bool HitJagde = false;// 何かとプレイヤーが当たった判定
@@ -94,85 +90,67 @@ public class Player : MagnetManager
 
     void Update()
     {
-        localScale = transform.localScale;
+        Vector3 localScale = transform.localScale;
 
         if (PlayerState == State.Normal)
         {
             float HorizontalKey = Input.GetAxisRaw("Horizontal");
             float VerticalKey = Input.GetAxisRaw("Vertical");  // 縦入力反応変数
+            float XSpeed = 0.0f;
+            float YSpeed = 0.0f;                            // 縦移動のスピード変数
 
             if (HitJagde == true)// 壁のぼりの処理
             {
                 // 縦入力反応処理
                 if (VerticalKey > 0)
                 {
-                    if (PlayerAnim.speed == 0)
-                    {
-                        PlayerAnim.speed = 1.0f;
-                    }
-
-                    PlayerSpeed.y = Speed * 2.0f;
+                    YSpeed = Speed * 2.0f;
 
                     PlayerAnim.SetTrigger("Climbing");
                 }
                 else if (VerticalKey < 0)
                 {
-                    if (PlayerAnim.speed == 0)
-                    {
-                        PlayerAnim.speed = 1.0f;
-                    }
-
-                    PlayerSpeed.y = -Speed * 2.0f;
+                    YSpeed = -Speed * 2.0f;
 
                     PlayerAnim.SetTrigger("Climbing");
-                }
-                else if(HorizontalKey > 0)
-                {
-                    if (PlayerAnim.speed == 0)
-                    {
-                        PlayerAnim.speed = 1.0f;
-                    }
-
-                    PlayerMoveRight();
-
-                }
-                else if (HorizontalKey < 0)
-                {
-                    if (PlayerAnim.speed == 0)
-                    {
-                        PlayerAnim.speed = 1.0f;
-                    }
-
-                    PlayerMoveLeft();
                 }
                 else
                 {
-                    PlayerSpeed.y = 0.0f;
-
-                    PlayerAnim.SetTrigger("Climbing");
-
-                    PlayerAnim.speed = 0;
+                    YSpeed = 0.0f;
                 }
 
-                Rb.velocity = new Vector2(PlayerSpeed.x, PlayerSpeed.y);
+                Rb.velocity = new Vector2(XSpeed, YSpeed);
             }
             else//壁のぼりでない時(通常時)の処理
             {
                 //横入力反応処理
                 if (HorizontalKey > 0)
                 {
+                    XSpeed = Speed;
 
-                    PlayerMoveRight();
+                    DirectionX = (int)PlayerDirection.Right;
 
+                    PlayerAnim.SetTrigger("Walk");
 
+                    localScale.x = 1.0f;
+
+                    transform.localScale = localScale;
                 }
                 else if (HorizontalKey < 0)
                 {
-                    PlayerMoveLeft();
+                    XSpeed = -Speed;
+
+                    DirectionX = (int)PlayerDirection.Left;
+
+                    PlayerAnim.SetTrigger("Walk");
+
+                    localScale.x = -1.0f;
+
+                    transform.localScale = localScale;
                 }
                 else
                 {
-                    PlayerSpeed.x = 0.0f;
+                    XSpeed = 0.0f;
 
                     PlayerAnim.SetTrigger("Idle");
                 }
@@ -183,19 +161,10 @@ public class Player : MagnetManager
                     if (IsGround)
                     {
                         Rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
-
-                        if (HorizontalKey == 0)
-                        {
-                            PlayerAnim.SetTrigger("IdleJump");
-                        }
-                        else
-                        {
-                            PlayerAnim.SetTrigger("WalkJump");
-                        }
                     }
                 }
 
-                Rb.velocity = new Vector2(PlayerSpeed.x, Rb.velocity.y);
+                Rb.velocity = new Vector2(XSpeed, Rb.velocity.y);
             }
 
             //極切り替え
@@ -256,32 +225,6 @@ public class Player : MagnetManager
                 0.0f
                 );
         }
-    }
-
-    void PlayerMoveRight()
-    {
-        PlayerSpeed.x = Speed;
-
-        DirectionX = (int)PlayerDirection.Right;
-
-        PlayerAnim.SetTrigger("Walk");
-
-        localScale.x = 1.0f;
-
-        transform.localScale = localScale;
-    }
-
-    void PlayerMoveLeft()
-    {
-        PlayerSpeed.x = -Speed;
-
-        DirectionX = (int)PlayerDirection.Left;
-
-        PlayerAnim.SetTrigger("Walk");
-
-        localScale.x = -1.0f;
-
-        transform.localScale = localScale;
     }
 
     public Magnet_Pole GetPole() { return Pole; }
@@ -350,8 +293,6 @@ public class Player : MagnetManager
         if (collision.gameObject.CompareTag("Iron"))
         {
             Debug.Log("鉄にくっついた！！");
-
-            PlayerAnim.SetTrigger("Climbing");
 
             //既にTure
             if (HitJagde)
