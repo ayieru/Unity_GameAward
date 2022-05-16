@@ -87,62 +87,60 @@ public class Player : MagnetManager
             float XSpeed = 0.0f;
             float YSpeed = 0.0f;                            // 縦移動のスピード変数
 
+            //横入力反応処理
+            if (HorizontalKey > 0)
+            {
+                XSpeed = Speed;
+
+                DirectionX = (int)PlayerDirection.Right;
+
+                localScale.x = 1.0f;
+
+                transform.localScale = localScale;
+            }
+            else if (HorizontalKey < 0)
+            {
+                XSpeed = -Speed;
+
+                DirectionX = (int)PlayerDirection.Left;
+
+                localScale.x = -1.0f;
+
+                transform.localScale = localScale;
+            }
+            else
+            {
+                XSpeed = 0.0f;
+            }
+
+            // 縦入力反応処理
+            if (VerticalKey > 0)
+            {
+                YSpeed = Speed * 2.0f;
+            }
+            else if (VerticalKey < 0)
+            {
+                YSpeed = -Speed * 2.0f;
+            }
+            else
+            {
+                YSpeed = 0.0f;
+            }
+
+            //ジャンプ
+            if (Input.GetButtonDown("Jump") && !(Rb.velocity.y < -0.5f))
+            {
+                if (IsGround)
+                {
+                    Rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
+                }
+            }
+
+            Rb.velocity = new Vector2(XSpeed, Rb.velocity.y);
+
             if (HitJagde == true)// 壁のぼりの処理
             {
-                // 縦入力反応処理
-                if (VerticalKey > 0)
-                {
-                    YSpeed = Speed * 2.0f;
-                }
-                else if (VerticalKey < 0)
-                {
-                    YSpeed = -Speed * 2.0f;
-                }
-                else
-                {
-                    YSpeed = 0.0f;
-                }
-
                 Rb.velocity = new Vector2(XSpeed, YSpeed);
-            }
-            else//壁のぼりでない時(通常時)の処理
-            {
-                //横入力反応処理
-                if (HorizontalKey > 0)
-                {
-                    XSpeed = Speed;
-
-                    DirectionX = (int)PlayerDirection.Right;
-
-                    localScale.x = 1.0f;
-
-                    transform.localScale = localScale;
-                }
-                else if (HorizontalKey < 0)
-                {
-                    XSpeed = -Speed;
-
-                    DirectionX = (int)PlayerDirection.Left;
-
-                    localScale.x = -1.0f;
-
-                    transform.localScale = localScale;
-                }
-                else
-                {
-                    XSpeed = 0.0f;
-                }
-
-                //ジャンプ
-                if (Input.GetButtonDown("Jump") && !(Rb.velocity.y < -0.5f))
-                {
-                    if (IsGround)
-                    {
-                        Rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
-                    }
-                }
-
-                Rb.velocity = new Vector2(XSpeed, Rb.velocity.y);
             }
 
             //極切り替え
@@ -168,11 +166,11 @@ public class Player : MagnetManager
 
                 Rb.simulated = true;
             }
-                if (transform.localPosition != ChainObj.GetArrivalPoint())
-                {
-                    //滑らかに決められた位置に移動させる
-                    transform.localPosition = Vector3.Lerp(transform.localPosition, ChainObj.GetArrivalPoint(), SpeedToRope * Time.deltaTime);
-                }
+            if (transform.localPosition != ChainObj.GetArrivalPoint())
+            {
+                //滑らかに決められた位置に移動させる
+                transform.localPosition = Vector3.Lerp(transform.localPosition, ChainObj.GetArrivalPoint(), SpeedToRope * Time.deltaTime);
+            }
         }
         else if (PlayerState == State.ReleaseChain)
         {
@@ -288,7 +286,7 @@ public class Player : MagnetManager
             }
         }
 
-        if(collision.gameObject.CompareTag("Thorn"))
+        if (collision.gameObject.CompareTag("Thorn"))
         {
             Vector2 worldPos = transform.position;
 
