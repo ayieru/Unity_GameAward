@@ -29,11 +29,7 @@ public class PlayerAnimation : MonoBehaviour
     
     void Update()
     {
-        if(PlayerObj.HorizontalKey > 0)
-        {
-            PlayerAnim.SetTrigger("Walk");
-        }
-        else if(PlayerObj.HorizontalKey < 0)
+        if(PlayerObj.HorizontalKey > 0 || PlayerObj.HorizontalKey < 0)
         {
             PlayerAnim.SetTrigger("Walk");
         }
