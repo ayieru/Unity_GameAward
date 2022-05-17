@@ -62,6 +62,8 @@ public class Player : MagnetManager
     private float PlayerPosX;
     private float PlayerPosY;
 
+    public bool magnetic = false; //仮実装
+
     void Awake()
     {
         IsGround = false;

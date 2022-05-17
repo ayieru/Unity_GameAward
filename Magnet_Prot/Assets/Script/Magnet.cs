@@ -31,6 +31,7 @@ public class Magnet : MagnetManager
     private GameObject playerGO;
     private Player player;
     private Magnet_Pole currentPole;
+    private bool mag = false;
 
     void Awake()
     {
@@ -42,30 +43,24 @@ public class Magnet : MagnetManager
 
         currentPole = Pole;
         ChangeColor();
+
+#if UNITY_EDITOR
+        GameObject child = transform.GetChild(0).gameObject;
+        var scale = new Vector3(Distance * 2, Distance * 2, 0.0f);
+        child.transform.localScale = scale;
+#else
+        child.SetActive(false);
+
+#endif
     }
 
     void Update()
     {
-        //ここ重い
-        float dis = Vector2.Distance(transform.position, player.transform.position);
-
-        if (dis < Distance)
+        if (!player.magnetic)
         {
-            centerPosition = transform.position;
-            distance = centerPosition - player.transform.position;
-
-            pullObject = PullPower * distance / Mathf.Pow(distance.magnitude, 3);
-            releaseObject = -ReleasePower * distance / Mathf.Pow(distance.magnitude, 3);
-
-            if (Pole == player.GetPole())
-            {
-                rb.AddForce(releaseObject, ForceMode2D.Force);
-            }
-            else
-            {
-                rb.AddForce(pullObject, ForceMode2D.Force);
-            }
+            UpdateMagnet();
         }
+        else if (mag) UpdateMagnet();
 
         if (currentPole != Pole) ChangeColor();
 
@@ -97,6 +92,49 @@ public class Magnet : MagnetManager
         else
         {
             Pole = Magnet_Pole.N;
+        }
+    }
+
+    private void UpdateMagnet()
+    {
+        float dis = Vector2.Distance(transform.position, player.transform.position);
+
+        if (dis < Distance)
+        {
+            player.magnetic = true; //使用中
+            mag = true;
+
+#if UNITY_EDITOR
+            GameObject child = transform.GetChild(0).gameObject;
+
+            if (ColorUtility.TryParseHtmlString("#FF640055", out Color color))
+                child.GetComponent<SpriteRenderer>().color = color;
+#endif
+            centerPosition = transform.position;
+            distance = centerPosition - player.transform.position;
+
+            pullObject = PullPower * distance / Mathf.Pow(distance.magnitude, 3);
+            releaseObject = -ReleasePower * distance / Mathf.Pow(distance.magnitude, 3);
+
+            if (Pole == player.GetPole())
+            {
+                rb.AddForce(releaseObject, ForceMode2D.Force);
+            }
+            else
+            {
+                rb.AddForce(pullObject, ForceMode2D.Force);
+            }
+        }
+        else if (mag)
+        {
+            player.magnetic = false; 
+            mag = false;
+#if UNITY_EDITOR
+            GameObject child = transform.GetChild(0).gameObject;
+
+            if (ColorUtility.TryParseHtmlString("#FFFF0055", out Color color))
+                child.GetComponent<SpriteRenderer>().color = color;
+#endif
         }
     }
 }
