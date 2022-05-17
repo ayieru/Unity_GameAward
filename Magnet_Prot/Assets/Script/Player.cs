@@ -48,7 +48,8 @@ public class Player : MagnetManager
 
     private Quaternion PreRotation;//ロープを掴んでいる時のプレイヤーの角度格納用
 
-    private bool IsGround = false;
+    private bool IsGround = false;// 地面と触れているか
+    private bool IsFootField = false;// 足場と触れているか
 
     private Rigidbody2D Rb;
 
@@ -64,6 +65,7 @@ public class Player : MagnetManager
     void Awake()
     {
         IsGround = false;
+        IsFootField = false;
 
         Rb = GetComponent<Rigidbody2D>();
 
@@ -130,7 +132,8 @@ public class Player : MagnetManager
             //ジャンプ
             if (Input.GetButtonDown("Jump") && !(Rb.velocity.y < -0.5f))
             {
-                if (IsGround)
+                // 地面か足場に触れていたら
+                if (IsGround||IsFootField)
                 {
                     Rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
                 }
@@ -311,12 +314,16 @@ public class Player : MagnetManager
         {
             IsGround = true;
 
+            Debug.Log(IsGround);
+
             SetPlayerState(State.Normal);
         }
 
         if (collision.gameObject.CompareTag("Block"))
         {
-            IsGround = true;
+            IsFootField = true;
+
+            Debug.Log(IsFootField);
 
             SetPlayerState(State.Normal);
         }
@@ -358,7 +365,7 @@ public class Player : MagnetManager
 
         if (collision.gameObject.CompareTag("Block"))
         {
-            IsGround = false;
+            IsFootField = false;
 
             SetPlayerState(State.Normal);
         }
