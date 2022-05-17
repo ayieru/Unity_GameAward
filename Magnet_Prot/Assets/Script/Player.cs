@@ -39,6 +39,9 @@ public class Player : MagnetManager
     [Header("鎖を離した時の力を減衰させる時間")]
     [SerializeField] private float DampingTime = 2.0f;
 
+    public float HorizontalKey { get; private set; }
+    public float VerticalKey { get; private set; }
+
     private MoveChain MoveChainObj;
 
     private CatchTheChain ChainObj;
@@ -48,8 +51,6 @@ public class Player : MagnetManager
     private bool IsGround = false;
 
     private Rigidbody2D Rb;
-
-    private Animator PlayerAnim;
 
     private bool HitJagde = false;// 何かとプレイヤーが当たった判定
     private bool TwoFlug = false;
@@ -66,19 +67,6 @@ public class Player : MagnetManager
 
         Rb = GetComponent<Rigidbody2D>();
 
-        PlayerAnim = GetComponent<Animator>();
-
-        PlayerAnim.SetTrigger("Idle");
-
-        if (Pole == Magnet_Pole.S)
-        {
-            PlayerAnim.SetBool("MagnetSwitch", false);
-        }
-        else
-        {
-            PlayerAnim.SetBool("MagnetSwitch", true);
-        }
-
         PlayerState = State.Normal;
 
         DirectionX = (int)PlayerDirection.Right;
@@ -94,77 +82,65 @@ public class Player : MagnetManager
 
         if (PlayerState == State.Normal)
         {
-            float HorizontalKey = Input.GetAxisRaw("Horizontal");
-            float VerticalKey = Input.GetAxisRaw("Vertical");  // 縦入力反応変数
+            HorizontalKey = Input.GetAxisRaw("Horizontal");
+            VerticalKey = Input.GetAxisRaw("Vertical");  // 縦入力反応変数
             float XSpeed = 0.0f;
             float YSpeed = 0.0f;                            // 縦移動のスピード変数
 
+            //横入力反応処理
+            if (HorizontalKey > 0)
+            {
+                XSpeed = Speed;
+
+                DirectionX = (int)PlayerDirection.Right;
+
+                localScale.x = 1.0f;
+
+                transform.localScale = localScale;
+            }
+            else if (HorizontalKey < 0)
+            {
+                XSpeed = -Speed;
+
+                DirectionX = (int)PlayerDirection.Left;
+
+                localScale.x = -1.0f;
+
+                transform.localScale = localScale;
+            }
+            else
+            {
+                XSpeed = 0.0f;
+            }
+
+            // 縦入力反応処理
+            if (VerticalKey > 0)
+            {
+                YSpeed = Speed * 2.0f;
+            }
+            else if (VerticalKey < 0)
+            {
+                YSpeed = -Speed * 2.0f;
+            }
+            else
+            {
+                YSpeed = 0.0f;
+            }
+
+            //ジャンプ
+            if (Input.GetButtonDown("Jump") && !(Rb.velocity.y < -0.5f))
+            {
+                if (IsGround)
+                {
+                    Rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
+                }
+            }
+
+            Rb.velocity = new Vector2(XSpeed, Rb.velocity.y);
+
             if (HitJagde == true)// 壁のぼりの処理
             {
-                // 縦入力反応処理
-                if (VerticalKey > 0)
-                {
-                    YSpeed = Speed * 2.0f;
-
-                    PlayerAnim.SetTrigger("Climbing");
-                }
-                else if (VerticalKey < 0)
-                {
-                    YSpeed = -Speed * 2.0f;
-
-                    PlayerAnim.SetTrigger("Climbing");
-                }
-                else
-                {
-                    YSpeed = 0.0f;
-                }
-
                 Rb.velocity = new Vector2(XSpeed, YSpeed);
-            }
-            else//壁のぼりでない時(通常時)の処理
-            {
-                //横入力反応処理
-                if (HorizontalKey > 0)
-                {
-                    XSpeed = Speed;
-
-                    DirectionX = (int)PlayerDirection.Right;
-
-                    PlayerAnim.SetTrigger("Walk");
-
-                    localScale.x = 1.0f;
-
-                    transform.localScale = localScale;
-                }
-                else if (HorizontalKey < 0)
-                {
-                    XSpeed = -Speed;
-
-                    DirectionX = (int)PlayerDirection.Left;
-
-                    PlayerAnim.SetTrigger("Walk");
-
-                    localScale.x = -1.0f;
-
-                    transform.localScale = localScale;
-                }
-                else
-                {
-                    XSpeed = 0.0f;
-
-                    PlayerAnim.SetTrigger("Idle");
-                }
-
-                //ジャンプ
-                if (Input.GetButtonDown("Jump") && !(Rb.velocity.y < -0.5f))
-                {
-                    if (IsGround)
-                    {
-                        Rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
-                    }
-                }
-
-                Rb.velocity = new Vector2(XSpeed, Rb.velocity.y);
             }
 
             //極切り替え
@@ -174,36 +150,30 @@ public class Player : MagnetManager
                 {
                     Pole = Magnet_Pole.N;
                     Debug.Log("極切り替え：S → N");
-                    PlayerAnim.SetBool("MagnetSwitch", true);
                 }
                 else
                 {
                     Pole = Magnet_Pole.S;
                     Debug.Log("極切り替え：N → S");
-                    PlayerAnim.SetBool("MagnetSwitch", false);
                 }
             }
         }
         else if (PlayerState == State.CatchChain)
         {
-            PlayerAnim.SetTrigger("Idle");
-
             if (Input.GetButtonDown("Jump"))
             {
                 SetPlayerState(State.ReleaseChain);
 
                 Rb.simulated = true;
             }
-                if (transform.localPosition != ChainObj.GetArrivalPoint())
-                {
-                    //滑らかに決められた位置に移動させる
-                    transform.localPosition = Vector3.Lerp(transform.localPosition, ChainObj.GetArrivalPoint(), SpeedToRope * Time.deltaTime);
-                }
+            if (transform.localPosition != ChainObj.GetArrivalPoint())
+            {
+                //滑らかに決められた位置に移動させる
+                transform.localPosition = Vector3.Lerp(transform.localPosition, ChainObj.GetArrivalPoint(), SpeedToRope * Time.deltaTime);
+            }
         }
         else if (PlayerState == State.ReleaseChain)
         {
-            PlayerAnim.SetTrigger("Walk");
-
             transform.localRotation = Quaternion.Lerp(transform.localRotation, PreRotation, SpeedToRope * Time.deltaTime);
 
             //ロープの動いている速度を取得
@@ -231,7 +201,7 @@ public class Player : MagnetManager
 
     public State GetPlayerState() { return PlayerState; }
 
-    public float GetDirectionX() { return DirectionX; } 
+    public float GetDirectionX() { return DirectionX; }
 
     public void SetPlayerState(State state, CatchTheChain catchTheChain = null)
     {
@@ -316,7 +286,7 @@ public class Player : MagnetManager
             }
         }
 
-        if(collision.gameObject.CompareTag("Thorn"))
+        if (collision.gameObject.CompareTag("Thorn"))
         {
             Vector2 worldPos = transform.position;
 
