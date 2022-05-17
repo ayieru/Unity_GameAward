@@ -147,6 +147,6 @@ MonoBehaviour:
   Pole: 1
   PullPower: 150
   ReleasePower: 150
-  Distance: 8
+  Distance: 4
   S_Magnet: {fileID: 21300000, guid: 7e995c4901dbef049a084ff2923d5c0d, type: 3}
   N_Magnet: {fileID: 21300000, guid: 2f8f6a427a1e5d940ac401812daf9a75, type: 3}
