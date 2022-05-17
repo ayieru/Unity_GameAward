@@ -29,13 +29,39 @@ public class PlayerAnimation : MonoBehaviour
     
     void Update()
     {
-        if(PlayerObj.HorizontalKey > 0 || PlayerObj.HorizontalKey < 0)
+        if(PlayerObj.GetHitJagde())
         {
-            PlayerAnim.SetTrigger("Walk");
+            if (PlayerObj.VerticalKey != 0)
+            {
+                PlayerAnim.speed = 1;//再開
+            }
+            else if(PlayerObj.VerticalKey == 0)
+            {
+                PlayerAnim.speed = 0;//停止
+            }
+            else if (PlayerObj.HorizontalKey > 0 || PlayerObj.HorizontalKey < 0)
+            {
+                PlayerAnim.speed = 1;//再開
+                PlayerAnim.SetTrigger("Walk");
+            }
+            else if(PlayerObj.HorizontalKey == 0)
+            {
+                PlayerAnim.speed = 1;//再開
+                PlayerAnim.SetTrigger("Idle");
+            }
         }
         else
         {
-            PlayerAnim.SetTrigger("Idle");
+            PlayerAnim.speed = 1;//再開
+
+            if (PlayerObj.HorizontalKey > 0 || PlayerObj.HorizontalKey < 0)
+            {
+                PlayerAnim.SetTrigger("Walk");
+            }
+            else
+            {
+                PlayerAnim.SetTrigger("Idle");
+            }
         }
 
         if (PlayerObj.GetPole() == Magnet.Magnet_Pole.N)

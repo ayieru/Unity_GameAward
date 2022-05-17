@@ -10,6 +10,7 @@ public class Player : MagnetManager
         CatchChain,//鎖に捕まってる状態
         ReleaseChain,//鎖を離した状態
     }
+
     public enum PlayerDirection
     {
         Right = 1,//右向き
@@ -201,6 +202,10 @@ public class Player : MagnetManager
 
     public State GetPlayerState() { return PlayerState; }
 
+    public bool GetTwoFlug() { return TwoFlug; }
+
+    public bool GetHitJagde() { return HitJagde; }
+
     public float GetDirectionX() { return DirectionX; }
 
     public void SetPlayerState(State state, CatchTheChain catchTheChain = null)
@@ -272,6 +277,9 @@ public class Player : MagnetManager
 
             HitJagde = true;
 
+            Animator anim = GetComponent<Animator>();
+            anim.SetTrigger("Climbing");
+
             Rb.gravityScale = 0.0f;
         }
 
@@ -337,6 +345,9 @@ public class Player : MagnetManager
         if (collision.gameObject.CompareTag("Iron"))
         {
             Debug.Log("離れた！！");
+
+            Animator anim = GetComponent<Animator>();
+            anim.SetTrigger("Walk");
 
             if (!TwoFlug)
             {
