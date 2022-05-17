@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 7e995c4901dbef049a084ff2923d5c0d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9fd9c06221cde964d930f518a5d35358, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -103,7 +103,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.0536, y: 1.0536}
+    oldSize: {x: 0.9666055, y: 0.9666055}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -149,8 +149,8 @@ MonoBehaviour:
   PullPower: 150
   ReleasePower: 150
   Distance: 4
-  S_Magnet: {fileID: 21300000, guid: 7e995c4901dbef049a084ff2923d5c0d, type: 3}
-  N_Magnet: {fileID: 21300000, guid: 2f8f6a427a1e5d940ac401812daf9a75, type: 3}
+  S_Magnet: {fileID: 21300000, guid: 9fd9c06221cde964d930f518a5d35358, type: 3}
+  N_Magnet: {fileID: 21300000, guid: d1f031bca323cb1408c7d77e130239e4, type: 3}
 --- !u!1 &6592251164341848827
 GameObject:
   m_ObjectHideFlags: 0
