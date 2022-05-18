@@ -6,7 +6,11 @@ public class PlayerAnimation : MonoBehaviour
 {
     Animator PlayerAnim;
 
+    AnimatorStateInfo StateInfo;
+
     Player PlayerObj;
+
+    float MotionCounter;
 
     void Start()
     {
@@ -24,40 +28,30 @@ public class PlayerAnimation : MonoBehaviour
         }
 
         PlayerAnim.SetTrigger("Idle");
+
+        MotionCounter = -1.0f;
     }
 
 
     void Update()
     {
-        if (PlayerObj.GetHitJagde())
+        PlayerAnim.speed = 1;//再開
+
+        if (PlayerObj.GetHitJagde())//登るときの状態
         {
-            Debug.Log("壁のぼりの動き中");
-            //PlayerAnim.speed = 1;//再開
             PlayerAnim.SetTrigger("Climbing");
 
-            if (PlayerObj.GetVerticalKey() != 0)
+             if (PlayerObj.GetVerticalKey() == 0)
             {
-
-            }
-            else if (PlayerObj.GetVerticalKey() == 0)
-            {
-                //PlayerAnim.speed = 0;//停止
+                PlayerAnim.speed = 0;//停止
             }
             else if (PlayerObj.GetHorizontalKey() > 0 || PlayerObj.GetHorizontalKey() < 0)
             {
-                //PlayerAnim.SetTrigger("Walk");
-            }
-            else if (PlayerObj.GetHorizontalKey() == 0)
-            {
-                //PlayerAnim.SetTrigger("Idle");
+                PlayerAnim.SetTrigger("Walk");
             }
         }
-        else
+        else//普通に移動している時の状態
         {
-            //PlayerAnim.speed = 1;//再開
-
-            Debug.Log("歩行中");
-
             if (PlayerObj.GetHorizontalKey() > 0 || PlayerObj.GetHorizontalKey() < 0)
             {
                 PlayerAnim.SetTrigger("Walk");
@@ -65,6 +59,19 @@ public class PlayerAnimation : MonoBehaviour
             else
             {
                 PlayerAnim.SetTrigger("Idle");
+            }
+        }
+        
+        if (MotionCounter >= 0.0f)
+        {
+            //ジャンプアニメーションが再生し終えたらIdle or Walkに戻す
+            MotionCounter += Time.deltaTime;
+
+            if(MotionCounter>=StateInfo.length)
+            {
+                MotionCounter = -1.0f;
+
+                PlayerAnim.SetBool("Jump", false);
             }
         }
 
@@ -78,6 +85,13 @@ public class PlayerAnimation : MonoBehaviour
         }
     }
 
+    public void JumpAction()
+    {
+        PlayerAnim.SetBool("Jump", true);
+
+        MotionCounter = 0.0f;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //簡易的に鉄を実装
@@ -86,4 +100,20 @@ public class PlayerAnimation : MonoBehaviour
             PlayerAnim.SetTrigger("Climbing");
         }
     }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Iron"))
+        {
+
+        }
+    }
 }
+
+/*
+ *ジャンプに関して
+ * 
+ *プレイヤースクリプトの方でJumpAction関数を呼び、
+ * 関数内でJumpアニメーションに切り替える方法を採用しました。
+ * 
+ */

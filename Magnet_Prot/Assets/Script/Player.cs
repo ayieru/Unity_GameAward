@@ -63,8 +63,6 @@ public class Player : MagnetManager
 
     private float VerticalKey;
 
-    private bool Action;
-
     void Awake()
     {
         IsGround = false;
@@ -135,14 +133,13 @@ public class Player : MagnetManager
             //ジャンプ
             if (Input.GetButtonDown("Jump") && !(Rb.velocity.y < -0.5f))
             {
-                Action = true;
-
                 if (IsGround)
                 {
                     Rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
-                }
 
-                Debug.Log(Action);
+                    PlayerAnimation PlayerAnim = GetComponent<PlayerAnimation>();
+                    PlayerAnim.JumpAction();
+                }
             }
 
             Rb.velocity = new Vector2(XSpeed, Rb.velocity.y);
@@ -219,8 +216,6 @@ public class Player : MagnetManager
     public float GetHorizontalKey() { return HorizontalKey; }
 
     public float GetVerticalKey() { return VerticalKey; }
-
-    public bool GetAction() { return Action; }
 
     public void SetPlayerState(State state, CatchTheChain catchTheChain = null)
     {
