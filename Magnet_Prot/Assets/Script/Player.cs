@@ -39,8 +39,17 @@ public class Player : MagnetManager
     [Header("鎖を離した時の力を減衰させる時間")]
     [SerializeField] private float DampingTime = 2.0f;
 
+    // 初期座標保存
+    [Header("プレイヤー初期座標設定")]
+    public float PlayerPosX = 0.0f;
+    public float PlayerPosY = 0.0f;
+
     public float HorizontalKey { get; private set; }
     public float VerticalKey { get; private set; }
+
+    private float SavePlayerRightPosX;  // 右側のX座標保存
+    private float SavePlayerLeftPosX;   // 左側のX座標保存
+    private float SavePlayerPosY;       // Y座標保存
 
     private MoveChain MoveChainObj;
 
@@ -48,19 +57,15 @@ public class Player : MagnetManager
 
     private Quaternion PreRotation;//ロープを掴んでいる時のプレイヤーの角度格納用
 
-    private bool IsGround = false;// 地面と触れているか
-    private bool IsFootField = false;// 足場と触れているか
-
     private Rigidbody2D Rb;
+
+    private bool IsGround = false;      // 地面と触れているか
+    private bool IsFootField = false;   // 足場と触れているか
 
     private bool HitJagde = false;// 何かとプレイヤーが当たった判定
     private bool TwoFlug = false;
 
     private State PlayerState = State.Normal;
-
-    //初期座標
-    private float PlayerPosX;
-    private float PlayerPosY;
 
     public bool magnetic = false; //仮実装
 
@@ -74,15 +79,13 @@ public class Player : MagnetManager
         PlayerState = State.Normal;
 
         DirectionX = (int)PlayerDirection.Right;
-
-        PlayerPosX = this.transform.position.x;
-        PlayerPosY = this.transform.position.y;
-
     }
 
     void Update()
     {
         Vector3 localScale = transform.localScale;
+
+        FootPos();
 
         if (PlayerState == State.Normal)
         {
@@ -261,6 +264,40 @@ public class Player : MagnetManager
         MoveChainObj = chainBase.GetComponent<MoveChain>();
     }
 
+    // 触れていたら常に実行させる
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        // 既に地面か足場に触れてある状態ならスルーする
+        if (IsGround == true || IsFootField == true) return;
+
+        if (collision.gameObject.CompareTag("Floor"))
+        {
+            IsGround = true;
+
+            Debug.Log(IsGround);
+
+            SetPlayerState(State.Normal);
+        }
+
+        if (collision.gameObject.CompareTag("Block"))
+        {
+            // プレイヤーが触れていないブロックが動作しないようにする
+            if (FootFieldBrock.instance == null) return;
+
+            // プレイヤーの高さが足場の高さ超えている　かつ　プレイヤーが足場に着地出来ているなら
+            if (
+                (SavePlayerPosY > FootFieldBrock.instance.GetSaveTopPosY()) &&
+                ((SavePlayerLeftPosX > FootFieldBrock.instance.GetSaveLeftPosX()) || (SavePlayerRightPosX < FootFieldBrock.instance.GetSaveRightPosX()))
+                )
+            {
+                // ジャンプ出来るようにする
+                IsFootField = true;
+
+                SetPlayerState(State.Normal);
+            }
+        }
+    }
+
     // あたったタイミングで処理が動く
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -293,14 +330,13 @@ public class Player : MagnetManager
 
         if (collision.gameObject.CompareTag("Thorn"))
         {
-            Vector2 worldPos = transform.position;
+            Vector2 worldPos = this.transform.position;
 
             // セーブポイント通ったか
             if (SavePoint.instance != null)
             {
                 // 通ったセーブポイントの座標に復活させる
-                worldPos.x = SavePoint.instance.GetSavePointPosX();
-                worldPos.y = SavePoint.instance.GetSavePointPosY();
+                worldPos = SavePoint.instance.GetSavePointPos().position;
             }
             // 通ってないなら初期座標に戻る
             else
@@ -310,24 +346,6 @@ public class Player : MagnetManager
             }
 
             transform.position = worldPos;// 座標設定
-        }
-
-        if (collision.gameObject.CompareTag("Floor"))
-        {
-            IsGround = true;
-
-            Debug.Log(IsGround);
-
-            SetPlayerState(State.Normal);
-        }
-
-        if (collision.gameObject.CompareTag("Block"))
-        {
-            IsFootField = true;
-
-            Debug.Log(IsFootField);
-
-            SetPlayerState(State.Normal);
         }
     }
 
@@ -369,7 +387,40 @@ public class Player : MagnetManager
         {
             IsFootField = false;
 
+            Debug.Log(IsFootField);
+
             SetPlayerState(State.Normal);
         }
+    }
+
+    // プレイヤーの足元の座標を求める
+    private void FootPos()
+    {
+        /*-----------右側のX座標設定-----------*/
+        float RightPosX;
+        RightPosX = transform.position.x;
+        
+        // 自身のサイズ分座標をずらす
+        RightPosX += gameObject.GetComponent<SpriteRenderer>().bounds.size.x * 0.5f;
+        
+        SavePlayerRightPosX = RightPosX;
+        
+        /*-----------左側のX座標設定-----------*/
+        float LeftPosX;
+        LeftPosX = transform.position.x;
+        
+        // 自身のサイズ分座標をずらす
+        LeftPosX -= gameObject.GetComponent<SpriteRenderer>().bounds.size.x * 0.5f;
+        
+        SavePlayerLeftPosX = LeftPosX;
+
+        /*-----------Y座標設定-----------*/
+        float PosY;
+        PosY = transform.position.y;
+
+        // 自身のサイズ分座標をずらす
+        PosY -= gameObject.GetComponent<SpriteRenderer>().bounds.size.y * 0.5f;
+
+        SavePlayerPosY = PosY;
     }
 }
