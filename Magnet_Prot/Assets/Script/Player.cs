@@ -40,9 +40,6 @@ public class Player : MagnetManager
     [Header("鎖を離した時の力を減衰させる時間")]
     [SerializeField] private float DampingTime = 2.0f;
 
-    public float HorizontalKey { get; private set; }
-    public float VerticalKey { get; private set; }
-
     private MoveChain MoveChainObj;
 
     private CatchTheChain ChainObj;
@@ -61,6 +58,12 @@ public class Player : MagnetManager
     //初期座標
     private float PlayerPosX;
     private float PlayerPosY;
+
+    private float HorizontalKey;
+
+    private float VerticalKey;
+
+    private bool Action;
 
     void Awake()
     {
@@ -84,7 +87,8 @@ public class Player : MagnetManager
         if (PlayerState == State.Normal)
         {
             HorizontalKey = Input.GetAxisRaw("Horizontal");
-            VerticalKey = Input.GetAxisRaw("Vertical");  // 縦入力反応変数
+            VerticalKey = Input.GetAxisRaw("Vertical");
+
             float XSpeed = 0.0f;
             float YSpeed = 0.0f;                            // 縦移動のスピード変数
 
@@ -131,10 +135,14 @@ public class Player : MagnetManager
             //ジャンプ
             if (Input.GetButtonDown("Jump") && !(Rb.velocity.y < -0.5f))
             {
+                Action = true;
+
                 if (IsGround)
                 {
                     Rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
                 }
+
+                Debug.Log(Action);
             }
 
             Rb.velocity = new Vector2(XSpeed, Rb.velocity.y);
@@ -208,6 +216,12 @@ public class Player : MagnetManager
 
     public float GetDirectionX() { return DirectionX; }
 
+    public float GetHorizontalKey() { return HorizontalKey; }
+
+    public float GetVerticalKey() { return VerticalKey; }
+
+    public bool GetAction() { return Action; }
+
     public void SetPlayerState(State state, CatchTheChain catchTheChain = null)
     {
         PlayerState = state;
@@ -277,9 +291,6 @@ public class Player : MagnetManager
 
             HitJagde = true;
 
-            Animator anim = GetComponent<Animator>();
-            anim.SetTrigger("Climbing");
-
             Rb.gravityScale = 0.0f;
         }
 
@@ -345,9 +356,6 @@ public class Player : MagnetManager
         if (collision.gameObject.CompareTag("Iron"))
         {
             Debug.Log("離れた！！");
-
-            Animator anim = GetComponent<Animator>();
-            anim.SetTrigger("Walk");
 
             if (!TwoFlug)
             {
