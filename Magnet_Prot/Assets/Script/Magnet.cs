@@ -32,6 +32,7 @@ public class Magnet : MagnetManager
     private Player player;
     private Magnet_Pole currentPole;
     private bool mag = false;
+    private Sprite spRen;
 
     void Awake()
     {
@@ -41,13 +42,15 @@ public class Magnet : MagnetManager
         rb = playerGO.GetComponent<Rigidbody2D>();
         player = playerGO.GetComponent<Player>();
 
+        spRen = GetComponent<SpriteRenderer>().sprite;
+
         currentPole = Pole;
         ChangeColor();
 
 #if UNITY_EDITOR
         GameObject child = transform.GetChild(0).gameObject;
         var scale = new Vector3(Distance * 2, Distance * 2, 0.0f);
-        child.transform.localScale = scale;
+        if (child) child.transform.localScale = scale;
 #else
         child.SetActive(false);
 
@@ -63,24 +66,20 @@ public class Magnet : MagnetManager
         else if (mag) UpdateMagnet();
 
         if (currentPole != Pole) ChangeColor();
-
     }
 
     private void ChangeColor()
     {
-        if (N_Magnet && S_Magnet)
-        {
-            if (Pole == Magnet_Pole.N)
-            {
-                GetComponent<SpriteRenderer>().sprite = N_Magnet;// Sprite RendererをN_Magnetに変更している
-            }
-            else
-            {
-                GetComponent<SpriteRenderer>().sprite = S_Magnet;// Sprite RendererをS_Magnetに変更している
-            }
-        }
+        if (!N_Magnet || !S_Magnet) return;
 
-        currentPole = Pole;
+        if (Pole == Magnet_Pole.N)
+        {
+            spRen = N_Magnet;
+        }
+        else
+        {
+            spRen = S_Magnet;
+        }
     }
 
     public void ChangePole()
@@ -93,6 +92,8 @@ public class Magnet : MagnetManager
         {
             Pole = Magnet_Pole.N;
         }
+        ChangeColor();
+        currentPole = Pole;
     }
 
     private void UpdateMagnet()
@@ -107,9 +108,10 @@ public class Magnet : MagnetManager
 #if UNITY_EDITOR
             GameObject child = transform.GetChild(0).gameObject;
 
-            if (ColorUtility.TryParseHtmlString("#FF640055", out Color color))
+            if (ColorUtility.TryParseHtmlString("#FF640055", out Color color) && child)
                 child.GetComponent<SpriteRenderer>().color = color;
 #endif
+
             centerPosition = transform.position;
             distance = centerPosition - player.transform.position;
 
@@ -127,12 +129,13 @@ public class Magnet : MagnetManager
         }
         else if (mag)
         {
-            player.magnetic = false; 
+            player.magnetic = false;
             mag = false;
+
 #if UNITY_EDITOR
             GameObject child = transform.GetChild(0).gameObject;
 
-            if (ColorUtility.TryParseHtmlString("#FFFF0055", out Color color))
+            if (ColorUtility.TryParseHtmlString("#FFFF0055", out Color color)&& child)
                 child.GetComponent<SpriteRenderer>().color = color;
 #endif
         }
