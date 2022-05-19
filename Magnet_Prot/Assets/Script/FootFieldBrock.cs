@@ -40,12 +40,6 @@ public class FootFieldBrock : FootFieldBrockManager
         SaveTopPosY = TopPosY;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnCollisionStay2D(Collision2D collision)
     {
         // 既に触れてある状態ならスルーする
