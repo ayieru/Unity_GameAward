@@ -69,6 +69,8 @@ public class Player : MagnetManager
 
     public bool magnetic = false; //仮実装
 
+    private float texX, texY;
+
     void Awake()
     {
         IsGround = false;
@@ -79,13 +81,14 @@ public class Player : MagnetManager
         PlayerState = State.Normal;
 
         DirectionX = (int)PlayerDirection.Right;
+
+        texX = gameObject.GetComponent<SpriteRenderer>().bounds.size.x * 0.5f;
+        texY = gameObject.GetComponent<SpriteRenderer>().bounds.size.y * 0.5f;
     }
 
     void Update()
     {
         Vector3 localScale = transform.localScale;
-
-        FootPos();
 
         if (PlayerState == State.Normal)
         {
@@ -138,7 +141,7 @@ public class Player : MagnetManager
             if (Input.GetButtonDown("Jump") && !(Rb.velocity.y < -0.5f))
             {
                 // 地面か足場に触れていたら
-                if (IsGround||IsFootField)
+                if (IsGround || IsFootField)
                 {
                     Rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
                 }
@@ -275,14 +278,14 @@ public class Player : MagnetManager
             IsGround = true;
 
             Debug.Log(IsGround);
-
-            SetPlayerState(State.Normal);
         }
 
         if (collision.gameObject.CompareTag("Block"))
         {
             // プレイヤーが触れていないブロックが動作しないようにする
             if (FootFieldBrock.instance == null) return;
+
+            FootPos();
 
             // プレイヤーの高さが足場の高さ超えている　かつ　プレイヤーが足場に着地出来ているなら
             if (
@@ -292,8 +295,6 @@ public class Player : MagnetManager
             {
                 // ジャンプ出来るようにする
                 IsFootField = true;
-
-                SetPlayerState(State.Normal);
             }
         }
     }
@@ -399,18 +400,18 @@ public class Player : MagnetManager
         /*-----------右側のX座標設定-----------*/
         float RightPosX;
         RightPosX = transform.position.x;
-        
+
         // 自身のサイズ分座標をずらす
-        RightPosX += gameObject.GetComponent<SpriteRenderer>().bounds.size.x * 0.5f;
+        RightPosX += texX;
         
         SavePlayerRightPosX = RightPosX;
         
         /*-----------左側のX座標設定-----------*/
         float LeftPosX;
         LeftPosX = transform.position.x;
-        
+
         // 自身のサイズ分座標をずらす
-        LeftPosX -= gameObject.GetComponent<SpriteRenderer>().bounds.size.x * 0.5f;
+        LeftPosX -= texX;
         
         SavePlayerLeftPosX = LeftPosX;
 
@@ -419,7 +420,7 @@ public class Player : MagnetManager
         PosY = transform.position.y;
 
         // 自身のサイズ分座標をずらす
-        PosY -= gameObject.GetComponent<SpriteRenderer>().bounds.size.y * 0.5f;
+        PosY -= texY;
 
         SavePlayerPosY = PosY;
     }

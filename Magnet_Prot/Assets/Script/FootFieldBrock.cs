@@ -7,7 +7,8 @@ public class FootFieldBrock : FootFieldBrockManager
     public static FootFieldBrock instance;
 
     // Start is called before the first frame update
-    void Start()
+    
+    void Awake()
     {
         instance = null;
 
