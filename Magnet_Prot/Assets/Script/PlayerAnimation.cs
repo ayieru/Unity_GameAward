@@ -57,27 +57,6 @@ public class PlayerAnimation : MonoBehaviour
                 PlayerAnim.SetTrigger("Idle");
             }
         }
-        
-        //if (MotionCounter >= 0.0f)
-        //{
-        //    //ジャンプアニメーションが再生し終えたらIdle or Walkに戻す
-        //    MotionCounter += Time.deltaTime;
-        //
-        //    Debug.Log(MotionCounter);
-        //
-        //    if (MotionCounter >= StateInfo.length)
-        //    {
-        //        MotionCounter = -1.0f;
-        //
-        //        
-        //    }
-        //}
-
-        //切り替え操作されました
-        //現在の再生時間を保存
-        //切り替え
-        //保存した再生時間を代入
-        //もし６秒の所で切り替えが押されていたら、切り替え後には６秒後からスタート
     }
 
     public void JumpAction()
@@ -132,11 +111,3 @@ public class PlayerAnimation : MonoBehaviour
         }
     }
 }
-
-/*
- *ジャンプに関して
- * 
- *プレイヤースクリプトの方でJumpAction関数を呼び、
- * 関数内でJumpアニメーションに切り替える方法を採用しました。
- * 
- */
