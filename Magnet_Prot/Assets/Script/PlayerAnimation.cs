@@ -20,11 +20,11 @@ public class PlayerAnimation : MonoBehaviour
 
         if (PlayerObj.GetPole() == Magnet.Magnet_Pole.N)
         {
-            PlayerAnim.SetBool("MagnetSwitch", true);
+            PlayerAnim.SetBool("MagnetChange", true);
         }
         else if (PlayerObj.GetPole() == Magnet.Magnet_Pole.S)
         {
-            PlayerAnim.SetBool("MagnetSwitch", false);
+            PlayerAnim.SetBool("MagnetChange", false);
         }
 
         PlayerAnim.SetTrigger("Idle");
@@ -67,7 +67,7 @@ public class PlayerAnimation : MonoBehaviour
             //ジャンプアニメーションが再生し終えたらIdle or Walkに戻す
             MotionCounter += Time.deltaTime;
 
-            if(MotionCounter>=StateInfo.length)
+            if (MotionCounter >= StateInfo.length)
             {
                 MotionCounter = -1.0f;
 
@@ -75,14 +75,11 @@ public class PlayerAnimation : MonoBehaviour
             }
         }
 
-        if (PlayerObj.GetPole() == Magnet.Magnet_Pole.N)
-        {
-            PlayerAnim.SetBool("MagnetSwitch", true);
-        }
-        else if (PlayerObj.GetPole() == Magnet.Magnet_Pole.S)
-        {
-            PlayerAnim.SetBool("MagnetSwitch", false);
-        }
+        //切り替え操作されました
+        //現在の再生時間を保存
+        //切り替え
+        //保存した再生時間を代入
+        //もし６秒の所で切り替えが押されていたら、切り替え後には６秒後からスタート
     }
 
     public void JumpAction()
@@ -91,6 +88,21 @@ public class PlayerAnimation : MonoBehaviour
 
         MotionCounter = 0.0f;
     }
+    
+    /// <summary>
+    /// プレイヤーの極切り替えの際のアニメーション遷移
+    /// </summary>
+    /// <param name="enable">true/N極(赤)、false/S極(青)</param>
+    public void MagnetChange(bool enable)
+    {
+        //現在の再生時間を取得
+        float CurrentAnimFrame = StateInfo.length * StateInfo.normalizedTime;
+
+        Debug.Log(CurrentAnimFrame);
+
+        PlayerAnim.SetBool("MagnetChange", enable);
+    }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

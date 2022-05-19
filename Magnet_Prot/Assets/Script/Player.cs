@@ -44,6 +44,8 @@ public class Player : MagnetManager
 
     private CatchTheChain ChainObj;
 
+    private PlayerAnimation PlayerAnim;
+
     private Quaternion PreRotation;//ロープを掴んでいる時のプレイヤーの角度格納用
 
     private bool IsGround = false;
@@ -68,6 +70,8 @@ public class Player : MagnetManager
         IsGround = false;
 
         Rb = GetComponent<Rigidbody2D>();
+
+        PlayerAnim = GetComponent<PlayerAnimation>();
 
         PlayerState = State.Normal;
 
@@ -137,7 +141,6 @@ public class Player : MagnetManager
                 {
                     Rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
 
-                    PlayerAnimation PlayerAnim = GetComponent<PlayerAnimation>();
                     PlayerAnim.JumpAction();
                 }
             }
@@ -156,11 +159,15 @@ public class Player : MagnetManager
                 {
                     Pole = Magnet_Pole.N;
                     Debug.Log("極切り替え：S → N");
+
+                    PlayerAnim.MagnetChange(true);
                 }
                 else
                 {
                     Pole = Magnet_Pole.S;
                     Debug.Log("極切り替え：N → S");
+
+                    PlayerAnim.MagnetChange(false);
                 }
             }
         }
