@@ -10,8 +10,6 @@ public class PlayerAnimation : MonoBehaviour
 
     Player PlayerObj;
 
-    float MotionCounter;
-
     void Start()
     {
         PlayerAnim = GetComponent<Animator>();
@@ -28,8 +26,6 @@ public class PlayerAnimation : MonoBehaviour
         }
 
         PlayerAnim.SetTrigger("Idle");
-
-        MotionCounter = -1.0f;
     }
 
 
@@ -62,18 +58,20 @@ public class PlayerAnimation : MonoBehaviour
             }
         }
         
-        if (MotionCounter >= 0.0f)
-        {
-            //ジャンプアニメーションが再生し終えたらIdle or Walkに戻す
-            MotionCounter += Time.deltaTime;
-
-            if (MotionCounter >= StateInfo.length)
-            {
-                MotionCounter = -1.0f;
-
-                PlayerAnim.SetBool("Jump", false);
-            }
-        }
+        //if (MotionCounter >= 0.0f)
+        //{
+        //    //ジャンプアニメーションが再生し終えたらIdle or Walkに戻す
+        //    MotionCounter += Time.deltaTime;
+        //
+        //    Debug.Log(MotionCounter);
+        //
+        //    if (MotionCounter >= StateInfo.length)
+        //    {
+        //        MotionCounter = -1.0f;
+        //
+        //        
+        //    }
+        //}
 
         //切り替え操作されました
         //現在の再生時間を保存
@@ -85,8 +83,10 @@ public class PlayerAnimation : MonoBehaviour
     public void JumpAction()
     {
         PlayerAnim.SetBool("Jump", true);
+        PlayerAnim.Update(0);
+        StateInfo = PlayerAnim.GetCurrentAnimatorStateInfo(0);
 
-        MotionCounter = 0.0f;
+        Debug.Log(StateInfo.length);
     }
     
     /// <summary>
@@ -100,7 +100,18 @@ public class PlayerAnimation : MonoBehaviour
 
         Debug.Log(CurrentAnimFrame);
 
+        PlayerAnim.Update(CurrentAnimFrame);
+
         PlayerAnim.SetBool("MagnetChange", enable);
+    }
+
+ 
+    /// <summary>
+    /// unity側でジャンプ再生が終わったら呼び出す関数として使用する
+    /// </summary>
+    public void JumpFinish()
+    {
+        PlayerAnim.SetBool("Jump", false);
     }
 
 
