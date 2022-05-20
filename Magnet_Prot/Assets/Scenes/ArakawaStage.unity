@@ -429,7 +429,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1159253589317391840, guid: d676cdfc4ebe5004a93887071d88569a, type: 3}
       propertyPath: Pole
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1159253589317391841, guid: d676cdfc4ebe5004a93887071d88569a, type: 3}
       propertyPath: m_Name
