@@ -160,14 +160,14 @@ public class Player : MagnetManager
                     Pole = Magnet_Pole.N;
                     Debug.Log("極切り替え：S → N");
 
-                    PlayerAnim.MagnetChange(true);
+                    PlayerAnim.MagnetChange(PlayerAnimation.AnimationLayer.Player_Red);
                 }
                 else
                 {
                     Pole = Magnet_Pole.S;
                     Debug.Log("極切り替え：N → S");
 
-                    PlayerAnim.MagnetChange(false);
+                    PlayerAnim.MagnetChange(PlayerAnimation.AnimationLayer.Player_Blue);
                 }
             }
         }
