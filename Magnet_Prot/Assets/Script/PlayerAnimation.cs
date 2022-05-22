@@ -81,7 +81,7 @@ public class PlayerAnimation : MonoBehaviour
 
     public void JumpAction()
     {
-        PlayerAnim.Play("PlayerIdleJump_Red");
+        PlayerAnim.Play("Jump");
         PlayerAnim.Update(0);
         StateInfo = PlayerAnim.GetCurrentAnimatorStateInfo(0);
 

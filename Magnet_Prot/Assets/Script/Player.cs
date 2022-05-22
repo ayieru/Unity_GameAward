@@ -55,6 +55,8 @@ public class Player : MagnetManager
 
     private CatchTheChain ChainObj;
 
+    private PlayerAnimation PlayerAnim;
+
     private Quaternion PreRotation;//ロープを掴んでいる時のプレイヤーの角度格納用
 
     private Rigidbody2D Rb;
@@ -77,6 +79,8 @@ public class Player : MagnetManager
         IsFootField = false;
 
         Rb = GetComponent<Rigidbody2D>();
+
+        PlayerAnim = GetComponent<PlayerAnimation>();
 
         PlayerState = State.Normal;
 
@@ -161,11 +165,15 @@ public class Player : MagnetManager
                 {
                     Pole = Magnet_Pole.N;
                     Debug.Log("極切り替え：S → N");
+
+                    PlayerAnim.MagnetChange(PlayerAnimation.AnimationLayer.Player_Red);
                 }
                 else
                 {
                     Pole = Magnet_Pole.S;
                     Debug.Log("極切り替え：N → S");
+
+                    PlayerAnim.MagnetChange(PlayerAnimation.AnimationLayer.Player_Blue);
                 }
             }
         }
@@ -212,7 +220,15 @@ public class Player : MagnetManager
 
     public State GetPlayerState() { return PlayerState; }
 
+    public bool GetTwoFlug() { return TwoFlug; }
+
+    public bool GetHitJagde() { return HitJagde; }
+
     public float GetDirectionX() { return DirectionX; }
+
+    public float GetHorizontalKey() { return HorizontalKey; }
+
+    public float GetVerticalKey() { return VerticalKey; }
 
     public void SetPlayerState(State state, CatchTheChain catchTheChain = null)
     {
