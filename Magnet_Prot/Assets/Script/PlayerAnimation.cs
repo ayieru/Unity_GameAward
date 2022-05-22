@@ -107,7 +107,7 @@ public class PlayerAnimation : MonoBehaviour
 
         LayerNumber = nextLayer;
 
-        PlayerAnim.Play("Idle", 0, CurrentAnimFrame);
+        //PlayerAnim.Play("Idle", 0, CurrentAnimFrame);
     }
 
     public void SetPlayerAnimation(string animationName, int animationLayer)
