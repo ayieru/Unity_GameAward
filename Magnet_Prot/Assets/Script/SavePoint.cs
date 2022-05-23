@@ -12,6 +12,7 @@ public class SavePoint : SavePointManager
     {
         SetSaveJadge(false);
         SavePointTransform = this.transform;// transformを取得
+        GetComponent<SpriteRenderer>().sprite = null;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -24,7 +25,7 @@ public class SavePoint : SavePointManager
             Debug.Log("セーブ成功");
 
             // セーブポイントが設置している座標をプレイヤーが復帰する座標に代入
-            SavePointPos = SavePointTransform.position;
+            SavePointPos = SavePointTransform;
             SetSaveJadge(true);
             instance = this;
         }
