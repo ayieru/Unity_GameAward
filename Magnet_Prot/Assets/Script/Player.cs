@@ -111,6 +111,8 @@ public class Player : MagnetManager
                 localScale.x = 1.0f;
 
                 transform.localScale = localScale;
+
+                //PlayerAnim.AnimationChange("Walk");
             }
             else if (HorizontalKey < 0)
             {
@@ -121,10 +123,14 @@ public class Player : MagnetManager
                 localScale.x = -1.0f;
 
                 transform.localScale = localScale;
+
+                //PlayerAnim.AnimationChange("Walk");
             }
             else
             {
                 XSpeed = 0.0f;
+
+                //PlayerAnim.AnimationChange("Idle");
             }
 
             // 縦入力反応処理
@@ -148,6 +154,8 @@ public class Player : MagnetManager
                 if (IsGround || IsFootField)
                 {
                     Rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
+
+                    PlayerAnim.SetAction(true);
                 }
             }
 

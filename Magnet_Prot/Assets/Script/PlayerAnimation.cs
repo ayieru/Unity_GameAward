@@ -17,9 +17,9 @@ public class PlayerAnimation : MonoBehaviour
 
     private Player PlayerObj;
 
-    private string AnimationName = "Idle";
+    private AnimationLayer CurrentLayer = AnimationLayer.Player_Red;
 
-    private AnimationLayer LayerNumber;
+    private bool Action = false;
 
     void Start()
     {
@@ -27,107 +27,97 @@ public class PlayerAnimation : MonoBehaviour
 
         PlayerObj = GetComponent<Player>();
 
-        LayerNumber = AnimationLayer.Player_Blue;
+        CurrentLayer = AnimationLayer.Player_Red;
 
-        PlayerAnim.Play(AnimationName, (int)LayerNumber);
-
-        return;
+        Action = false;
 
         if (PlayerObj.GetPole() == Magnet.Magnet_Pole.N)
         {
-            LayerNumber = AnimationLayer.Player_Red;
+            MagnetChange(AnimationLayer.Player_Red);
         }
         else if (PlayerObj.GetPole() == Magnet.Magnet_Pole.S)
         {
-            LayerNumber = AnimationLayer.Player_Blue;
+            MagnetChange(AnimationLayer.Player_Blue);
         }
 
-        
-
-        
+        PlayerAnim.Play("Idle", (int)CurrentLayer);
     }
 
 
     void Update()
     {
-        return;
         PlayerAnim.speed = 1;//再開
 
         if (PlayerObj.GetHitJagde())//登るときの状態
         {
-            PlayerAnim.Play("Climbing");
+            PlayerAnim.Play("Climbing", (int)CurrentLayer);
 
-             if (PlayerObj.GetVerticalKey() == 0)
+            if (PlayerObj.GetVerticalKey() == 0)
             {
                 PlayerAnim.speed = 0;//停止
             }
             else if (PlayerObj.GetHorizontalKey() > 0 || PlayerObj.GetHorizontalKey() < 0)
             {
-                PlayerAnim.Play("PlayerWalk_Red");
+                PlayerAnim.Play("Walk", (int)CurrentLayer);
             }
         }
         else//普通に移動している時の状態
         {
-            if (PlayerObj.GetHorizontalKey() > 0 || PlayerObj.GetHorizontalKey() < 0)
+            if (Action)
             {
-                PlayerAnim.Play("PlayerWalk_Red");
+                if (PlayerObj.GetHorizontalKey() > 0 || PlayerObj.GetHorizontalKey() < 0)
+                {
+                    PlayerAnim.Play("WalkJump", (int)CurrentLayer);
+                }
+                else
+                {
+                    PlayerAnim.Play("IdleJump", (int)CurrentLayer);
+                }
             }
             else
             {
-                PlayerAnim.Play("PlayerIdle_Red");
+                if (PlayerObj.GetHorizontalKey() > 0 || PlayerObj.GetHorizontalKey() < 0)
+                {
+                    PlayerAnim.Play("Walk", (int)CurrentLayer);
+                }
+                else
+                {
+                    PlayerAnim.Play("Idle", (int)CurrentLayer);
+                }
             }
         }
     }
 
-    public void JumpAction()
-    {
-        PlayerAnim.Play("Jump");
-        PlayerAnim.Update(0);
-        StateInfo = PlayerAnim.GetCurrentAnimatorStateInfo(0);
+    public void SetAction(bool enable) { Action = enable; }
 
-        Debug.Log(StateInfo.length);
-    }
+    public bool GetAction() { return Action; }
 
     /// <summary>
-    /// プレイヤーの極切り替えの際のアニメーション遷移
+    /// プレイヤーの極切り替えの際のアニメーションレイヤー変更
     /// </summary>
-    /// <param name="animationName">再生するアニメーション名</param>
     /// <param name="nextLayer">切り替え後のレイヤー</param>
+    /// <param name="weight">N→Sにするときは1を引数に入れる</param>
     public void MagnetChange(AnimationLayer nextLayer)
     {
-        StateInfo = PlayerAnim.GetCurrentAnimatorStateInfo(0);//切り替え前のアニメーション情報の取得
+        if(CurrentLayer ==nextLayer)
+        {
+            return;
+        }
 
-        //現在の再生時間を取得
-        float CurrentAnimFrame = StateInfo.normalizedTime;
-        //Debug.Log(CurrentAnimFrame);
+        PlayerAnim.SetLayerWeight((int)CurrentLayer, 0.0f);//現在のレイヤー
 
-        PlayerAnim.SetLayerWeight((int)LayerNumber, 0);//元のレイヤー
+        PlayerAnim.SetLayerWeight((int)nextLayer, 1.0f);//次のレイヤー
 
-        PlayerAnim.SetLayerWeight((int)nextLayer, 1);//次のレイヤー
-
-        LayerNumber = nextLayer;
-
-        //PlayerAnim.Play("Idle", 0, CurrentAnimFrame);
+        CurrentLayer = nextLayer;
     }
-
-    public void SetPlayerAnimation(string animationName, int animationLayer)
-    {
-
-    }
-
-    public void SetPlayerAnimation(string animationName)
-    {
-
-    }
-
-
-
+    
     /// <summary>
     /// unity側でジャンプ再生が終わったら呼び出す関数として使用する
     /// </summary>
     public void JumpFinish()
     {
-        PlayerAnim.Play("PlayerIdle_Red");
+        Action = false;
+        //PlayerAnim.Play("Idle", (int)CurrentLayer);
     }
 
 
@@ -136,7 +126,7 @@ public class PlayerAnimation : MonoBehaviour
         //簡易的に鉄を実装
         if (collision.gameObject.CompareTag("Iron"))
         {
-            PlayerAnim.SetTrigger("Climbing");
+            PlayerAnim.Play("Climbing", (int)CurrentLayer);
         }
     }
 
