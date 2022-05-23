@@ -40,9 +40,8 @@ public class Player : MagnetManager
     [SerializeField] private float DampingTime = 2.0f;
 
     // 初期座標保存
-    [Header("プレイヤー初期座標設定")]
-    public float PlayerPosX = 0.0f;
-    public float PlayerPosY = 0.0f;
+    private float PlayerPosX;
+    private float PlayerPosY;
 
     public float HorizontalKey { get; private set; }
     public float VerticalKey { get; private set; }
@@ -88,7 +87,10 @@ public class Player : MagnetManager
 
         texX = gameObject.GetComponent<SpriteRenderer>().bounds.size.x * 0.5f;
         texY = gameObject.GetComponent<SpriteRenderer>().bounds.size.y * 0.5f;
-    }
+
+        PlayerPosX = transform.position.x;
+        PlayerPosY = transform.position.y;
+}
 
     void Update()
     {
