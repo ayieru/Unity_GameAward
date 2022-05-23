@@ -7,25 +7,24 @@ using UnityEngine.SceneManagement;
 public class Pause : MonoBehaviour
 {
     [SerializeField]
-    [Header("pausePanel Obj")] private GameObject pausePanel;
-    [Header("scene Obj")] public GameObject sceneObj;
-
-    //ポーズ中か確かめるフラグ
-    private bool pauseflug = false;
-
-    //スクリプト
-    Scene loadScene;
-
-    [Header("現在のシーン")]
-    private string NowScene;
+    [Header("Panel Obj")] private GameObject pausePanel;
 
     [SerializeField]
     [Header("ゲームに戻るボタン")]
     private Button ResumeButton;
 
+    [Header("現在のシーン")]
+    private string NowScene;
+
+    //ポーズ中か
+    private bool pauseflug = false;
+
+    //スクリプト
+    Scene loadScene;
+
     void Start()
     {
-        //ポーズフラグをfalseにする
+        //フラグを初期化
         pauseflug = false;
 
         //現在のシーン名を取得
@@ -96,7 +95,7 @@ public class Pause : MonoBehaviour
         Resume();
 
         //ステージセレクトシーンへ移動
-        FadeManager.FadeOut(NowScene);
+        FadeManager.FadeOut("StageSelect");
     }
 
     //ゲームをやめる処理
