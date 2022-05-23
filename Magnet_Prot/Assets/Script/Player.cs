@@ -94,6 +94,12 @@ public class Player : MagnetManager
 
     void Update()
     {
+        //追加しました(5/24)
+        if (Mathf.Approximately(Time.timeScale, 0f))
+        {
+            return;
+        }
+
         Vector3 localScale = transform.localScale;
 
         if (PlayerState == State.Normal)
