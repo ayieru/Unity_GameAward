@@ -56,10 +56,6 @@ public class PlayerAnimation : MonoBehaviour
             {
                 PlayerAnim.speed = 0;//停止
             }
-            else if (PlayerObj.GetHorizontalKey() > 0 || PlayerObj.GetHorizontalKey() < 0)
-            {
-                PlayerAnim.Play("Walk", (int)CurrentLayer);
-            }
         }
         else//普通に移動している時の状態
         {
@@ -124,17 +120,41 @@ public class PlayerAnimation : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //簡易的に鉄を実装
-        if (collision.gameObject.CompareTag("Iron"))
+        if (collision.gameObject.CompareTag("Iron") ||
+            collision.gameObject.CompareTag("NPole") ||
+            collision.gameObject.CompareTag("SPole"))
         {
+            //触れたオブジェクトと自身の位置を計算して向きを補正させる
+            if ((gameObject.transform.position.x - collision.gameObject.transform.position.x) >=0.0f)
+            {
+                Vector3 localScale = PlayerObj.transform.localScale;
+
+                localScale.x = -1.0f;
+
+                transform.localScale = localScale;
+
+                Debug.Log("左向きに補正！！");
+            }
+            else
+            {
+                Vector3 localScale = PlayerObj.transform.localScale;
+
+                localScale.x = 1.0f;
+
+                transform.localScale = localScale;
+
+                Debug.Log("右向きに補正！！");
+            }
+
             PlayerAnim.Play("Climbing", (int)CurrentLayer);
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Iron"))
+        if (collision.gameObject.CompareTag("NPole") || collision.gameObject.CompareTag("SPole"))
         {
-
+            PlayerAnim.Play("Idle", (int)CurrentLayer);
         }
     }
 }

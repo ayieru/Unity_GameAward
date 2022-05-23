@@ -101,61 +101,72 @@ public class Player : MagnetManager
             float XSpeed = 0.0f;
             float YSpeed = 0.0f;                            // 縦移動のスピード変数
 
-            //横入力反応処理
-            if (HorizontalKey > 0)
+            if (HitJagde)
             {
-                XSpeed = Speed;
-
-                DirectionX = (int)PlayerDirection.Right;
-
-                localScale.x = 1.0f;
-
-                transform.localScale = localScale;
-
-                //PlayerAnim.AnimationChange("Walk");
-            }
-            else if (HorizontalKey < 0)
-            {
-                XSpeed = -Speed;
-
-                DirectionX = (int)PlayerDirection.Left;
-
-                localScale.x = -1.0f;
-
-                transform.localScale = localScale;
-
-                //PlayerAnim.AnimationChange("Walk");
-            }
-            else
-            {
-                XSpeed = 0.0f;
-
-                //PlayerAnim.AnimationChange("Idle");
-            }
-
-            // 縦入力反応処理
-            if (VerticalKey > 0)
-            {
-                YSpeed = Speed * 2.0f;
-            }
-            else if (VerticalKey < 0)
-            {
-                YSpeed = -Speed * 2.0f;
-            }
-            else
-            {
-                YSpeed = 0.0f;
-            }
-
-            //ジャンプ
-            if (Input.GetButtonDown("Jump") && !(Rb.velocity.y < -0.5f))
-            {
-                // 地面か足場に触れていたら
-                if (IsGround || IsFootField)
+                // 縦入力反応処理
+                if (VerticalKey > 0)
                 {
-                    Rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
+                    YSpeed = Speed * 2.0f;
+                }
+                else if (VerticalKey < 0)
+                {
+                    YSpeed = -Speed * 2.0f;
+                }
+                else
+                {
+                    YSpeed = 0.0f;
+                }
 
-                    PlayerAnim.SetAction(true);
+                if (Input.GetButtonDown("Jump"))
+                {
+                    //磁石から離れる
+                    //後ろ斜め上に飛ばす
+                }
+            }
+            else
+            {
+                //横入力反応処理
+                if (HorizontalKey > 0)
+                {
+                    XSpeed = Speed;
+
+                    DirectionX = (int)PlayerDirection.Right;
+
+                    localScale.x = 1.0f;
+
+                    transform.localScale = localScale;
+
+                    //PlayerAnim.AnimationChange("Walk");
+                }
+                else if (HorizontalKey < 0)
+                {
+                    XSpeed = -Speed;
+
+                    DirectionX = (int)PlayerDirection.Left;
+
+                    localScale.x = -1.0f;
+
+                    transform.localScale = localScale;
+
+                    //PlayerAnim.AnimationChange("Walk");
+                }
+                else
+                {
+                    XSpeed = 0.0f;
+
+                    //PlayerAnim.AnimationChange("Idle");
+                }
+
+                //ジャンプ
+                if (Input.GetButtonDown("Jump") && !(Rb.velocity.y < -0.5f))
+                {
+                    // 地面か足場に触れていたら
+                    if (IsGround || IsFootField)
+                    {
+                        Rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
+
+                        PlayerAnim.SetAction(true);
+                    }
                 }
             }
 
