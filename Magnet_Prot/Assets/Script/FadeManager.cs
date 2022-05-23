@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 //参照：https://kenko-san.com/unity-fade/#toc4
+//2022/5/21更新
 
 /*　〇特定のシーンをフェードインで始めたい場合
  *    そのシーン内にある何れかのスクリプトのStart()内に以下の1行を追加
@@ -12,7 +13,7 @@ using UnityEngine.SceneManagement;
  *  
  *  〇現在のシーンをフェードアウトで終わって、次のシーンにフェードインした場合
  *    任意のタイミングで以下の一行を追加
- *    FadeManager.FadeOut(遷移したいシーン番号);
+ *    FadeManager.FadeOut(遷移したいシーンの名前);
  *    
  *    シーン遷移も同時に出来ます。
  */
@@ -33,8 +34,8 @@ public class FadeManager : MonoBehaviour
     //フェードの長さ（単位は秒）
     private static float fadeTime = 0.4f;
 
-    //遷移先のシーン番号
-    private static int nextScene = 1;
+    //遷移先のシーン名
+    private static string nextScene;
 
     //フェード用のCanvasとImage生成
     static void Init()
@@ -68,10 +69,10 @@ public class FadeManager : MonoBehaviour
 
     //フェードアウト開始
     //引数は遷移したいシーンのシーン番号
-    public static void FadeOut(int n)
+    public static void FadeOut(string SceneName)
     {
         if (fadeImage == null) Init();
-        nextScene = n;
+        nextScene = SceneName;
         fadeImage.color = Color.clear;
         fadeCanvas.enabled = true;
         IsFadeOut = true;
