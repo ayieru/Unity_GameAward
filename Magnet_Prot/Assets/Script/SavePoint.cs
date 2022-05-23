@@ -12,6 +12,7 @@ public class SavePoint : SavePointManager
     {
         SetSaveJadge(false);
         SavePointTransform = this.transform;// transformを取得
+        GetComponent<SpriteRenderer>().sprite = null;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
