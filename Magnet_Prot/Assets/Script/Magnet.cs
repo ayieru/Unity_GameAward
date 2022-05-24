@@ -54,6 +54,7 @@ public class Magnet : MagnetManager
         var sscale = new Vector3(scale.x / transform.lossyScale.x, scale.y / transform.lossyScale.y, scale.z);
         if (child) child.transform.localScale = sscale;
 #else
+        GameObject child = transform.GetChild(0).gameObject;
         child.SetActive(false);
 
 #endif
@@ -122,12 +123,12 @@ public class Magnet : MagnetManager
 
             if (Pole == player.GetPole())
             {
-                myrb.constraints = RigidbodyConstraints2D.FreezeRotation;
+                if(myrb) myrb.constraints = RigidbodyConstraints2D.FreezeRotation;
                 rb.AddForce(releaseObject, ForceMode2D.Force);
             }
             else
             {
-                myrb.constraints = RigidbodyConstraints2D.FreezeAll;
+                if(myrb) myrb.constraints = RigidbodyConstraints2D.FreezeAll;
                 rb.AddForce(pullObject, ForceMode2D.Force);
             }
         }
