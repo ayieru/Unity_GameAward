@@ -28,7 +28,7 @@ public class StageSelect : MonoBehaviour
     void Update()
     {
         //コマンドが押されたら、該当するステージを開始する
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") || Input.GetButtonDown("Action"))
         {
             FadeManager.FadeOut(StageButton[SelectID].gameObject.name);
         }

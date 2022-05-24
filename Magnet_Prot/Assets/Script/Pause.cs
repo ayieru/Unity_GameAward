@@ -17,7 +17,8 @@ public class Pause : MonoBehaviour
     private string NowScene;
 
     //ポーズ中か
-    private bool pauseflug = false;
+    private bool Pauseflug = false;
+    private bool CallOnce = false;
 
     //スクリプト
     Scene loadScene;
@@ -25,7 +26,8 @@ public class Pause : MonoBehaviour
     void Start()
     {
         //フラグを初期化
-        pauseflug = false;
+        Pauseflug = false;
+        CallOnce = false;
 
         //現在のシーン名を取得
         NowScene = SceneManager.GetActiveScene().name;
@@ -33,16 +35,20 @@ public class Pause : MonoBehaviour
 
     void Update()
     {
-
-        //ポーズ中じゃないとき
-        if (pauseflug == false)
+        if (Input.GetKeyDown(KeyCode.Escape) == true || Input.GetButtonDown("PauseKey"))
         {
-            //ポーズボタンが押されたら
-            if (Input.GetKeyDown(KeyCode.Escape) == true || Input.GetButtonDown("PauseKey"))
-            {
-                //ポーズする
-                PauseNow();
-            }
+            Pauseflug = !Pauseflug;
+        }
+
+        if(Pauseflug == true && CallOnce == false)
+        {
+            CallOnce = true;
+            PauseNow();
+        }
+
+        if(pausePanel.activeSelf == true && Pauseflug == false)
+        {
+            Resume();
         }
 
     }
@@ -50,8 +56,6 @@ public class Pause : MonoBehaviour
     //ポーズ処理
     public void PauseNow()
     {
-        //ポーズ中
-        pauseflug = true;
 
         //ゲーム内の時間を停止する
         Time.timeScale = 0;
@@ -62,13 +66,15 @@ public class Pause : MonoBehaviour
         //ゲームに戻るボタンが選択された状態にする
         Button button = ResumeButton.GetComponent<Button>();
         button.Select();
+
     }
 
     //ゲームに戻る処理
     public void Resume()
     {
         //ポーズ終了
-        pauseflug = false;
+        Pauseflug = false;
+        CallOnce = false;
 
         //止めていた時間を動かす
         Time.timeScale = 1.0f;
