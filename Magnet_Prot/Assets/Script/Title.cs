@@ -12,6 +12,8 @@ public class Title : MonoBehaviour
     [Header("Exit(text)")]
     public Text ExitText;
 
+    public Button button;
+
     void Start()
     {
         FadeManager.FadeIn();
