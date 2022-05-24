@@ -23,8 +23,30 @@ public class Title : MonoBehaviour
         
     }
 
-    public void GameStart()
+    //Textの色を変更する処理
+    private void TextColorChange(Text text)
     {
 
     }
+
+    //ゲーム開始処理
+    public void GameStart()
+    {
+        //ステージセレクトシーンへ移動
+        FadeManager.FadeOut("StageSelect");
+
+    }
+
+    //ゲーム終了処理
+    public void Exit()
+    {
+        //ゲームを終了する
+#if UNITY_EDITOR // Unityの画面上
+        UnityEditor.EditorApplication.isPlaying = false;
+#else // ビルド後、exeファイル
+		Application.Quit();
+#endif
+
+    }
+
 }
