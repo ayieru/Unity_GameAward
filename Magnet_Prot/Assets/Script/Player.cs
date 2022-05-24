@@ -67,6 +67,8 @@ public class Player : MagnetManager
     private bool HitJagde = false;// 何かとプレイヤーが当たった判定
     private bool TwoFlug = false;
 
+    private int MagnetHitCount = 0;//縦/横に2個以上並べたマグネットの判定に使う
+
     private State PlayerState = State.Normal;
 
     public bool magnetic = false; //仮実装
@@ -85,6 +87,8 @@ public class Player : MagnetManager
         PlayerState = State.Normal;
 
         DirectionX = (int)PlayerDirection.Right;
+
+        MagnetHitCount = 0;
 
         texX = gameObject.GetComponent<SpriteRenderer>().bounds.size.x * 0.5f;
         texY = gameObject.GetComponent<SpriteRenderer>().bounds.size.y * 0.5f;
@@ -185,14 +189,32 @@ public class Player : MagnetManager
                     Pole = Magnet_Pole.N;
                     Debug.Log("極切り替え：S → N");
 
-                    PlayerAnim.MagnetChange(PlayerAnimation.AnimationLayer.Player_Red);
+                    if (MagnetHitCount >= 1)
+                    {
+                        PlayerAnim.MagnetChange(PlayerAnimation.AnimationLayer.Player_Red, "Idle");
+
+                        MagnetHitCount = 0;
+                    }
+                    else
+                    {
+                        PlayerAnim.MagnetChange(PlayerAnimation.AnimationLayer.Player_Red);
+                    }
                 }
                 else
                 {
                     Pole = Magnet_Pole.S;
                     Debug.Log("極切り替え：N → S");
 
-                    PlayerAnim.MagnetChange(PlayerAnimation.AnimationLayer.Player_Blue);
+                    if (MagnetHitCount >= 1)
+                    {
+                        PlayerAnim.MagnetChange(PlayerAnimation.AnimationLayer.Player_Blue, "Idle");
+
+                        MagnetHitCount = 0;
+                    }
+                    else
+                    {
+                        PlayerAnim.MagnetChange(PlayerAnimation.AnimationLayer.Player_Blue);
+                    }
                 }
             }
         }
@@ -248,6 +270,10 @@ public class Player : MagnetManager
     public float GetHorizontalKey() { return HorizontalKey; }
 
     public float GetVerticalKey() { return VerticalKey; }
+
+    public int GetMagnetHitCount() { return MagnetHitCount; }
+
+    public void SetMagnetHitCount(int count) { MagnetHitCount = count; }
 
     public void SetPlayerState(State state, CatchTheChain catchTheChain = null)
     {
@@ -342,6 +368,10 @@ public class Player : MagnetManager
         {
             Debug.Log("鉄にくっついた！！");
 
+            MagnetHitCount++;
+
+            Debug.Log(MagnetHitCount);
+
             //既にTure
             if (HitJagde)
             {
@@ -391,6 +421,11 @@ public class Player : MagnetManager
         if (collision.gameObject.CompareTag("NPole") || collision.gameObject.CompareTag("SPole"))
         {
             Debug.Log("離れた！！");
+
+            MagnetHitCount = System.Math.Max(MagnetHitCount - 1, 0);
+
+            Debug.Log(MagnetHitCount);
+
             HitJagde = false;
 
             Rb.gravityScale = 1.0f;

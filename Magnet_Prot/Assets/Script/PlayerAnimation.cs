@@ -46,8 +46,6 @@ public class PlayerAnimation : MonoBehaviour
 
     void Update()
     {
-        PlayerAnim.speed = 1;//再開
-
         if (PlayerObj.GetHitJagde())//登るときの状態
         {
             PlayerAnim.Play("Climbing", (int)CurrentLayer);
@@ -56,27 +54,36 @@ public class PlayerAnimation : MonoBehaviour
             {
                 PlayerAnim.speed = 0;//停止
             }
-        }
-        else//普通に移動している時の状態
-        {
-            if (Action)
+            else
             {
-                if (PlayerObj.GetHorizontalKey() > 0 || PlayerObj.GetHorizontalKey() < 0)
+                PlayerAnim.speed = 1;//再開
+            }
+        }
+        else
+        {
+            if (PlayerObj.GetHorizontalKey() > 0 || PlayerObj.GetHorizontalKey() < 0)
+            {
+                if (Action)
                 {
                     PlayerAnim.Play("WalkJump", (int)CurrentLayer);
+                    return;
                 }
-                else
-                {
-                    PlayerAnim.Play("IdleJump", (int)CurrentLayer);
-                }
+
+                PlayerAnim.Play("Walk", (int)CurrentLayer);
             }
             else
             {
-                if (PlayerObj.GetHorizontalKey() > 0 || PlayerObj.GetHorizontalKey() < 0)
+                if (Action)
                 {
-                    PlayerAnim.Play("Walk", (int)CurrentLayer);
+                    if (PlayerObj.GetMagnetHitCount() <= 0)
+                    {
+                        PlayerAnim.Play("IdleJump", (int)CurrentLayer);
+
+                        return;
+                    }
                 }
-                else
+
+                if(PlayerObj.GetMagnetHitCount() <= 0)
                 {
                     PlayerAnim.Play("Idle", (int)CurrentLayer);
                 }
@@ -92,10 +99,9 @@ public class PlayerAnimation : MonoBehaviour
     /// プレイヤーの極切り替えの際のアニメーションレイヤー変更
     /// </summary>
     /// <param name="nextLayer">切り替え後のレイヤー</param>
-    /// <param name="weight">N→Sにするときは1を引数に入れる</param>
     public void MagnetChange(AnimationLayer nextLayer)
     {
-        if(CurrentLayer ==nextLayer)
+        if (CurrentLayer == nextLayer)
         {
             return;
         }
@@ -106,7 +112,19 @@ public class PlayerAnimation : MonoBehaviour
 
         CurrentLayer = nextLayer;
     }
-    
+
+    /// <summary>
+    /// プレイヤーの極切り替えの際のアニメーションレイヤー変更
+    /// </summary>
+    /// <param name="nextLayer">切り替え後のレイヤー</param>
+    /// <param name="nextAnimationName">切り替え先のアニメーション名</param>
+    public void MagnetChange(AnimationLayer nextLayer, string nextAnimationName)
+    {
+        MagnetChange(nextLayer);
+
+        PlayerAnim.Play(nextAnimationName, (int)nextLayer);
+    }
+
     /// <summary>
     /// unity側でジャンプ再生が終わったら呼び出す関数として使用する
     /// </summary>
@@ -125,7 +143,7 @@ public class PlayerAnimation : MonoBehaviour
             collision.gameObject.CompareTag("SPole"))
         {
             //触れたオブジェクトと自身の位置を計算して向きを補正させる
-            if ((gameObject.transform.position.x - collision.gameObject.transform.position.x) >=0.0f)
+            if ((gameObject.transform.position.x - collision.gameObject.transform.position.x) >= 0.0f)
             {
                 Vector3 localScale = PlayerObj.transform.localScale;
 
@@ -145,7 +163,16 @@ public class PlayerAnimation : MonoBehaviour
 
                 Debug.Log("右向きに補正！！");
             }
+        }
+    }
 
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        //簡易的に鉄を実装
+        if (collision.gameObject.CompareTag("Iron") ||
+            collision.gameObject.CompareTag("NPole") ||
+            collision.gameObject.CompareTag("SPole"))
+        {
             PlayerAnim.Play("Climbing", (int)CurrentLayer);
         }
     }
@@ -154,7 +181,10 @@ public class PlayerAnimation : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("NPole") || collision.gameObject.CompareTag("SPole"))
         {
-            PlayerAnim.Play("Idle", (int)CurrentLayer);
+            if (PlayerObj.GetMagnetHitCount() == 0)
+            {
+                PlayerAnim.Play("Idle", (int)CurrentLayer);
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 287903344783892285}
-  - component: {fileID: 3309265353588906676}
+  - component: {fileID: 7926493691785928966}
   m_Layer: 0
   m_Name: MagnetObject
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &3309265353588906676
+--- !u!61 &7926493691785928966
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,7 +45,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.0016109347, y: 0.49456644}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -56,7 +56,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.94522727, y: 0.04308653}
   m_EdgeRadius: 0
 --- !u!1 &4924745693522521992
 GameObject:
@@ -152,8 +152,7 @@ GameObject:
   - component: {fileID: 7409296722858953841}
   - component: {fileID: 7243446449741209466}
   - component: {fileID: 6065888963158051311}
-  - component: {fileID: 5660737502741833594}
-  - component: {fileID: 7838066842364675337}
+  - component: {fileID: 9168374540708659193}
   m_Layer: 0
   m_Name: mag
   m_TagString: SPole
@@ -261,12 +260,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Pole: 1
-  PullPower: 75
-  ReleasePower: 75
-  Distance: 3
+  PullPower: 400
+  ReleasePower: 150
+  Distance: 4
   S_Magnet: {fileID: 21300000, guid: 7e995c4901dbef049a084ff2923d5c0d, type: 3}
   N_Magnet: {fileID: 21300000, guid: 2f8f6a427a1e5d940ac401812daf9a75, type: 3}
---- !u!61 &5660737502741833594
+--- !u!61 &9168374540708659193
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -279,7 +278,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.49753734, y: 0.004358977}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -290,31 +289,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.049001038, y: 0.928902}
-  m_EdgeRadius: 0
---- !u!61 &7838066842364675337
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5146990924726843831}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.49730924, y: 0.004358977}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.9996205, y: 0.9996205}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.04900092, y: 0.928902}
+  m_Size: {x: 0.9996205, y: 0.9996205}
   m_EdgeRadius: 0
