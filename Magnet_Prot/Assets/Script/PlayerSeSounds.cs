@@ -45,20 +45,17 @@ public class PlayerSeSounds : MonoBehaviour
             // 触れたブロックのタグが設定されているタグの中に含まれているどうか確認
             if (collision.gameObject.tag == ListAudioClips[i].TypeTag)
             {
-                GroundIndex = TagToIndex[collision.gameObject.tag];
+                GroundIndex = TagToIndex[ListAudioClips[i].TypeTag];
+                PlayFootstepSE();// Animatorウィンドウでも鳴らす
                 break;
             }
-            else
-            {
-                return;
-            }
         }
-
-        PlayFootstepSE();// Animatorウィンドウでも鳴らす
     }
 
     public void PlayFootstepSE()
     {
+        if (GroundIndex == null) return;
+
         // tagで呼び出すSEを変える
         AudioClip[] clips = ListAudioClips[GroundIndex].audioClips;
 
