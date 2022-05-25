@@ -20,11 +20,6 @@ public class Title : MonoBehaviour
 
     }
 
-    void Update()
-    {
-        
-    }
-
     //ゲーム開始処理
     public void GameStart()
     {
@@ -32,17 +27,15 @@ public class Title : MonoBehaviour
         FadeManager.FadeOut("StageSelect");
 
     }
-
+    
     //ゲーム終了処理
     public void Exit()
     {
-        //ゲームを終了する
 #if UNITY_EDITOR // Unityの画面上
         UnityEditor.EditorApplication.isPlaying = false;
 #else // ビルド後、exeファイル
 		Application.Quit();
 #endif
-
     }
 
 }
