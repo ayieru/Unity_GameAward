@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-//※注意※　仮実装
 
 public class Goal : MonoBehaviour
 {
@@ -12,6 +11,11 @@ public class Goal : MonoBehaviour
     GameObject clearUI;
 
     private bool timeStop = false;
+
+    private void Start()
+    {
+        FadeManager.FadeIn();
+    }
 
     private void Update()
     {
@@ -21,7 +25,7 @@ public class Goal : MonoBehaviour
             {
                 timeStop = false;
                 Time.timeScale = 1;
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                FadeManager.FadeOut("Result");
             }
         }
     }
