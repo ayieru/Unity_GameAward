@@ -6,18 +6,16 @@ using UnityEngine.SceneManagement;
 
 public class Title : MonoBehaviour
 {
-    [SerializeField]
-    [Header("Startボタン")]
-    public Button Startbutton;
+    private GameObject Startbutton;
 
     void Start()
     {
         FadeManager.FadeIn();
+        Startbutton = transform.Find("StartButton").gameObject;
 
         //Startボタンが選択された状態にする
         Button button = Startbutton.GetComponent<Button>();
         button.Select();
-
     }
 
     //ゲーム開始処理
@@ -25,7 +23,6 @@ public class Title : MonoBehaviour
     {
         //ステージセレクトシーンへ移動
         FadeManager.FadeOut("StageSelect");
-
     }
     
     //ゲーム終了処理
