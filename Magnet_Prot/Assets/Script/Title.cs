@@ -6,29 +6,23 @@ using UnityEngine.SceneManagement;
 
 public class Title : MonoBehaviour
 {
-    [Header("Start(text)")]
-    public Text StartText;
-
-    [Header("Exit(text)")]
-    public Text ExitText;
-
-    public Button button;
+    [SerializeField]
+    [Header("Startボタン")]
+    public Button Startbutton;
 
     void Start()
     {
         FadeManager.FadeIn();
+
+        //Startボタンが選択された状態にする
+        Button button = Startbutton.GetComponent<Button>();
+        button.Select();
 
     }
 
     void Update()
     {
         
-    }
-
-    //Textの色を変更する処理
-    private void TextColorChange(Text text)
-    {
-
     }
 
     //ゲーム開始処理
