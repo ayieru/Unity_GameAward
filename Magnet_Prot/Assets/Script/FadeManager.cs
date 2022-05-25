@@ -36,6 +36,9 @@ public class FadeManager : MonoBehaviour
 
     //遷移先のシーン名
     private static string nextScene;
+    private static int nextSceneIndex;
+
+    private static bool FadeIndex = false;
 
     //フェード用のCanvasとImage生成
     static void Init()
@@ -68,11 +71,24 @@ public class FadeManager : MonoBehaviour
     }
 
     //フェードアウト開始
-    //引数は遷移したいシーンのシーン番号
+    //引数は遷移したいシーンのシーン名
     public static void FadeOut(string SceneName)
     {
+        FadeIndex = false;
         if (fadeImage == null) Init();
         nextScene = SceneName;
+        fadeImage.color = Color.clear;
+        fadeCanvas.enabled = true;
+        IsFadeOut = true;
+    }
+
+    //フェードアウト開始
+    //引数は遷移したいシーンのシーン番号
+    public static void FadeOut(int SceneNameIndex)
+    {
+        FadeIndex = true;
+        if (fadeImage == null) Init();
+        nextSceneIndex = SceneNameIndex;
         fadeImage.color = Color.clear;
         fadeCanvas.enabled = true;
         IsFadeOut = true;
@@ -109,7 +125,14 @@ public class FadeManager : MonoBehaviour
                 alpha = 1.0f;
 
                 //次のシーンへ遷移
-                SceneManager.LoadScene(nextScene);
+                if(FadeIndex == false)
+                {
+                    SceneManager.LoadScene(nextScene);
+                }
+                else
+                {
+                    SceneManager.LoadScene(nextSceneIndex);
+                }
             }
 
             //フェード用Imageの色・透明度設定

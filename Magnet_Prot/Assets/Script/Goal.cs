@@ -7,8 +7,13 @@ using UnityEngine.SceneManagement;
 
 public class Goal : MonoBehaviour
 {
-    [Header("現在のステージ名")]
-    public static string CurrentStageName;
+    [Header("現在のステージ番号")]
+    public static int CurrentStageIndex;
+
+
+    [Header("最後のステージか?")]
+    public  bool IsLast = false;
+    public static bool IsLastStage = false;
 
     [SerializeField]
     GameObject ClearUI;
@@ -18,7 +23,9 @@ public class Goal : MonoBehaviour
     private void Start()
     {
         FadeManager.FadeIn();
-        CurrentStageName = SceneManager.GetActiveScene().name;
+        CurrentStageIndex = SceneManager.GetActiveScene().buildIndex;
+
+        IsLastStage = IsLast;
     }
 
     private void Update()
