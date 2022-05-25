@@ -45,8 +45,25 @@ public class PlayerSeSounds : MonoBehaviour
             // 触れたブロックのタグが設定されているタグの中に含まれているどうか確認
             if (collision.gameObject.tag == ListAudioClips[i].TypeTag)
             {
-                GroundIndex = TagToIndex[ListAudioClips[i].TypeTag];
-                PlayFootstepSE();// Animatorウィンドウでも鳴らす
+                if(GroundIndex!= TagToIndex[ListAudioClips[i].TypeTag])
+                {
+                    // Collisionに付いた瞬間だけ鳴らす
+                    GroundIndex = TagToIndex[ListAudioClips[i].TypeTag];
+                    PlayFootstepSE();// Animatorウィンドウでも鳴らす
+                }
+                break;
+            }
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        for (int i = 0; i < ListAudioClips.Count; ++i)
+        {
+            // 触れたブロックのタグが設定されているタグの中に含まれているどうか確認
+            if (collision.gameObject.tag == ListAudioClips[i].TypeTag)
+            {
+                GroundIndex = -1;
                 break;
             }
         }
