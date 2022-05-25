@@ -10,6 +10,8 @@ public class Goal : MonoBehaviour
     [Header("現在のステージ番号")]
     public static int CurrentStageIndex;
 
+    [Header("現在のステージ名")]
+    public static string CurrentStageName;
 
     [Header("最後のステージか?")]
     public  bool IsLast = false;
@@ -24,7 +26,7 @@ public class Goal : MonoBehaviour
     {
         FadeManager.FadeIn();
         CurrentStageIndex = SceneManager.GetActiveScene().buildIndex;
-
+        CurrentStageName = SceneManager.GetActiveScene().name;
         IsLastStage = IsLast;
     }
 
