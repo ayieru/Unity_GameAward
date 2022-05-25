@@ -699,7 +699,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Thorn (16)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6814357828440331837, guid: 9c903c3a4fbc27946b7200c3d1b81a1e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9c903c3a4fbc27946b7200c3d1b81a1e, type: 3}
 --- !u!1001 &223167101
 PrefabInstance:
@@ -949,6 +950,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d351c84c9794af147916119ee4a821cb, type: 3}
+--- !u!1 &445508034 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4715961034139479215, guid: 9c903c3a4fbc27946b7200c3d1b81a1e, type: 3}
+  m_PrefabInstance: {fileID: 207360950}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &445508040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445508034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6bb79f368c92cf4b902571c031a41a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Volume: 0.1
 --- !u!1001 &463879611
 PrefabInstance:
   m_ObjectHideFlags: 0

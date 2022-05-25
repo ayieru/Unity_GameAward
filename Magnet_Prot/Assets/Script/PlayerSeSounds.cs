@@ -54,7 +54,7 @@ public class PlayerSeSounds : MonoBehaviour
             }
         }
 
-        //PlayFootstepSE();// Animatorウィンドウで鳴らす
+        PlayFootstepSE();// Animatorウィンドウでも鳴らす
     }
 
     public void PlayFootstepSE()
