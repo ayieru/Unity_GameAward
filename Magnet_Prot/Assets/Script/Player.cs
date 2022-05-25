@@ -134,6 +134,8 @@ public class Player : MagnetManager
                     //磁石から離れる
                     //後ろ斜め上に飛ばす
                 }
+
+                Rb.velocity = new Vector2(XSpeed, YSpeed);
             }
             else
             {
@@ -180,13 +182,13 @@ public class Player : MagnetManager
                         PlayerAnim.SetAction(true);
                     }
                 }
+
+                Rb.velocity = new Vector2(XSpeed, Rb.velocity.y);
             }
 
-            Rb.velocity = new Vector2(XSpeed, Rb.velocity.y);
 
             if (HitJagde == true)// 壁のぼりの処理
             {
-                Rb.velocity = new Vector2(XSpeed, YSpeed);
             }
 
             //極切り替え
@@ -233,12 +235,21 @@ public class Player : MagnetManager
                 SetPlayerState(State.ReleaseChain);
 
                 Rb.simulated = true;
+
+                PlayerAnim.MagnetChange(PlayerAnim.GetCurrentLayer(), "Jump");
+
+                PlayerAnim.SetAction(true);
             }
             if (transform.localPosition != ChainObj.GetArrivalPoint())
             {
                 //滑らかに決められた位置に移動させる
                 transform.localPosition = Vector3.Lerp(transform.localPosition, ChainObj.GetArrivalPoint(), SpeedToRope * Time.deltaTime);
             }
+
+            PlayerAnim.MagnetChange(PlayerAnim.GetCurrentLayer(), "Idle");
+
+            PlayerAnim.SetAction(false);
+
         }
         else if (PlayerState == State.ReleaseChain)
         {
@@ -262,6 +273,8 @@ public class Player : MagnetManager
                  Rb.velocity.y + Physics.gravity.y * Time.deltaTime,
                 0.0f
                 );
+
+            PlayerState = State.Normal;
         }
     }
 
@@ -284,10 +297,10 @@ public class Player : MagnetManager
     public void SetMagnetHitCount(int count) { MagnetHitCount = count; }
 
     /// <summary>
-    /// ジャンプできるかどうかの判定
+    /// 地面or足場と触れているかの判定
     /// </summary>
     /// <returns></returns>
-    public bool IsJump() { return IsGround == true || IsFootField == true; }
+    public bool IsJump() { return (IsGround == true || IsFootField == true); }
 
     public void SetPlayerState(State state, CatchTheChain catchTheChain = null)
     {

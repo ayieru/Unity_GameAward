@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PlayerIdleJump_Red
+  m_Name: PlayerAttraction_Red
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,21 +20,15 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: 35e2930f65bb0f04e9747733df31c5de, type: 3}
-    - time: 0.033333335
-      value: {fileID: 21300000, guid: 0fae3a7c95ef78141be5354883145bc0, type: 3}
-    - time: 0.06666667
-      value: {fileID: 21300000, guid: 32358800887a25648a2e4bc0a2f60ff2, type: 3}
-    - time: 0.1
       value: {fileID: 21300000, guid: 68ec630970d7af74cab169df2b436abc, type: 3}
-    - time: 0.13333334
+    - time: 0.05
       value: {fileID: 21300000, guid: c2ca52b2e29dd0b448eb348d58c145c4, type: 3}
-    - time: 0.16666667
+    - time: 0.1
       value: {fileID: 21300000, guid: 8e01d029bdc0d184cb47fe26596d8dc4, type: 3}
+    - time: 0.15
+      value: {fileID: 21300000, guid: c2ca52b2e29dd0b448eb348d58c145c4, type: 3}
     - time: 0.2
-      value: {fileID: 21300000, guid: ae3f2ed84f8abb146a67c40d4757281b, type: 3}
-    - time: 0.23333333
-      value: {fileID: 21300000, guid: 26b13d2fac37a244482317f4e9e7b8d2, type: 3}
+      value: {fileID: 21300000, guid: 68ec630970d7af74cab169df2b436abc, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -54,20 +48,17 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 35e2930f65bb0f04e9747733df31c5de, type: 3}
-    - {fileID: 21300000, guid: 0fae3a7c95ef78141be5354883145bc0, type: 3}
-    - {fileID: 21300000, guid: 32358800887a25648a2e4bc0a2f60ff2, type: 3}
     - {fileID: 21300000, guid: 68ec630970d7af74cab169df2b436abc, type: 3}
     - {fileID: 21300000, guid: c2ca52b2e29dd0b448eb348d58c145c4, type: 3}
     - {fileID: 21300000, guid: 8e01d029bdc0d184cb47fe26596d8dc4, type: 3}
-    - {fileID: 21300000, guid: ae3f2ed84f8abb146a67c40d4757281b, type: 3}
-    - {fileID: 21300000, guid: 26b13d2fac37a244482317f4e9e7b8d2, type: 3}
+    - {fileID: 21300000, guid: c2ca52b2e29dd0b448eb348d58c145c4, type: 3}
+    - {fileID: 21300000, guid: 68ec630970d7af74cab169df2b436abc, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.25
+    m_StopTime: 0.21666667
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -86,11 +77,4 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events:
-  - time: 0.23333333
-    functionName: JumpFinish
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
+  m_Events: []

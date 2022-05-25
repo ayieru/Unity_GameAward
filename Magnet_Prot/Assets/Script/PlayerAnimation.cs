@@ -50,6 +50,8 @@ public class PlayerAnimation : MonoBehaviour
 
     void Update()
     {
+        CheckFunction_Debug();
+
         if (PlayerObj.GetHitJagde())//登るときの状態
         {
             PlayerAnim.Play("Climbing", (int)CurrentLayer);
@@ -65,20 +67,29 @@ public class PlayerAnimation : MonoBehaviour
         }
         else
         {
-            if (PlayerObj.IsJump() && PlayerAnim.speed == 0.0f)
-            {
-                PlayerAnim.speed = 1.0f;
-
-                PlayerAnim.Play("Idle", (int)CurrentLayer);
-
-                JumpAction = false;
-            }
+            //if (PlayerObj.IsJump() && PlayerAnim.speed == 0.0f)
+            //{
+            //    PlayerAnim.speed = 1.0f;
+            //
+            //    PlayerAnim.Play("Idle", (int)CurrentLayer);
+            //
+            //    JumpAction = false;
+            //}
 
             if (PlayerObj.GetHorizontalKey() > 0 || PlayerObj.GetHorizontalKey() < 0)
             {
                 if (JumpAction)
                 {
                     PlayerAnim.Play("Jump", (int)CurrentLayer);
+                    return;
+                }
+
+                if (!PlayerObj.IsJump()/* && PlayerObj.magnetic*/)//空中で磁石に引き寄せられている時
+                {
+                    PlayerAnim.speed = 1.0f;
+
+                    PlayerAnim.Play("Attraction", (int)CurrentLayer);
+
                     return;
                 }
 
@@ -112,6 +123,14 @@ public class PlayerAnimation : MonoBehaviour
 
     public bool GetAction() { return JumpAction; }
 
+    private void CheckFunction_Debug()
+    {
+        Debug.Log("マグネットの判定は？：" + PlayerObj.magnetic);
+
+        Debug.Log("地面or足場と触れているかの判定は？：" + PlayerObj.IsJump());
+
+    }
+
     /// <summary>
     /// 
     /// </summary>
@@ -122,6 +141,8 @@ public class PlayerAnimation : MonoBehaviour
     }
 
     public float GetPlayerAnimationSpeed() { return PlayerAnim.speed; }
+
+    public AnimationLayer GetCurrentLayer() { return CurrentLayer; }
 
     /// <summary>
     /// プレイヤーの極切り替えの際のアニメーションレイヤー変更
