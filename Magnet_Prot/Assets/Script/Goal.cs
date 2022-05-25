@@ -7,14 +7,18 @@ using UnityEngine.SceneManagement;
 
 public class Goal : MonoBehaviour
 {
+    [Header("現在のステージ名")]
+    public static string CurrentStageName;
+
     [SerializeField]
-    GameObject clearUI;
+    GameObject ClearUI;
 
     private bool timeStop = false;
 
     private void Start()
     {
         FadeManager.FadeIn();
+        CurrentStageName = SceneManager.GetActiveScene().name;
     }
 
     private void Update()
@@ -34,7 +38,7 @@ public class Goal : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            clearUI.SetActive(true);
+            ClearUI.SetActive(true);
             Time.timeScale = 0;
             timeStop = true;
         }
