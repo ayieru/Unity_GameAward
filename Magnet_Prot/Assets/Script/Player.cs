@@ -368,8 +368,6 @@ public class Player : MagnetManager
         {
             Debug.Log("鉄にくっついた！！");
 
-            MagnetHitCount++;
-
             Debug.Log(MagnetHitCount);
 
             //既にTure
@@ -389,6 +387,8 @@ public class Player : MagnetManager
             if (collision.gameObject.GetComponent<Magnet>().Pole != Pole)
             {
                 Debug.Log("磁石にくっついた！！");
+
+                MagnetHitCount++;
 
                 HitJagde = true;
             }

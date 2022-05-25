@@ -21,6 +21,8 @@ public class PlayerAnimation : MonoBehaviour
 
     private bool Action = false;
 
+    private bool Climbing = false;
+
     void Start()
     {
         PlayerAnim = GetComponent<Animator>();
@@ -30,6 +32,8 @@ public class PlayerAnimation : MonoBehaviour
         CurrentLayer = AnimationLayer.Player_Red;
 
         Action = false;
+
+        Climbing = false;
 
         if (PlayerObj.GetPole() == Magnet.Magnet_Pole.N)
         {
@@ -46,6 +50,8 @@ public class PlayerAnimation : MonoBehaviour
 
     void Update()
     {
+        PlayerAnim.speed = 1.0f;
+
         if (PlayerObj.GetHitJagde())//登るときの状態
         {
             PlayerAnim.Play("Climbing", (int)CurrentLayer);
