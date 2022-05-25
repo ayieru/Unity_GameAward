@@ -19,7 +19,7 @@ public class PlayerAnimation : MonoBehaviour
 
     private AnimationLayer CurrentLayer = AnimationLayer.Player_Red;
 
-    private bool Action = false;
+    private bool JumpAction = false;
 
     private bool Climbing = false;
 
@@ -31,7 +31,7 @@ public class PlayerAnimation : MonoBehaviour
 
         CurrentLayer = AnimationLayer.Player_Red;
 
-        Action = false;
+        JumpAction = false;
 
         Climbing = false;
 
@@ -50,8 +50,6 @@ public class PlayerAnimation : MonoBehaviour
 
     void Update()
     {
-        PlayerAnim.speed = 1.0f;
-
         if (PlayerObj.GetHitJagde())//登るときの状態
         {
             PlayerAnim.Play("Climbing", (int)CurrentLayer);
@@ -67,23 +65,34 @@ public class PlayerAnimation : MonoBehaviour
         }
         else
         {
+            if (PlayerObj.IsJump() && PlayerAnim.speed == 0.0f)
+            {
+                PlayerAnim.speed = 1.0f;
+
+                PlayerAnim.Play("Idle", (int)CurrentLayer);
+
+                JumpAction = false;
+            }
+
             if (PlayerObj.GetHorizontalKey() > 0 || PlayerObj.GetHorizontalKey() < 0)
             {
-                if (Action)
+                if (JumpAction)
                 {
-                    PlayerAnim.Play("WalkJump", (int)CurrentLayer);
+                    PlayerAnim.Play("Jump", (int)CurrentLayer);
                     return;
                 }
+
+                PlayerAnim.speed = 1.0f;
 
                 PlayerAnim.Play("Walk", (int)CurrentLayer);
             }
             else
             {
-                if (Action)
+                if (JumpAction)
                 {
                     if (PlayerObj.GetMagnetHitCount() <= 0)
                     {
-                        PlayerAnim.Play("IdleJump", (int)CurrentLayer);
+                        PlayerAnim.Play("Jump", (int)CurrentLayer);
 
                         return;
                     }
@@ -91,15 +100,28 @@ public class PlayerAnimation : MonoBehaviour
 
                 if(PlayerObj.GetMagnetHitCount() <= 0)
                 {
+                    PlayerAnim.speed = 1.0f;
+
                     PlayerAnim.Play("Idle", (int)CurrentLayer);
                 }
             }
         }
     }
 
-    public void SetAction(bool enable) { Action = enable; }
+    public void SetAction(bool enable) { JumpAction = enable; }
 
-    public bool GetAction() { return Action; }
+    public bool GetAction() { return JumpAction; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="speed">0.0fは一時停止、1.0fは再生させるイメージ</param>
+    public void SetPlayerAnimationSpeed(float speed = 0.0f)
+    {
+        PlayerAnim.speed = speed;
+    }
+
+    public float GetPlayerAnimationSpeed() { return PlayerAnim.speed; }
 
     /// <summary>
     /// プレイヤーの極切り替えの際のアニメーションレイヤー変更
@@ -136,18 +158,28 @@ public class PlayerAnimation : MonoBehaviour
     /// </summary>
     public void JumpFinish()
     {
-        Action = false;
-        //PlayerAnim.Play("Idle", (int)CurrentLayer);
+        PlayerAnim.speed = 0;//停止
     }
 
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if(JumpAction == true || PlayerAnim.speed <=0.0f)
+        {
+            PlayerAnim.speed = 1.0f;
+
+            PlayerAnim.Play("Idle", (int)CurrentLayer);
+
+            JumpAction = false;
+        }
+
         //簡易的に鉄を実装
         if (collision.gameObject.CompareTag("Iron") ||
             collision.gameObject.CompareTag("NPole") ||
             collision.gameObject.CompareTag("SPole"))
         {
+            PlayerAnim.speed = 1;//再開
+
             //触れたオブジェクトと自身の位置を計算して向きを補正させる
             if ((gameObject.transform.position.x - collision.gameObject.transform.position.x) >= 0.0f)
             {

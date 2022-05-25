@@ -283,6 +283,12 @@ public class Player : MagnetManager
 
     public void SetMagnetHitCount(int count) { MagnetHitCount = count; }
 
+    /// <summary>
+    /// ジャンプできるかどうかの判定
+    /// </summary>
+    /// <returns></returns>
+    public bool IsJump() { return IsGround == true || IsFootField == true; }
+
     public void SetPlayerState(State state, CatchTheChain catchTheChain = null)
     {
         PlayerState = state;
@@ -371,7 +377,7 @@ public class Player : MagnetManager
     // あたったタイミングで処理が動く
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //簡易的に鉄を実装
+            //簡易的に鉄を実装
         if (collision.gameObject.CompareTag("Iron"))
         {
             Debug.Log("鉄にくっついた！！");

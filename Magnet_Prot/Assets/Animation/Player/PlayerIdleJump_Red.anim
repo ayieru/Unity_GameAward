@@ -35,22 +35,6 @@ AnimationClip:
       value: {fileID: 21300000, guid: 26b13d2fac37a244482317f4e9e7b8d2, type: 3}
     - time: 0.23333333
       value: {fileID: 21300000, guid: 0025c5849c8a14f4e8de47eedf33bf5b, type: 3}
-    - time: 0.26666668
-      value: {fileID: 21300000, guid: 609fdd4f745db3d44980c69c845af673, type: 3}
-    - time: 0.3
-      value: {fileID: 21300000, guid: 63c8c1a8844189a43a13a57b52cb8297, type: 3}
-    - time: 0.33333334
-      value: {fileID: 21300000, guid: 851de5b3400920042bd496d5b0c84315, type: 3}
-    - time: 0.36666667
-      value: {fileID: 21300000, guid: 5268eaafba393d44d85794217f6ba987, type: 3}
-    - time: 0.4
-      value: {fileID: 21300000, guid: 557be7c417d485c46a109af968b6c56c, type: 3}
-    - time: 0.43333334
-      value: {fileID: 21300000, guid: f943fcaa5aca1a146ae361aaa0e1eee9, type: 3}
-    - time: 0.46666667
-      value: {fileID: 21300000, guid: f0d366bd82ac10046ba9e14479c50e23, type: 3}
-    - time: 0.5
-      value: {fileID: 21300000, guid: e3c0e3e28cf62f84a940c764859b5acb, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -78,20 +62,12 @@ AnimationClip:
     - {fileID: 21300000, guid: ae3f2ed84f8abb146a67c40d4757281b, type: 3}
     - {fileID: 21300000, guid: 26b13d2fac37a244482317f4e9e7b8d2, type: 3}
     - {fileID: 21300000, guid: 0025c5849c8a14f4e8de47eedf33bf5b, type: 3}
-    - {fileID: 21300000, guid: 609fdd4f745db3d44980c69c845af673, type: 3}
-    - {fileID: 21300000, guid: 63c8c1a8844189a43a13a57b52cb8297, type: 3}
-    - {fileID: 21300000, guid: 851de5b3400920042bd496d5b0c84315, type: 3}
-    - {fileID: 21300000, guid: 5268eaafba393d44d85794217f6ba987, type: 3}
-    - {fileID: 21300000, guid: 557be7c417d485c46a109af968b6c56c, type: 3}
-    - {fileID: 21300000, guid: f943fcaa5aca1a146ae361aaa0e1eee9, type: 3}
-    - {fileID: 21300000, guid: f0d366bd82ac10046ba9e14479c50e23, type: 3}
-    - {fileID: 21300000, guid: e3c0e3e28cf62f84a940c764859b5acb, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.51666665
+    m_StopTime: 0.25
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -111,7 +87,7 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.5
+  - time: 0.23333333
     functionName: JumpFinish
     data: 
     objectReferenceParameter: {fileID: 0}
