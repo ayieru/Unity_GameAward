@@ -11,22 +11,54 @@ public class MagnetManager : MonoBehaviour
         None,
     }
 
-    private List<float> list = new List<float>();
-
-      public void Entry(Magnet mag) { list.Add(mag.GetDistance()); }
-
-    public bool isNear(Magnet mag)
+    private class MagnetSt
     {
-        list.Sort();
-        Debug.Log(list);
+        public float dis { get; set; }
+        public int id { get; set; }
+    }
 
-        if (mag.GetDistance() < list[0])
+    List<MagnetSt> list = new List<MagnetSt>();
+
+    public int Entry(Magnet mag)
+    {
+        list.Add(new MagnetSt { dis = mag.GetDistance(), id = list.Count });
+
+        return list.Count - 1;
+    }
+
+    public void UpdateDis(float distance,int Id)
+    {
+        for (int i = 0; i < list.Count; i++)
         {
-            return true;
+            if (list[i].id == Id)
+            {
+                list[i].dis = distance;
+            }
         }
-        else
+    }
+
+    public bool isNear(Magnet mag,int Id)
+    {
+        float distance = mag.GetDistance();
+
+        for (int i = 0; i < list.Count; i++)
         {
-            return false;
+            if (list[i].id == Id)
+            {
+                list[i].dis = distance;
+                list.Sort((a, b) => a.dis.CompareTo(b.dis));
+
+                if (distance <= list[0].dis)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
+
+        return false;
     }
 }

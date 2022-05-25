@@ -30,11 +30,14 @@ public class Magnet : MagnetManager
 
     private Rigidbody2D rb,myrb;
     private GameObject playerGO;
+    private MagnetManager mm;
     private Player player;
     private Magnet_Pole currentPole;
     private Sprite spRen;
     private GameObject child0;
+
     private float dis = 100.0f;
+    private int magId;
 
     public float GetDistance() { return Vector2.Distance(transform.position, player.transform.position); }
 
@@ -46,6 +49,7 @@ public class Magnet : MagnetManager
         rb = playerGO.GetComponent<Rigidbody2D>();
         myrb = GetComponent<Rigidbody2D>();
         player = playerGO.GetComponent<Player>();
+        mm = player.GetComponent<MagnetManager>();
 
         child0 = transform.GetChild(0).gameObject;
 
@@ -54,6 +58,7 @@ public class Magnet : MagnetManager
 
         currentPole = Pole;
         ChangeColor();
+        magId = mm.Entry(this);
 
         var scale = new Vector3(Distance * 2, Distance * 2, 1.0f);
         var sscale = new Vector3(scale.x / transform.lossyScale.x, scale.y / transform.lossyScale.y, scale.z);
@@ -67,7 +72,7 @@ public class Magnet : MagnetManager
 
     void Update()
     {
-        if(!player.magnetic) UpdateMagnet();
+        UpdateMagnet();
 
         if (currentPole != Pole) ChangeColor();
     }
@@ -103,11 +108,11 @@ public class Magnet : MagnetManager
     private void UpdateMagnet()
     {
         dis = Vector2.Distance(transform.position, player.transform.position);
+        mm.UpdateDis(dis, magId);
 
         if (dis < Distance)
         {
-            Entry(this);
-            if (isNear(this))
+            if (mm.isNear(this,magId))
             {
                 player.magnetic = true;
 
@@ -135,8 +140,6 @@ public class Magnet : MagnetManager
             }
             else
             {
-                player.magnetic = false;
-
 #if UNITY_EDITOR
                 if (ColorUtility.TryParseHtmlString("#FFFF0055", out Color color) && child0)
                     child0.GetComponent<SpriteRenderer>().color = color;
