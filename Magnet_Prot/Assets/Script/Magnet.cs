@@ -114,7 +114,6 @@ public class Magnet : MagnetManager
         {
             if (mm.isNear(this,magId))
             {
-                player.magnetic = true;
 
 #if UNITY_EDITOR
                 if (ColorUtility.TryParseHtmlString("#FF640055", out Color color) && child0)
@@ -152,8 +151,6 @@ public class Magnet : MagnetManager
             if (ColorUtility.TryParseHtmlString("#FFFF0055", out Color color)&& child0)
                 child0.GetComponent<SpriteRenderer>().color = color;
 #endif
-
-            player.magnetic = false;
         }
     }
 }

@@ -125,9 +125,7 @@ public class PlayerAnimation : MonoBehaviour
 
     private void CheckFunction_Debug()
     {
-        Debug.Log("マグネットの引付は起きてるの？：" + PlayerObj.magnetic);
-
-        Debug.Log("マグネットor磁石の上に乗ってる？：" + PlayerObj.magnetic);
+        Debug.Log("マグネットor磁石の上に乗ってる？：" + OnMetalJudge);
 
         Debug.Log("地面or足場と触れているかの判定は？：" + PlayerObj.IsJump());
     }

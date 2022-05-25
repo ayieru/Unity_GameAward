@@ -70,16 +70,12 @@ public class Player : MagnetManager
 
     private State PlayerState = State.Normal;
 
-    public bool magnetic = false; //仮実装
-
     private float texX, texY;
 
     void Awake()
     {
         IsGround = false;
         IsFootField = false;
-
-        magnetic = false;
 
         Rb = GetComponent<Rigidbody2D>();
 
