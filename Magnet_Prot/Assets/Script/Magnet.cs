@@ -152,6 +152,8 @@ public class Magnet : MagnetManager
             if (ColorUtility.TryParseHtmlString("#FFFF0055", out Color color)&& child0)
                 child0.GetComponent<SpriteRenderer>().color = color;
 #endif
+
+            player.magnetic = false;
         }
     }
 }

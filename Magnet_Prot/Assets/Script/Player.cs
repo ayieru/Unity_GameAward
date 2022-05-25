@@ -79,6 +79,8 @@ public class Player : MagnetManager
         IsGround = false;
         IsFootField = false;
 
+        magnetic = false;
+
         Rb = GetComponent<Rigidbody2D>();
 
         PlayerAnim = GetComponent<PlayerAnimation>();

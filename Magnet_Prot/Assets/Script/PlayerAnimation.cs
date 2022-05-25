@@ -21,7 +21,7 @@ public class PlayerAnimation : MonoBehaviour
 
     private bool JumpAction = false;
 
-    private bool Climbing = false;
+    private bool OnMetalJudge = false;
 
     void Start()
     {
@@ -33,7 +33,7 @@ public class PlayerAnimation : MonoBehaviour
 
         JumpAction = false;
 
-        Climbing = false;
+        OnMetalJudge = false;
 
         if (PlayerObj.GetPole() == Magnet.Magnet_Pole.N)
         {
@@ -84,7 +84,7 @@ public class PlayerAnimation : MonoBehaviour
                     return;
                 }
 
-                if (!PlayerObj.IsJump()/* && PlayerObj.magnetic*/)//空中で磁石に引き寄せられている時
+                if (!PlayerObj.IsJump() && !OnMetalJudge/*!PlayerObj.magnetic*/)//空中で磁石に引き寄せられている時
                 {
                     PlayerAnim.speed = 1.0f;
 
@@ -125,10 +125,11 @@ public class PlayerAnimation : MonoBehaviour
 
     private void CheckFunction_Debug()
     {
-        Debug.Log("マグネットの判定は？：" + PlayerObj.magnetic);
+        Debug.Log("マグネットの引付は起きてるの？：" + PlayerObj.magnetic);
+
+        Debug.Log("マグネットor磁石の上に乗ってる？：" + PlayerObj.magnetic);
 
         Debug.Log("地面or足場と触れているかの判定は？：" + PlayerObj.IsJump());
-
     }
 
     /// <summary>
@@ -234,6 +235,11 @@ public class PlayerAnimation : MonoBehaviour
         {
             PlayerAnim.Play("Climbing", (int)CurrentLayer);
         }
+
+        if(collision.gameObject.CompareTag("OnMetal"))
+        {
+            OnMetalJudge = true;
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -244,6 +250,11 @@ public class PlayerAnimation : MonoBehaviour
             {
                 PlayerAnim.Play("Idle", (int)CurrentLayer);
             }
+        }
+
+        if (collision.gameObject.CompareTag("OnMetal"))
+        {
+            OnMetalJudge = false;
         }
     }
 }
