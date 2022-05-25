@@ -9,7 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 287903344783892285}
+<<<<<<< HEAD:Magnet_Prot/Assets/Prefab/MagnetObject.prefab
   - component: {fileID: 7926493691785928966}
+=======
+  - component: {fileID: 4485863817346839193}
+  - component: {fileID: 1184413921441135489}
+  - component: {fileID: 3480066526194883464}
+>>>>>>> b889538831f35039ea761460dcbe882be2ff186c:Magnet_Prot/Assets/Prefab/mag.prefab
   m_Layer: 0
   m_Name: MagnetObject
   m_TagString: Untagged
@@ -140,7 +146,55 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+<<<<<<< HEAD:Magnet_Prot/Assets/Prefab/MagnetObject.prefab
 --- !u!1 &5146990924726843831
+=======
+--- !u!114 &1184413921441135489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3590380994185723307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e38feaa5bfac5846b11ce8e587de04b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Pole: 1
+  PullPower: 75
+  ReleasePower: 75
+  Distance: 3
+  S_Magnet: {fileID: 21300000, guid: 7e995c4901dbef049a084ff2923d5c0d, type: 3}
+  N_Magnet: {fileID: 21300000, guid: 2f8f6a427a1e5d940ac401812daf9a75, type: 3}
+--- !u!61 &3480066526194883464
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3590380994185723307}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.0536, y: 1.0536}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
+--- !u!1 &7748065697367287934
+>>>>>>> b889538831f35039ea761460dcbe882be2ff186c:Magnet_Prot/Assets/Prefab/mag.prefab
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

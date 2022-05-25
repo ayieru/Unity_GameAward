@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Scenes/GimmickScene.unity
+    path: Assets/Scenes/Stage/1-2.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 0
     path: Assets/Scenes/alpha.unity
@@ -17,7 +17,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/StageSelect.unity
     guid: ee485e3bb484e994da533a36b1bdfeda
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SatouStage.unity
     guid: 39130ae9c8692e244bd421512a950aeb
+  - enabled: 1
+    path: Assets/Scenes/ArakawaStage.unity
+    guid: a0dcc1331218c6d4a905c486560a6dc6
   m_configObjects: {}

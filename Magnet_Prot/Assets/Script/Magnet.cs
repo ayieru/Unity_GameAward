@@ -27,7 +27,7 @@ public class Magnet : MagnetManager
     Vector3 pullObject;
     Vector3 releaseObject;
 
-    private Rigidbody2D rb;
+    private Rigidbody2D rb,myrb;
     private GameObject playerGO;
     private Player player;
     private Magnet_Pole currentPole;
@@ -40,6 +40,7 @@ public class Magnet : MagnetManager
 
         playerGO = GameObject.Find("Player");
         rb = playerGO.GetComponent<Rigidbody2D>();
+        myrb = GetComponent<Rigidbody2D>();
         player = playerGO.GetComponent<Player>();
 
         spRen = GetComponent<SpriteRenderer>().sprite;
@@ -49,9 +50,11 @@ public class Magnet : MagnetManager
 
 #if UNITY_EDITOR
         GameObject child = transform.GetChild(0).gameObject;
-        var scale = new Vector3(Distance * 2, Distance * 2, 0.0f);
-        if (child) child.transform.localScale = scale;
+        var scale = new Vector3(Distance * 2, Distance * 2, 1.0f);
+        var sscale = new Vector3(scale.x / transform.lossyScale.x, scale.y / transform.lossyScale.y, scale.z);
+        if (child) child.transform.localScale = sscale;
 #else
+        GameObject child = transform.GetChild(0).gameObject;
         child.SetActive(false);
 
 #endif
@@ -120,10 +123,12 @@ public class Magnet : MagnetManager
 
             if (Pole == player.GetPole())
             {
+                if(myrb) myrb.constraints = RigidbodyConstraints2D.FreezeRotation;
                 rb.AddForce(releaseObject, ForceMode2D.Force);
             }
             else
             {
+                if(myrb) myrb.constraints = RigidbodyConstraints2D.FreezeAll;
                 rb.AddForce(pullObject, ForceMode2D.Force);
             }
         }
