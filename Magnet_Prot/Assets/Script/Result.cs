@@ -10,7 +10,7 @@ public class Result : MonoBehaviour
     void Start()
     {
         FadeManager.FadeIn();
-        NextStageButton = transform.Find("NextStageButton").gameObject;
+        NextStageButton = transform.Find("NextStage").gameObject;
 
         //最終ステージの場合
         if (Goal.IsLastStage == true)
@@ -31,9 +31,9 @@ public class Result : MonoBehaviour
         FadeManager.FadeOut("StageSelect");
     }
 
-    //タイトルシーンへの移動処理
-    public void Title()
+    //リトライ処理
+    public void Retry()
     {
-        FadeManager.FadeOut("Title");
+        FadeManager.FadeOut(Goal.CurrentStageIndex);
     }
 }
