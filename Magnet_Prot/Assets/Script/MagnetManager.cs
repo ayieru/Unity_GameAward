@@ -11,7 +11,22 @@ public class MagnetManager : MonoBehaviour
         None,
     }
 
-    float magForce;         //磁力を受けるオブジェクトにかかる力
-    float magForceX;
-    float magForceY;
+    private List<float> list = new List<float>();
+
+      public void Entry(Magnet mag) { list.Add(mag.GetDistance()); }
+
+    public bool isNear(Magnet mag)
+    {
+        list.Sort();
+        Debug.Log(list);
+
+        if (mag.GetDistance() < list[0])
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
