@@ -8,13 +8,15 @@ public class Result : MonoBehaviour
     private GameObject NextStageButton;
     private GameObject SelectButton;
     private GameObject StageText;
+    private GameObject TimeText;
 
     void Start()
     {
         FadeManager.FadeIn();
         NextStageButton = transform.Find("NextStage").gameObject;
         SelectButton = transform.Find("Select").gameObject;
-        StageText = transform.Find("StageIDText").gameObject;
+        StageText = transform.Find("StageID").gameObject;
+        TimeText = transform.Find("ClearTime").gameObject;
 
         //最終ステージの場合
         if (Goal.IsLastStage == true)
@@ -22,7 +24,6 @@ public class Result : MonoBehaviour
             NextStageButton.gameObject.SetActive(false);
             Button button = SelectButton.GetComponent<Button>();
             button.Select();
-
         }
         else
         {
@@ -32,6 +33,9 @@ public class Result : MonoBehaviour
 
         //ステージ名を表示
         StageText.GetComponent<Text>().text = Goal.CurrentStageName.ToString();
+
+        //クリア時間を表示
+        TimeText.GetComponent<Text>().text = Timer.ClearTime.ToString("N2");
     }
 
     //次のステージへの移動処理

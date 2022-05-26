@@ -17,14 +17,15 @@ public class Goal : MonoBehaviour
     public  bool IsLast = false;
     public static bool IsLastStage = false;
 
-    [SerializeField]
-    GameObject ClearUI;
+    [Header("クリアしたか?")]
+    public static bool TimeStop = false;
 
-    private bool timeStop = false;
+    public GameObject ClearUI;
 
     private void Start()
     {
         FadeManager.FadeIn();
+
         CurrentStageIndex = SceneManager.GetActiveScene().buildIndex;
         CurrentStageName = SceneManager.GetActiveScene().name;
         IsLastStage = IsLast;
@@ -32,11 +33,11 @@ public class Goal : MonoBehaviour
 
     private void Update()
     {
-        if (timeStop)
+        if (TimeStop)
         {
             if (Input.anyKeyDown)
             {
-                timeStop = false;
+                TimeStop = false;
                 Time.timeScale = 1;
                 FadeManager.FadeOut("Result");
             }
@@ -49,7 +50,7 @@ public class Goal : MonoBehaviour
         {
             ClearUI.SetActive(true);
             Time.timeScale = 0;
-            timeStop = true;
+            TimeStop = true;
         }
     }
 }
