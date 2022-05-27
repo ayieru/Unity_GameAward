@@ -460,9 +460,6 @@ public class Player : MagnetManager
             transform.position = worldPos;// 座標設定
         }
 
-        ////////////////////////////////
-        //鎖に触れたらジャンプ2種類をfalseにする処理を入れる
-
         if (collision.gameObject.CompareTag("Chain"))
         {
             NormalJump = false;
