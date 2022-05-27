@@ -12,7 +12,6 @@ TagManager:
   - Thorn
   - SavePoint
   - MagnetBlock
-  - OnMetal
   - MagnetGround
   - IronGround
   layers:
