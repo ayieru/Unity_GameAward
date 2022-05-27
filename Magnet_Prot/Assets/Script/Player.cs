@@ -174,13 +174,7 @@ public class Player : MagnetManager
             {
                 if(HitJagde)//壁のぼり時
                 {
-                    Rb.AddForce((transform.up * 2.0f + (transform.right * (DirectionX * -1.0f))) * JumpPower * 0.5f, ForceMode2D.Impulse);
-
-                    DirectionX = -DirectionX;
-
-                    localScale.x = -1.0f;
-
-                    transform.localScale = localScale;
+                    Rb.AddForce((transform.up + (transform.right * (DirectionX * -1.0f))) * JumpPower, ForceMode2D.Impulse);
 
                     WallJump = true;
                 }
