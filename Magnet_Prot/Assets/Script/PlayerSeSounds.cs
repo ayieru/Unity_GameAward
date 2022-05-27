@@ -19,7 +19,7 @@ public class PlayerSeSounds : MonoBehaviour
     [Header("テンポを一定にするかどうか")]
     [SerializeField] bool RandomizePitch = true;
 
-    [Header("テンポ")]
+    [Header("テンポ数")]
     [SerializeField] float PitchRange = 0.1f;
 
     private Dictionary<string, int> TagToIndex = new Dictionary<string, int>();

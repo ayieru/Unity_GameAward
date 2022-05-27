@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Player : MagnetManager
 {
+    [System.Serializable]
+    public class AudioClips
+    {
+        public float Volume = 0.0f;
+        public AudioClip audioClips;
+    }
     public enum State
     {
         Normal,//通常状態
@@ -15,6 +21,15 @@ public class Player : MagnetManager
         Right = 1,//右向き
         Left = -1,//左向き
     }
+
+    [Header("切り替えのSE")]
+    public AudioClips ListAudioClips = new AudioClips();
+
+    [Header("テンポを一定にするかどうか")]
+    [SerializeField] bool RandomizePitch = true;
+
+    [Header("テンポ数")]
+    [SerializeField] float PitchRange = 0.1f;
 
     [Header("極")]
     [SerializeField] Magnet_Pole Pole = Magnet_Pole.N;
@@ -72,8 +87,12 @@ public class Player : MagnetManager
 
     private float texX, texY;
 
+    protected AudioSource Source;
+
     void Awake()
     {
+        Source = GetComponent<AudioSource>();
+
         IsGround = false;
         IsFootField = false;
 
@@ -183,6 +202,12 @@ public class Player : MagnetManager
 
                     PlayerAnim.MagnetChange(PlayerAnimation.AnimationLayer.Player_Blue);
                 }
+
+                AudioClip clips = ListAudioClips.audioClips;
+                float SoundVolume = ListAudioClips.Volume;
+                // テンポを毎回ランダムにして自然に近い感じにする
+                if (RandomizePitch) Source.pitch = 1.0f + Random.Range(-PitchRange, PitchRange);
+                Source.PlayOneShot(clips, SoundVolume);
             }
         }
         else if (PlayerState == State.CatchChain)
@@ -321,6 +346,8 @@ public class Player : MagnetManager
                 IsFootField = true;
             }
         }
+
+        
     }
 
     // あたったタイミングで処理が動く
@@ -352,6 +379,8 @@ public class Player : MagnetManager
                 HitJagde = true;
             }
         }
+
+        
 
         if (collision.gameObject.CompareTag("Thorn"))
         {
