@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ListAudioClips:
-    Volume: 1
+    Volume: 0.5
     audioClips: {fileID: 8300000, guid: b054605d9d0c6484db7676ba7952fc16, type: 3}
   RandomizePitch: 1
   PitchRange: 0.1
@@ -161,7 +161,6 @@ MonoBehaviour:
   SpeedToRope: 5
   ReleasePower: 70
   DampingTime: 2
-  magnetic: 0
 --- !u!114 &5200208854478397848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,10 +317,10 @@ MonoBehaviour:
     TypeTag: Wood
     audioClips:
     - {fileID: 8300000, guid: 9fdbb34cfea72704d980f908b2c32323, type: 3}
-  - Volume: 1
-    TypeTag: Chain
+  - Volume: 0.4
+    TypeTag: OnMetal
     audioClips:
-    - {fileID: 8300000, guid: 62cdd532d28b1644293b668caf2d8afb, type: 3}
+    - {fileID: 8300000, guid: f188be7d424b9f447877065e588d74a8, type: 3}
   RandomizePitch: 1
   PitchRange: 0.1
 --- !u!1 &6460900677209814641
