@@ -17,7 +17,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6048715128019692239, guid: 3abda3aa2832c404289e0f1f365dc15f, type: 3}
       propertyPath: m_Name
-      value: Iron (2)
+      value: IronTop
+      objectReference: {fileID: 0}
+    - target: {fileID: 6048715128019692239, guid: 3abda3aa2832c404289e0f1f365dc15f, type: 3}
+      propertyPath: m_TagString
+      value: IronGround
       objectReference: {fileID: 0}
     - target: {fileID: 7044555791773235086, guid: 3abda3aa2832c404289e0f1f365dc15f, type: 3}
       propertyPath: m_Sprite

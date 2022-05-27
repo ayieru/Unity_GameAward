@@ -13,6 +13,8 @@ TagManager:
   - SavePoint
   - MagnetBlock
   - OnMetal
+  - MagnetGround
+  - IronGround
   layers:
   - Default
   - TransparentFX
