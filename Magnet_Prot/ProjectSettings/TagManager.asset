@@ -12,6 +12,8 @@ TagManager:
   - Thorn
   - SavePoint
   - MagnetBlock
+  - Wood
+  - Chain
   layers:
   - Default
   - TransparentFX
