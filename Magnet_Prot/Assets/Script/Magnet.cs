@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,10 +30,16 @@ public class Magnet : MagnetManager
 
     private Rigidbody2D rb,myrb;
     private GameObject playerGO;
+    private MagnetManager mm;
     private Player player;
     private Magnet_Pole currentPole;
-    private bool mag = false;
     private Sprite spRen;
+    private GameObject child0;
+
+    private float dis = 100.0f;
+    private int magId;
+
+    public float GetDistance() { return Vector2.Distance(transform.position, player.transform.position); }
 
     void Awake()
     {
@@ -42,31 +49,30 @@ public class Magnet : MagnetManager
         rb = playerGO.GetComponent<Rigidbody2D>();
         myrb = GetComponent<Rigidbody2D>();
         player = playerGO.GetComponent<Player>();
+        mm = player.GetComponent<MagnetManager>();
+
+        child0 = transform.GetChild(0).gameObject;
 
         spRen = GetComponent<SpriteRenderer>().sprite;
+        dis = Vector2.Distance(transform.position, player.transform.position);
 
         currentPole = Pole;
         ChangeColor();
+        magId = mm.Entry(this);
 
-#if UNITY_EDITOR
-        GameObject child = transform.GetChild(0).gameObject;
         var scale = new Vector3(Distance * 2, Distance * 2, 1.0f);
         var sscale = new Vector3(scale.x / transform.lossyScale.x, scale.y / transform.lossyScale.y, scale.z);
-        if (child) child.transform.localScale = sscale;
-#else
-        GameObject child = transform.GetChild(0).gameObject;
-        child.SetActive(false);
 
+#if UNITY_EDITOR
+        child0.transform.localScale = sscale;
+#else
+        child0.SetActive(false);
 #endif
     }
 
     void Update()
     {
-        if (!player.magnetic)
-        {
-            UpdateMagnet();
-        }
-        else if (mag) UpdateMagnet();
+        UpdateMagnet();
 
         if (currentPole != Pole) ChangeColor();
     }
@@ -101,47 +107,49 @@ public class Magnet : MagnetManager
 
     private void UpdateMagnet()
     {
-        float dis = Vector2.Distance(transform.position, player.transform.position);
+        dis = Vector2.Distance(transform.position, player.transform.position);
+        mm.UpdateDis(dis, magId);
 
         if (dis < Distance)
         {
-            player.magnetic = true; //使用中
-            mag = true;
+            if (mm.isNear(this,magId))
+            {
 
 #if UNITY_EDITOR
-            GameObject child = transform.GetChild(0).gameObject;
-
-            if (ColorUtility.TryParseHtmlString("#FF640055", out Color color) && child)
-                child.GetComponent<SpriteRenderer>().color = color;
+                if (ColorUtility.TryParseHtmlString("#FF640055", out Color color) && child0)
+                    child0.GetComponent<SpriteRenderer>().color = color;
 #endif
 
-            centerPosition = transform.position;
-            distance = centerPosition - player.transform.position;
+                centerPosition = transform.position;
+                distance = centerPosition - player.transform.position;
 
-            pullObject = PullPower * distance / Mathf.Pow(distance.magnitude, 3);
-            releaseObject = -ReleasePower * distance / Mathf.Pow(distance.magnitude, 3);
+                pullObject = PullPower * distance / Mathf.Pow(distance.magnitude, 3);
+                releaseObject = -ReleasePower * distance / Mathf.Pow(distance.magnitude, 3);
 
-            if (Pole == player.GetPole())
-            {
-                if(myrb) myrb.constraints = RigidbodyConstraints2D.FreezeRotation;
-                rb.AddForce(releaseObject, ForceMode2D.Force);
+                if (Pole == player.GetPole())
+                {
+                    if (myrb) myrb.constraints = RigidbodyConstraints2D.FreezeRotation;
+                    rb.AddForce(releaseObject, ForceMode2D.Force);
+                }
+                else
+                {
+                    if (myrb) myrb.constraints = RigidbodyConstraints2D.FreezeAll;
+                    rb.AddForce(pullObject, ForceMode2D.Force);
+                }
             }
             else
             {
-                if(myrb) myrb.constraints = RigidbodyConstraints2D.FreezeAll;
-                rb.AddForce(pullObject, ForceMode2D.Force);
+#if UNITY_EDITOR
+                if (ColorUtility.TryParseHtmlString("#FFFF0055", out Color color) && child0)
+                    child0.GetComponent<SpriteRenderer>().color = color;
+#endif
             }
         }
-        else if (mag)
+        else
         {
-            player.magnetic = false;
-            mag = false;
-
 #if UNITY_EDITOR
-            GameObject child = transform.GetChild(0).gameObject;
-
-            if (ColorUtility.TryParseHtmlString("#FFFF0055", out Color color)&& child)
-                child.GetComponent<SpriteRenderer>().color = color;
+            if (ColorUtility.TryParseHtmlString("#FFFF0055", out Color color)&& child0)
+                child0.GetComponent<SpriteRenderer>().color = color;
 #endif
         }
     }

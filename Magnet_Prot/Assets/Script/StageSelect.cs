@@ -23,6 +23,9 @@ public class StageSelect : MonoBehaviour
 
         //IDテキスト変更
         StageIDChange();
+
+        StageButton[SelectID].gameObject.SetActive(true);
+
     }
 
     void Update()
@@ -31,6 +34,7 @@ public class StageSelect : MonoBehaviour
         if (Input.GetButtonDown("Jump") || Input.GetButtonDown("Action"))
         {
             FadeManager.FadeOut(StageButton[SelectID].gameObject.name);
+            
         }
 
         //横入力反応処理：前フレームの入力値が0の場合のみ
