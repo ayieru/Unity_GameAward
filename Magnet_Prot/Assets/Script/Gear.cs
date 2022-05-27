@@ -26,8 +26,13 @@ public class Gear : MagnetManager
     private Vector3 initPos;
     private float texY;
 
+    private bool SeStop = false;// SEを止めるタイミング
+
+    protected AudioSource Source;
+
     void Awake()
     {
+        Source = GetComponent<AudioSource>();
         PlayerObj = GameObject.Find("Player");
         DoorObj = transform.Find("Door").gameObject;
         player = PlayerObj.GetComponent<Player>();
@@ -36,6 +41,7 @@ public class Gear : MagnetManager
         texY = DoorObj.GetComponent<SpriteRenderer>().bounds.size.y;
         initPos = DoorObj.transform.position;
         stay = false;
+        SeStop = false;
     }
 
     private void Update()
@@ -45,6 +51,7 @@ public class Gear : MagnetManager
         {
             if (Doorpos.y <= initPos.y + texY)
             {
+                SeStop = false;
                 //ドアを開く
                 Doorpos.y += DoorSpeed;
                 DoorObj.transform.position = Doorpos;
@@ -54,7 +61,10 @@ public class Gear : MagnetManager
 
                 //歯車（小）
                 SmallGearObj.gameObject.transform.Rotate(new Vector3(0, 0, 180) * Time.deltaTime * RotSpeed, Space.World);
+
+                GimmickSeSound.instance.SoundStart();
             }
+            else if (Doorpos.y > initPos.y + texY) SeStop = true;
         }
 
         //歯車が停止した際の処理
@@ -62,6 +72,7 @@ public class Gear : MagnetManager
         {
             if (Doorpos.y >= initPos.y)
             {
+                SeStop = false;
                 //ドアを閉める
                 Doorpos.y -= DoorSpeed;
                 DoorObj.transform.position = Doorpos;
@@ -71,8 +82,13 @@ public class Gear : MagnetManager
 
                 //歯車（小）
                 SmallGearObj.gameObject.transform.Rotate(new Vector3(0, 0, 180) * Time.deltaTime * RotSpeed, Space.World);
+
+                GimmickSeSound.instance.SoundStart();
             }
+            else if (Doorpos.y < initPos.y - texY) SeStop = true;
         }
+
+        if (SeStop == true) GimmickSeSound.instance.SoundStop();
     }
 
     private void OnTriggerExit2D(Collider2D collision)
