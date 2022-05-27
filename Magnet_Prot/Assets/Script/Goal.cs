@@ -4,24 +4,42 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-//※注意※　仮実装
 
 public class Goal : MonoBehaviour
 {
-    [SerializeField]
-    GameObject clearUI;
+    [Header("現在のステージ番号")]
+    public static int CurrentStageIndex;
 
-    private bool timeStop = false;
+    [Header("現在のステージ名")]
+    public static string CurrentStageName;
+
+    [Header("最後のステージか?")]
+    public  bool IsLast = false;
+    public static bool IsLastStage = false;
+
+    [Header("クリアしたか?")]
+    public static bool TimeStop = false;
+
+    public GameObject ClearUI;
+
+    private void Start()
+    {
+        FadeManager.FadeIn();
+
+        CurrentStageIndex = SceneManager.GetActiveScene().buildIndex;
+        CurrentStageName = SceneManager.GetActiveScene().name;
+        IsLastStage = IsLast;
+    }
 
     private void Update()
     {
-        if (timeStop)
+        if (TimeStop)
         {
             if (Input.anyKeyDown)
             {
-                timeStop = false;
+                TimeStop = false;
                 Time.timeScale = 1;
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                FadeManager.FadeOut("Result");
             }
         }
     }
@@ -30,9 +48,9 @@ public class Goal : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            clearUI.SetActive(true);
+            ClearUI.SetActive(true);
             Time.timeScale = 0;
-            timeStop = true;
+            TimeStop = true;
         }
     }
 }
