@@ -114,7 +114,6 @@ public class Magnet : MagnetManager
         {
             if (mm.isNear(this,magId))
             {
-                player.magnetic = true;
 
 #if UNITY_EDITOR
                 if (ColorUtility.TryParseHtmlString("#FF640055", out Color color) && child0)

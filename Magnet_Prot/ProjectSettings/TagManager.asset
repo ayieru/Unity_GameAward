@@ -12,6 +12,7 @@ TagManager:
   - Thorn
   - SavePoint
   - MagnetBlock
+  - OnMetal
   layers:
   - Default
   - TransparentFX
