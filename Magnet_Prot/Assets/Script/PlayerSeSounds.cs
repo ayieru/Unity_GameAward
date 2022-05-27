@@ -8,6 +8,7 @@ public class PlayerSeSounds : MonoBehaviour
     [System.Serializable]
     public class AudioClips
     {
+        public float Volume = 0.0f;
         public string TypeTag;
         public AudioClip[] audioClips;
     }
@@ -22,7 +23,7 @@ public class PlayerSeSounds : MonoBehaviour
     [SerializeField] float PitchRange = 0.1f;
 
     private Dictionary<string, int> TagToIndex = new Dictionary<string, int>();
-    private int GroundIndex = 0;    // 鳴らす音のタグ番号保存
+    private int GroundIndex = -1;    // 鳴らす音のタグ番号保存
 
     protected AudioSource Source;
 
@@ -49,7 +50,8 @@ public class PlayerSeSounds : MonoBehaviour
                 {
                     // Collisionに付いた瞬間だけ鳴らす
                     GroundIndex = TagToIndex[ListAudioClips[i].TypeTag];
-                    PlayFootstepSE();// Animatorウィンドウでも鳴らす
+                    PlayFootSE();// Animatorウィンドウでも鳴らす
+                    Debug.Log(ListAudioClips[i].TypeTag);
                 }
                 break;
             }
@@ -69,17 +71,18 @@ public class PlayerSeSounds : MonoBehaviour
         }
     }
 
-    public void PlayFootstepSE()
+    public void PlayFootSE()
     {
-        if (GroundIndex == null) return;
+        if (GroundIndex == -1 || GroundIndex > ListAudioClips.Count) return;
 
         // tagで呼び出すSEを変える
         AudioClip[] clips = ListAudioClips[GroundIndex].audioClips;
+        float SoundVolume = ListAudioClips[GroundIndex].Volume;
 
         // テンポを毎回ランダムにして自然に近い感じにする
         if (RandomizePitch) Source.pitch = 1.0f + Random.Range(-PitchRange, PitchRange);
 
         // 音量もランダムにしている
-        Source.PlayOneShot(clips[Random.Range(0, clips.Length)]);
+        Source.PlayOneShot(clips[Random.Range(0, clips.Length)], SoundVolume);
     }
 }
