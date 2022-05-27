@@ -66,6 +66,10 @@ public class Player : MagnetManager
     private bool HitJagde = false;// 何かとプレイヤーが当たった判定
     private bool TwoFlug = false;
 
+    private bool NormalJump = false;//床、ブロック、鎖に触れてる時に行うジャンプ
+
+    private bool WallJump = false;//鉄に触れてる時に行う壁ジャンプ
+
     private int MagnetHitCount = 0;//縦/横に2個以上並べたマグネットの判定に使う
 
     private State PlayerState = State.Normal;
@@ -75,7 +79,10 @@ public class Player : MagnetManager
     void Awake()
     {
         IsGround = false;
+
         IsFootField = false;
+
+        NormalJump = false;
 
         Rb = GetComponent<Rigidbody2D>();
 
@@ -111,23 +118,20 @@ public class Player : MagnetManager
                 if (VerticalKey > 0)
                 {
                     YSpeed = Speed * 2.0f;
+
+                    Rb.velocity = new Vector2(0.0f, Speed);
                 }
                 else if (VerticalKey < 0)
                 {
-                    YSpeed = -Speed * 2.0f;
+                    Rb.velocity = new Vector2(0.0f, -Speed);
                 }
                 else
                 {
-                    YSpeed = 0.0f;
+                    if(!WallJump)
+                    {
+                        Rb.velocity = new Vector2(0.0f, 0.0f);
+                    }
                 }
-
-                if (Input.GetButtonDown("Jump"))
-                {
-                    //磁石から離れる
-                    //後ろ斜め上に飛ばす
-                }
-
-                Rb.velocity = new Vector2(XSpeed, YSpeed);
             }
             else
             {
@@ -136,51 +140,54 @@ public class Player : MagnetManager
                 {
                     XSpeed = Speed;
 
+                    Rb.velocity = new Vector2(Speed, Rb.velocity.y);
+
                     DirectionX = (int)PlayerDirection.Right;
 
                     localScale.x = 1.0f;
 
                     transform.localScale = localScale;
-
-                    //PlayerAnim.AnimationChange("Walk");
                 }
                 else if (HorizontalKey < 0)
                 {
                     XSpeed = -Speed;
+
+                    Rb.velocity = new Vector2(-Speed, Rb.velocity.y);
 
                     DirectionX = (int)PlayerDirection.Left;
 
                     localScale.x = -1.0f;
 
                     transform.localScale = localScale;
-
-                    //PlayerAnim.AnimationChange("Walk");
                 }
                 else
                 {
-                    XSpeed = 0.0f;
-
-                    //PlayerAnim.AnimationChange("Idle");
+                    if (!WallJump)
+                    {
+                      Rb.velocity = new Vector2(0.0f, Rb.velocity.y);
+                    }
                 }
+            }
 
-                //ジャンプ
-                if (Input.GetButtonDown("Jump") && !(Rb.velocity.y < -0.5f))
+            //ジャンプ
+            if (Input.GetButtonDown("Jump") && !(Rb.velocity.y < -0.5f))
+            {
+                if(HitJagde)//壁のぼり時
+                {
+                    Rb.AddForce((transform.up + (transform.right * (DirectionX * -1.0f))) * JumpPower, ForceMode2D.Impulse);
+
+                    WallJump = true;
+                }
+                else
                 {
                     // 地面か足場に触れていたら
                     if (IsGround || IsFootField)
                     {
-                        Rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
+                        Rb.AddForce(transform.up * JumpPower, ForceMode2D.Impulse);
 
-                        PlayerAnim.SetAction(true);
+                        NormalJump = true;
                     }
                 }
-
-                Rb.velocity = new Vector2(XSpeed, Rb.velocity.y);
-            }
-
-
-            if (HitJagde == true)// 壁のぼりの処理
-            {
             }
 
             //極切り替え
@@ -191,9 +198,9 @@ public class Player : MagnetManager
                     Pole = Magnet_Pole.N;
                     Debug.Log("極切り替え：S → N");
 
-                    if (MagnetHitCount >= 1)
+                    if (MagnetHitCount >= 1)//磁石の側面に触れている時用にも対応
                     {
-                        PlayerAnim.MagnetChange(PlayerAnimation.AnimationLayer.Player_Red, "Idle");
+                        PlayerAnim.MagnetChange(PlayerAnimation.AnimationLayer.Player_Red, "Attraction");
 
                         MagnetHitCount = 0;
                     }
@@ -230,17 +237,17 @@ public class Player : MagnetManager
 
                 PlayerAnim.MagnetChange(PlayerAnim.GetCurrentLayer(), "Jump");
 
-                PlayerAnim.SetAction(true);
+                NormalJump = true;
             }
             if (transform.localPosition != ChainObj.GetArrivalPoint())
             {
                 //滑らかに決められた位置に移動させる
-                transform.localPosition = Vector3.Lerp(transform.localPosition, ChainObj.GetArrivalPoint(), SpeedToRope * Time.deltaTime);
+                //transform.localPosition = Vector3.Lerp(transform.localPosition, ChainObj.GetArrivalPoint(), SpeedToRope * Time.deltaTime);
             }
 
             PlayerAnim.MagnetChange(PlayerAnim.GetCurrentLayer(), "Idle");
 
-            PlayerAnim.SetAction(false);
+            NormalJump = false;
 
         }
         else if (PlayerState == State.ReleaseChain)
@@ -265,8 +272,6 @@ public class Player : MagnetManager
                  Rb.velocity.y + Physics.gravity.y * Time.deltaTime,
                 0.0f
                 );
-
-            PlayerState = State.Normal;
         }
     }
 
@@ -287,6 +292,14 @@ public class Player : MagnetManager
     public int GetMagnetHitCount() { return MagnetHitCount; }
 
     public void SetMagnetHitCount(int count) { MagnetHitCount = count; }
+
+    public void SetNormalJump(bool enable) { NormalJump = enable; }
+
+    public bool GetNormalJump() { return NormalJump; }
+
+    public void SetWallJump(bool enable) { WallJump = enable; }
+
+    public bool GetWallJump() { return WallJump; }
 
     /// <summary>
     /// 地面or足場と触れているかの判定
@@ -357,6 +370,8 @@ public class Player : MagnetManager
         {
             IsGround = true;
 
+            PlayerState = State.Normal;
+
             Debug.Log(IsGround);
         }
 
@@ -366,6 +381,8 @@ public class Player : MagnetManager
             if (FootFieldBrock.instance == null) return;
 
             FootPos();
+
+            PlayerState = State.Normal;
 
             // プレイヤーの高さが足場の高さ超えている　かつ　プレイヤーが足場に着地出来ているなら
             if (
@@ -382,7 +399,7 @@ public class Player : MagnetManager
     // あたったタイミングで処理が動く
     private void OnCollisionEnter2D(Collision2D collision)
     {
-            //簡易的に鉄を実装
+        //簡易的に鉄を実装
         if (collision.gameObject.CompareTag("Iron"))
         {
             Debug.Log("鉄にくっついた！！");
@@ -398,6 +415,12 @@ public class Player : MagnetManager
             HitJagde = true;
 
             Rb.gravityScale = 0.0f;
+
+            NormalJump = false;
+
+            WallJump = false;
+
+            PlayerDirectionCorrection(transform.position.x, collision.gameObject.transform.position.x);
         }
 
         if (collision.gameObject.CompareTag("NPole") || collision.gameObject.CompareTag("SPole"))
@@ -411,6 +434,10 @@ public class Player : MagnetManager
 
                 HitJagde = true;
             }
+
+            PlayerDirectionCorrection(transform.position.x, collision.gameObject.transform.position.x);
+
+            PlayerAnim.SetPlayerAnimationSpeed(1.0f);
         }
 
         if (collision.gameObject.CompareTag("Thorn"))
@@ -431,6 +458,16 @@ public class Player : MagnetManager
             }
 
             transform.position = worldPos;// 座標設定
+        }
+
+        ////////////////////////////////
+        //鎖に触れたらジャンプ2種類をfalseにする処理を入れる
+
+        if (collision.gameObject.CompareTag("Chain"))
+        {
+            NormalJump = false;
+
+            WallJump = false;
         }
     }
 
@@ -469,8 +506,6 @@ public class Player : MagnetManager
         if (collision.gameObject.CompareTag("Floor"))
         {
             IsGround = false;
-
-            SetPlayerState(State.Normal);
         }
 
         if (collision.gameObject.CompareTag("Block"))
@@ -478,8 +513,30 @@ public class Player : MagnetManager
             IsFootField = false;
 
             Debug.Log(IsFootField);
+        }
+    }
 
-            SetPlayerState(State.Normal);
+    public void PlayerDirectionCorrection(float posA, float posB)
+    {
+        if((posA - posB) >= 0.0f)
+        {
+            Vector3 localScale = transform.localScale;
+
+            localScale.x = -1.0f;
+
+            transform.localScale = localScale;
+
+            Debug.Log("左向きに補正！！");
+        }
+        else
+        {
+            Vector3 localScale = transform.localScale;
+
+            localScale.x = 1.0f;
+
+            transform.localScale = localScale;
+
+            Debug.Log("右向きに補正！！");
         }
     }
 

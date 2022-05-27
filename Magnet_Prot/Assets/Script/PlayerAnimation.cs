@@ -19,9 +19,11 @@ public class PlayerAnimation : MonoBehaviour
 
     private AnimationLayer CurrentLayer = AnimationLayer.Player_Red;
 
-    private bool JumpAction = false;
-
     private bool OnMetalJudge = false;
+
+    private bool GameClear = false;
+
+    private bool GameOver = false;
 
     void Start()
     {
@@ -31,9 +33,11 @@ public class PlayerAnimation : MonoBehaviour
 
         CurrentLayer = AnimationLayer.Player_Red;
 
-        JumpAction = false;
-
         OnMetalJudge = false;
+
+        GameClear = false;
+
+        GameOver = false;
 
         if (PlayerObj.GetPole() == Magnet.Magnet_Pole.N)
         {
@@ -52,7 +56,21 @@ public class PlayerAnimation : MonoBehaviour
     {
         CheckFunction_Debug();
 
-        if (PlayerObj.GetHitJagde())//登るときの状態
+        if (GameClear)
+        {
+            PlayerAnim.Play("Goal", (int)CurrentLayer);
+
+            return;
+        }
+
+        if (GameOver)
+        {
+            PlayerAnim.Play("GameOver", (int)CurrentLayer);
+
+            return;
+        }
+
+        if (PlayerObj.GetHitJagde())//壁を登る時
         {
             PlayerAnim.Play("Climbing", (int)CurrentLayer);
 
@@ -64,80 +82,78 @@ public class PlayerAnimation : MonoBehaviour
             {
                 PlayerAnim.speed = 1;//再開
             }
+
+            return;
         }
-        else
+
+        if (PlayerObj.GetHorizontalKey() > 0 || PlayerObj.GetHorizontalKey() < 0)//歩いてる時
         {
-            //if (PlayerObj.IsJump() && PlayerAnim.speed == 0.0f)
-            //{
-            //    PlayerAnim.speed = 1.0f;
-            //
-            //    PlayerAnim.Play("Idle", (int)CurrentLayer);
-            //
-            //    JumpAction = false;
-            //}
-
-            if (PlayerObj.GetHorizontalKey() > 0 || PlayerObj.GetHorizontalKey() < 0)
+            if (PlayerObj.GetNormalJump() || PlayerObj.GetWallJump())
             {
-                if (JumpAction)
-                {
-                    PlayerAnim.Play("Jump", (int)CurrentLayer);
-                    return;
-                }
+                PlayerAnim.Play("Jump", (int)CurrentLayer);
+                return;
+            }
 
-                if (!PlayerObj.IsJump() && !OnMetalJudge/*!PlayerObj.magnetic*/)//空中で磁石に引き寄せられている時
-                {
-                    PlayerAnim.speed = 1.0f;
-
-                    PlayerAnim.Play("Attraction", (int)CurrentLayer);
-
-                    return;
-                }
-
+            if (!PlayerObj.IsJump() && !OnMetalJudge)//空中で磁石に引き寄せられている時
+            {
                 PlayerAnim.speed = 1.0f;
 
-                PlayerAnim.Play("Walk", (int)CurrentLayer);
+                PlayerAnim.Play("Attraction", (int)CurrentLayer);
+
+                return;
             }
-            else
+
+            PlayerAnim.speed = 1.0f;
+
+            PlayerAnim.Play("Walk", (int)CurrentLayer);
+        }
+        else//歩いてない時
+        {
+            if (PlayerObj.GetNormalJump() || PlayerObj.GetWallJump())
             {
-                if (JumpAction)
+                if (PlayerObj.GetMagnetHitCount() <= 0)
                 {
-                    if (PlayerObj.GetMagnetHitCount() <= 0)
-                    {
-                        PlayerAnim.Play("Jump", (int)CurrentLayer);
+                    PlayerAnim.Play("Jump", (int)CurrentLayer);
 
-                        return;
-                    }
+                    return;
                 }
+            }
 
-                if(PlayerObj.GetMagnetHitCount() <= 0)
-                {
-                    PlayerAnim.speed = 1.0f;
+            if (PlayerObj.GetMagnetHitCount() <= 0)
+            {
+                PlayerAnim.speed = 1.0f;
 
-                    PlayerAnim.Play("Idle", (int)CurrentLayer);
-                }
+                PlayerAnim.Play("Idle", (int)CurrentLayer);
             }
         }
     }
 
-    public void SetAction(bool enable) { JumpAction = enable; }
+    public void SetGameClear(bool enable) { GameClear = enable; }
 
-    public bool GetAction() { return JumpAction; }
+    public bool GetGameClear() { return GameClear; }
+
+    public void SetGameOver(bool enable) { GameOver = enable; }
+
+    public bool GetGameOver() { return GameOver; }
 
     private void CheckFunction_Debug()
     {
         Debug.Log("マグネットor磁石の上に乗ってる？：" + OnMetalJudge);
 
+        Debug.Log("通常ジャンプは？：" + PlayerObj.GetNormalJump());
+
+        Debug.Log("壁ジャンプは？：" + PlayerObj.GetWallJump());
+
+        Debug.Log("アニメーションスピードは？：" + PlayerAnim.speed);
+
         Debug.Log("地面or足場と触れているかの判定は？：" + PlayerObj.IsJump());
     }
 
     /// <summary>
-    /// 
+    /// アニメーション再生速度設定
     /// </summary>
     /// <param name="speed">0.0fは一時停止、1.0fは再生させるイメージ</param>
-    public void SetPlayerAnimationSpeed(float speed = 0.0f)
-    {
-        PlayerAnim.speed = speed;
-    }
+    public void SetPlayerAnimationSpeed(float speed = 0.0f) { PlayerAnim.speed = speed; }
 
     public float GetPlayerAnimationSpeed() { return PlayerAnim.speed; }
 
@@ -184,42 +200,18 @@ public class PlayerAnimation : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(JumpAction == true || PlayerAnim.speed <=0.0f)
+        if (collision.gameObject.CompareTag("Floor") ||
+            collision.gameObject.CompareTag("Block"))
         {
-            PlayerAnim.speed = 1.0f;
-
-            PlayerAnim.Play("Idle", (int)CurrentLayer);
-
-            JumpAction = false;
-        }
-
-        //簡易的に鉄を実装
-        if (collision.gameObject.CompareTag("Iron") ||
-            collision.gameObject.CompareTag("NPole") ||
-            collision.gameObject.CompareTag("SPole"))
-        {
-            PlayerAnim.speed = 1;//再開
-
-            //触れたオブジェクトと自身の位置を計算して向きを補正させる
-            if ((gameObject.transform.position.x - collision.gameObject.transform.position.x) >= 0.0f)
+            if (PlayerObj.GetNormalJump() || PlayerAnim.speed <= 0.0f)
             {
-                Vector3 localScale = PlayerObj.transform.localScale;
+                PlayerAnim.speed = 1.0f;
 
-                localScale.x = -1.0f;
+                PlayerAnim.Play("Idle", (int)CurrentLayer);
 
-                transform.localScale = localScale;
+                PlayerObj.SetNormalJump(false);
 
-                Debug.Log("左向きに補正！！");
-            }
-            else
-            {
-                Vector3 localScale = PlayerObj.transform.localScale;
-
-                localScale.x = 1.0f;
-
-                transform.localScale = localScale;
-
-                Debug.Log("右向きに補正！！");
+                PlayerObj.SetWallJump(false);
             }
         }
     }
@@ -234,7 +226,7 @@ public class PlayerAnimation : MonoBehaviour
             PlayerAnim.Play("Climbing", (int)CurrentLayer);
         }
 
-        if(collision.gameObject.CompareTag("OnMetal"))
+        if (collision.gameObject.CompareTag("OnMetal"))
         {
             OnMetalJudge = true;
         }
