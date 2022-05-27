@@ -70,6 +70,11 @@ public class PlayerAnimation : MonoBehaviour
             return;
         }
 
+        if(PlayerObj.GetPlayerState() != Player.State.Normal)
+        {
+            return;
+        }
+
         if (PlayerObj.GetHitJagde())//壁を登る時
         {
             PlayerAnim.Play("Climbing", (int)CurrentLayer);
@@ -94,7 +99,7 @@ public class PlayerAnimation : MonoBehaviour
                 return;
             }
 
-            if (!PlayerObj.IsJump() && !OnMetalJudge)//空中で磁石に引き寄せられている時
+            if (!PlayerObj.IsJump() && !OnMetalJudge)//空中で磁石に引き寄せられている時or落下してる時
             {
                 PlayerAnim.speed = 1.0f;
 
@@ -138,15 +143,9 @@ public class PlayerAnimation : MonoBehaviour
 
     private void CheckFunction_Debug()
     {
-        Debug.Log("マグネットor磁石の上に乗ってる？：" + OnMetalJudge);
-
         Debug.Log("通常ジャンプは？：" + PlayerObj.GetNormalJump());
 
         Debug.Log("壁ジャンプは？：" + PlayerObj.GetWallJump());
-
-        Debug.Log("アニメーションスピードは？：" + PlayerAnim.speed);
-
-        Debug.Log("地面or足場と触れているかの判定は？：" + PlayerObj.IsJump());
     }
 
     /// <summary>
@@ -213,6 +212,15 @@ public class PlayerAnimation : MonoBehaviour
 
                 PlayerObj.SetWallJump(false);
             }
+        }
+
+        if (collision.gameObject.CompareTag("OnMetal"))
+        {
+            PlayerObj.SetWallJump(false);
+
+            PlayerObj.SetNormalJump(false);
+
+            PlayerObj.SetPlayerState(Player.State.Normal);
         }
     }
 
