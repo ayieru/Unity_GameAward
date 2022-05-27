@@ -217,6 +217,10 @@ public class PlayerAnimation : MonoBehaviour
         if (collision.gameObject.CompareTag("OnMetal"))
         {
             PlayerObj.SetWallJump(false);
+
+            PlayerObj.SetNormalJump(false);
+
+            PlayerObj.SetPlayerState(Player.State.Normal);
         }
     }
 
