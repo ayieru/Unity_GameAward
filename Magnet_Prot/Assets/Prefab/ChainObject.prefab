@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 125267407492811649}
   m_Layer: 0
   m_Name: ChainObject
-  m_TagString: Untagged
+  m_TagString: Chain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 2683452375917209563}
   m_Layer: 0
   m_Name: Chain
-  m_TagString: Untagged
+  m_TagString: Chain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
