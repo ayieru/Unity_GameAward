@@ -178,7 +178,7 @@ public class Player : MagnetManager
 
                     DirectionX = -DirectionX;
 
-                    localScale.x = -1.0f;
+                    localScale.x = -localScale.x;
 
                     transform.localScale = localScale;
 
