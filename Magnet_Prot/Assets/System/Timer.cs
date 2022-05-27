@@ -1,17 +1,24 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-    [SerializeField]
-    float TimeLimit = 0;
+    [Header("経過時間")]
+    private float ElapsedTime = 0;
+
+    [Header("クリア時間")]
+    public static float ClearTime = 0;
 
     bool EnableTimer = false;
+    public GameObject TimeText;
 
     private void Start()
     {
         EnableTimer = true;
+        ElapsedTime = 0;
+        ClearTime = 0;
     }
 
     private void Update()
@@ -21,12 +28,17 @@ public class Timer : MonoBehaviour
             return;
         }
 
-        TimeLimit -= Time.deltaTime;
+        ElapsedTime += Time.deltaTime;
 
-        if (TimeLimit <= 0.0)
+        //クリア時間を表示
+        TimeText.GetComponent<Text>().text = ElapsedTime.ToString("N2");
+
+        if (Goal.TimeStop == true)
         {
-            TimeLimit = 0.0f;
+            ClearTime = ElapsedTime;
             EnableTimer = false;
         }
     }
 }
+
+//ElapsedTime.ToString("N2")
