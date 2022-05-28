@@ -6,7 +6,7 @@ using System.IO;
 public class ClearRank : MonoBehaviour
 {
     [Header("ステージの総数")]
-    public  int TortalStage = 7;
+    public static  int TortalStage = 7;
 
     string filePath;
     ClearData Clear;
@@ -14,19 +14,11 @@ public class ClearRank : MonoBehaviour
     [System.Serializable]
     public class ClearData
     {
-        public Rank[] rank;
-    }
-
-    [System.Serializable]
-    public class Rank
-    {
-        public int StageRank;
+        public static int[] Rank = new int[TortalStage];
     }
 
     void Awake()
     {
-        Clear = new ClearData();
-        Clear.rank = new Rank[TortalStage];
 
         // Assets/Json/rank.json 
         filePath = Application.dataPath + "/Json/rank.json";
@@ -43,9 +35,9 @@ public class ClearRank : MonoBehaviour
         }
 
         //クリアランクを保存
-        Clear.rank[StageNum].StageRank = RankNum;
+        ClearData.Rank[StageNum] = RankNum;
 
-        string json = JsonUtility.ToJson(Clear, true);
+        string json = JsonUtility.ToJson(ClearData.Rank[StageNum], true);
         StreamWriter streamWriter = new StreamWriter(filePath);
         streamWriter.Write(json);
         streamWriter.Flush();
@@ -62,7 +54,7 @@ public class ClearRank : MonoBehaviour
             streamReader.Close();
             Clear = JsonUtility.FromJson<ClearData>(data);
 
-            return Clear.rank[StageNum].StageRank;
+            return ClearData.Rank[StageNum];
         }
         else
         {
