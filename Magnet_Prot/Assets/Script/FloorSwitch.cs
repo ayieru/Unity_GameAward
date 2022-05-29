@@ -1,16 +1,47 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class FloorSwitch : MonoBehaviour
 {
+    [System.Serializable]
+    public class AudioClips
+    {
+        public float Volume = 1.0f;
+        public AudioClip audioClips;
+    }
+    [Header("SE")]
+    public AudioClips ListAudioClips = new AudioClips();
+
+    [Header("テンポを一定にするかどうか")]
+    [SerializeField] bool RandomizePitch = true;
+
+    [Header("テンポ数")]
+    [SerializeField] float PitchRange = 0.1f;
+
     [Header("対応するドア")]
     public GameObject DoorObj;
 
+    [Header("押されてないスイッチ")]
+    public Sprite Switch;
+
+    [Header("押されてるスイッチ")]
+    public Sprite PushSwitch;
+
+    private Sprite SpRen;
     private GameObject PlayerObj;
     private Rigidbody2D Rb;
     private Player player;
     private bool FloorSwitchOn = false;
+
+    protected AudioSource Source;
+
+    private void Start()
+    {
+        Source = GetComponent<AudioSource>();
+        SpRen = GetComponent<SpriteRenderer>().sprite;
+        SpRen = Switch;
+    }
 
     private void Update()
     {
@@ -55,6 +86,9 @@ public class FloorSwitch : MonoBehaviour
         {
             //フロアスイッチオン
             FloorSwitchOn = true;
+
+            SoundStart();
+            SpRen = PushSwitch;
         }
     }
 
@@ -64,6 +98,18 @@ public class FloorSwitch : MonoBehaviour
         {
             //フロアスイッチオフ
             FloorSwitchOn = false;
+
+            SoundStart();
+            SpRen = Switch;
         }
+    }
+
+    private void SoundStart()
+    {
+        AudioClip clips = ListAudioClips.audioClips;
+        float SoundVolume = ListAudioClips.Volume;
+        // テンポを毎回ランダムにして自然に近い感じにする
+        if (RandomizePitch) Source.pitch = 1.0f + Random.Range(-PitchRange, PitchRange);
+        Source.PlayOneShot(clips, SoundVolume);
     }
 }
