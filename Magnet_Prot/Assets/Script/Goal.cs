@@ -14,20 +14,20 @@ public class Goal : MonoBehaviour
     public static string CurrentStageName;
 
     [Header("最後のステージか?")]
-    public  bool IsLast = false;
+    public bool IsLast = false;
     public static bool IsLastStage = false;
 
     [Header("クリアしたか?")]
     public static bool TimeStop = false;
 
     [Header("クリアタイム：S")]
-    public  float S;
+    public float S;
     [Header("クリアタイム：A")]
-    public  float A;
+    public float A;
     [Header("クリアタイム：B")]
-    public  float B;
+    public float B;
     [Header("クリアタイム：C")]
-    public  float C;
+    public float C;
 
     [Header("クリアランク")]
     public static int Rank = 0;
@@ -36,6 +36,10 @@ public class Goal : MonoBehaviour
     public static float TimeA;
     public static float TimeB;
     public static float TimeC;
+
+    private int WaitTime = 0;
+
+    private int MaxWaitTime = 1 * 60;
 
     public GameObject ClearUI;
 
@@ -54,13 +58,17 @@ public class Goal : MonoBehaviour
         TimeB = B;
         TimeC = C;
         IsCallOnce = false;
+
+        WaitTime = 0;
     }
 
     private void Update()
     {
         if (TimeStop)
         {
-            if (Input.anyKeyDown)
+            WaitTime++;
+
+            if (WaitTime >= MaxWaitTime)
             {
                 TimeStop = false;
                 Time.timeScale = 1;
@@ -68,38 +76,37 @@ public class Goal : MonoBehaviour
             }
         }
 
-        if(Timer.RankSave == true)
+        if (Timer.RankSave == true)
         {
             ClearStatus();
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
             TimeStop = true;
-            ClearUI.SetActive(true);
-            Time.timeScale = 0;
+            Time.timeScale = 1;
         }
     }
 
     //クリアランクを求める
     private void ClearStatus()
     {
-        if( 0 <= Timer.ClearTime && Timer.ClearTime <= TimeS)
+        if (0 <= Timer.ClearTime && Timer.ClearTime <= TimeS)
         {
             Rank = 1;
         }
-        else if( TimeS + 1 <= Timer.ClearTime && Timer.ClearTime <= TimeA)
+        else if (TimeS + 1 <= Timer.ClearTime && Timer.ClearTime <= TimeA)
         {
             Rank = 2;
         }
-        else if(TimeA + 1 <= Timer.ClearTime && Timer.ClearTime <= TimeB)
+        else if (TimeA + 1 <= Timer.ClearTime && Timer.ClearTime <= TimeB)
         {
             Rank = 3;
         }
-        else if(TimeC <= Timer.ClearTime)
+        else if (TimeC <= Timer.ClearTime)
         {
             Rank = 4;
         }

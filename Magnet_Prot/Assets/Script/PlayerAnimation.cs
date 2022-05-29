@@ -10,6 +10,13 @@ public class PlayerAnimation : MonoBehaviour
         Player_Blue = 1,
     }
 
+    [Header("ゲームクリアフラグ(リザルトシーンで使用)")]
+    [SerializeField]
+    private bool GameClear = false;
+
+    [Header("ゲームオーバーフラグ(リザルトシーンで使用)")]
+    [SerializeField]
+    private bool GameOver = false;
 
     private Animator PlayerAnim;
 
@@ -20,10 +27,6 @@ public class PlayerAnimation : MonoBehaviour
     private AnimationLayer CurrentLayer = AnimationLayer.Player_Red;
 
     private bool SpecialFloor = false;
-
-    private bool GameClear = false;
-
-    private bool GameOver = false;
 
     private bool HitBlockFloor = false;
 
@@ -38,10 +41,6 @@ public class PlayerAnimation : MonoBehaviour
         PlayerAnim.speed = 1.0f;
 
         SpecialFloor = false;
-
-        GameClear = false;
-
-        GameOver = false;
 
         if (PlayerObj.GetPole() == Magnet.Magnet_Pole.N)
         {
@@ -252,7 +251,7 @@ public class PlayerAnimation : MonoBehaviour
             SpecialFloor = false;
         }
 
-        if (collision.gameObject.CompareTag("Bock") ||
+        if (collision.gameObject.CompareTag("Block") ||
             collision.gameObject.CompareTag("Floor"))
         {
             HitBlockFloor = false;
