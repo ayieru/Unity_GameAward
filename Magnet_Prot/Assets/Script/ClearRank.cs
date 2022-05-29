@@ -1,64 +1,41 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
+using UnityEngine.UI;
+
+/*Goal.CurrentStageIndex - 2：ビルドインデックスから
+ *タイトルとステージセレクトの2つ分の値を引いた数が
+ ゲームのステージのインデックスになる*/
 
 public class ClearRank : MonoBehaviour
 {
-    [Header("ステージの総数")]
-    public static  int TortalStage = 7;
 
-    string filePath;
-    ClearData Clear;
-
-    [System.Serializable]
-    public class ClearData
+    private void Start()
     {
-        public static int[] Rank = new int[TortalStage];
+        DisplayClearRank();
+        
+        StageSelect.StageClearRank[Goal.CurrentStageIndex - 2] = Goal.Rank;
     }
 
-    void Awake()
+    //クリアランクを表示する
+    private void DisplayClearRank()
     {
-
-        // Assets/Json/rank.json 
-        filePath = Application.dataPath + "/Json/rank.json";
-    }
-
-    //ランクをセーブする
-    //引数：StageNum..保存するステージのIndex
-    //      RankNum ..ランクに対応し値（S..1,）
-    public void Save(int StageNum,int RankNum)
-    {
-        if(StageNum > TortalStage - 1)
+        if (Goal.Rank == 1)
         {
-            return;
+            gameObject.GetComponent<Text>().text = "S";
         }
-
-        //クリアランクを保存
-        ClearData.Rank[StageNum] = RankNum;
-
-        string json = JsonUtility.ToJson(ClearData.Rank[StageNum], true);
-        StreamWriter streamWriter = new StreamWriter(filePath);
-        streamWriter.Write(json);
-        streamWriter.Flush();
-        streamWriter.Close();
-    }
-
-    public int Load(int StageNum)
-    {
-        if (File.Exists(filePath))
+        else if(Goal.Rank == 2)
         {
-            StreamReader streamReader;
-            streamReader = new StreamReader(filePath);
-            string data = streamReader.ReadToEnd();
-            streamReader.Close();
-            Clear = JsonUtility.FromJson<ClearData>(data);
-
-            return ClearData.Rank[StageNum];
+            gameObject.GetComponent<Text>().text = "A";
+        }
+        else if(Goal.Rank ==3)
+        {
+            gameObject.GetComponent<Text>().text = "B";
         }
         else
         {
-            return 0;
+            gameObject.GetComponent<Text>().text = "C";
         }
     }
+
 }

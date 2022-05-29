@@ -36,6 +36,7 @@ public class Result : MonoBehaviour
 
         //クリア時間を表示
         TimeText.GetComponent<Text>().text = Timer.ClearTime.ToString("N2");
+
     }
 
     //次のステージへの移動処理

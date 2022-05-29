@@ -178,6 +178,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsLast: 0
+  S: 10
+  A: 20
+  B: 30
+  C: 50
   ClearUI: {fileID: 6276192711129248840}
 --- !u!114 &4414374200142043881
 MonoBehaviour:
