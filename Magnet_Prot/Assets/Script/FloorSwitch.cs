@@ -22,6 +22,13 @@ public class FloorSwitch : MonoBehaviour
     [Header("対応するドア")]
     public GameObject DoorObj;
 
+    [Header("押されてないスイッチ")]
+    public Sprite Switch;
+
+    [Header("押されてるスイッチ")]
+    public Sprite PushSwitch;
+
+    private Sprite SpRen;
     private GameObject PlayerObj;
     private Rigidbody2D Rb;
     private Player player;
@@ -32,6 +39,8 @@ public class FloorSwitch : MonoBehaviour
     private void Start()
     {
         Source = GetComponent<AudioSource>();
+        SpRen = GetComponent<SpriteRenderer>().sprite;
+        SpRen = Switch;
     }
 
     private void Update()
@@ -79,6 +88,7 @@ public class FloorSwitch : MonoBehaviour
             FloorSwitchOn = true;
 
             SoundStart();
+            SpRen = PushSwitch;
         }
     }
 
@@ -90,6 +100,7 @@ public class FloorSwitch : MonoBehaviour
             FloorSwitchOn = false;
 
             SoundStart();
+            SpRen = Switch;
         }
     }
 
