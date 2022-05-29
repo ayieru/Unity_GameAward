@@ -12,6 +12,8 @@ TagManager:
   - Thorn
   - SavePoint
   - MagnetBlock
+  - MagnetGround
+  - IronGround
   - Wood
   - Chain
   - OnMetal

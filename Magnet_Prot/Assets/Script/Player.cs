@@ -493,6 +493,9 @@ public class Player : MagnetManager
             }
 
             transform.position = worldPos;// 座標設定
+
+            // とげに刺さったら、ジャンプの力を0にして浮かないようにする。
+            Rb.velocity = new Vector2(0.0f, 0.0f);
         }
 
         if (collision.gameObject.CompareTag("Chain"))

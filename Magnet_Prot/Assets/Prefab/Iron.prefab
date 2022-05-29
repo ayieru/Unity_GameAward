@@ -70,7 +70,7 @@ GameObject:
   - component: {fileID: 1640526495488002865}
   m_Layer: 0
   m_Name: Iron
-  m_TagString: OnMetal
+  m_TagString: IronGround
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
