@@ -22,6 +22,8 @@ public class PlayerSeSounds : MonoBehaviour
     [Header("テンポ数")]
     [SerializeField] float PitchRange = 0.1f;
 
+    public bool On = false;
+
     private Dictionary<string, int> TagToIndex = new Dictionary<string, int>();
     private int GroundIndex = -1;    // 鳴らす音のタグ番号保存
 
@@ -29,6 +31,7 @@ public class PlayerSeSounds : MonoBehaviour
 
     private void Awake()
     {
+        On = false;
         // アタッチしたオーディオソースのうち1番目を使用する
         Source = GetComponents<AudioSource>()[0];
 
@@ -36,6 +39,15 @@ public class PlayerSeSounds : MonoBehaviour
         for (int i = 0; i < ListAudioClips.Count; ++i)
         {
             TagToIndex.Add(ListAudioClips[i].TypeTag, i);
+        }
+    }
+
+    private void Update()
+    {
+        if (On == true)
+        {
+            PlayFootSE();// Animatorウィンドウでも鳴らす
+            On = false;
         }
     }
 
@@ -50,7 +62,8 @@ public class PlayerSeSounds : MonoBehaviour
                 {
                     // Collisionに付いた瞬間だけ鳴らす
                     GroundIndex = TagToIndex[ListAudioClips[i].TypeTag];
-                    PlayFootSE();// Animatorウィンドウでも鳴らす
+                    
+                    
                     Debug.Log(ListAudioClips[i].TypeTag);
                 }
                 break;
