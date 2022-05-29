@@ -17,6 +17,9 @@ TagManager:
   - OnMetal
   - MagnetGround
   - IronGround
+  - Wood
+  - Chain
+  - OnMetal
   - Goal
   layers:
   - Default
