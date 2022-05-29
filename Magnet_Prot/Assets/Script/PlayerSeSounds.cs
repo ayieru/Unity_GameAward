@@ -71,19 +71,6 @@ public class PlayerSeSounds : MonoBehaviour
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        for (int i = 0; i < ListAudioClips.Count; ++i)
-        {
-            // 触れたブロックのタグが設定されているタグの中に含まれているどうか確認
-            if (collision.gameObject.tag == ListAudioClips[i].TypeTag)
-            {
-                GroundIndex = -1;
-                break;
-            }
-        }
-    }
-
     public void PlayFootSE()
     {
         if (GroundIndex == -1 || GroundIndex > ListAudioClips.Count) return;
