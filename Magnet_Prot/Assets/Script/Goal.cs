@@ -39,6 +39,8 @@ public class Goal : MonoBehaviour
 
     public GameObject ClearUI;
 
+    private bool IsCallOnce;
+
     private void Start()
     {
         FadeManager.FadeIn();
@@ -51,6 +53,7 @@ public class Goal : MonoBehaviour
         TimeA = A;
         TimeB = B;
         TimeC = C;
+        IsCallOnce = false;
     }
 
     private void Update()
@@ -64,6 +67,11 @@ public class Goal : MonoBehaviour
                 FadeManager.FadeOut("Result");
             }
         }
+
+        if(Timer.RankSave == true)
+        {
+            ClearStatus();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -73,28 +81,28 @@ public class Goal : MonoBehaviour
             TimeStop = true;
             ClearUI.SetActive(true);
             Time.timeScale = 0;
-            ClearStatus();
         }
     }
 
     //クリアランクを求める
     private void ClearStatus()
     {
-        if(Timer.ClearTime < TimeS)
+        if( 0 <= Timer.ClearTime && Timer.ClearTime <= TimeS)
         {
             Rank = 1;
         }
-        else if(Timer.ClearTime < TimeA)
+        else if( TimeS + 1 <= Timer.ClearTime && Timer.ClearTime <= TimeA)
         {
             Rank = 2;
         }
-        else if(Timer.ClearTime < TimeB)
+        else if(TimeA + 1 <= Timer.ClearTime && Timer.ClearTime <= TimeB)
         {
             Rank = 3;
         }
-        else if(Timer.ClearTime < TimeC)
+        else if(TimeC <= Timer.ClearTime)
         {
             Rank = 4;
         }
+
     }
 }
