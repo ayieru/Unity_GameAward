@@ -35,6 +35,8 @@ public class PlayerAnimation : MonoBehaviour
 
         CurrentLayer = AnimationLayer.Player_Red;
 
+        PlayerAnim.speed = 1.0f;
+
         SpecialFloor = false;
 
         GameClear = false;
@@ -71,7 +73,7 @@ public class PlayerAnimation : MonoBehaviour
 
             return;
         }
-        
+
         if (PlayerObj.GetHitJagde())//壁を登る時
         {
             PlayerAnim.Play("Climbing", (int)CurrentLayer);
@@ -191,16 +193,15 @@ public class PlayerAnimation : MonoBehaviour
         if (collision.gameObject.CompareTag("Floor") ||
             collision.gameObject.CompareTag("Block"))
         {
-            if (PlayerObj.GetNormalJump() || PlayerAnim.speed <= 0.0f)
-            {
-                PlayerAnim.speed = 1.0f;
+            PlayerAnim.speed = 1.0f;
 
-                PlayerAnim.Play("Idle", (int)CurrentLayer);
+            PlayerAnim.Play("Idle", (int)CurrentLayer);
 
-                PlayerObj.SetNormalJump(false);
+            PlayerObj.SetNormalJump(false);
 
-                PlayerObj.SetWallJump(false);
-            }
+            PlayerObj.SetWallJump(false);
+
+            HitBlockFloor = true;
         }
 
         if (collision.gameObject.CompareTag("MagnetGround") ||
@@ -213,15 +214,9 @@ public class PlayerAnimation : MonoBehaviour
             PlayerObj.SetPlayerState(Player.State.Normal);
         }
 
-        if(collision.gameObject.CompareTag("Goal"))
+        if (collision.gameObject.CompareTag("Goal"))
         {
             GameClear = true;
-        }
-
-        if (collision.gameObject.CompareTag("Bock") ||
-            collision.gameObject.CompareTag("Floor"))
-        {
-            HitBlockFloor = true;
         }
     }
 

@@ -61,7 +61,7 @@ public class MoveChain : MonoBehaviour
             Angle = Mathf.SmoothStep(Angle, ChainDirection * MaxAngle, t);
 
             //角度を変更
-            transform.localEulerAngles = new Vector3(0f, 0f, Angle);
+            transform.localEulerAngles = new Vector3(0.0f, 0.0f, Angle);
 
             //角度が指定した角度と1度の差になったら反転
             if (Mathf.Abs(Mathf.DeltaAngle(Angle, ChainDirection * MaxAngle)) < 1.0f)
