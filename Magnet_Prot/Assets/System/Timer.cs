@@ -14,11 +14,14 @@ public class Timer : MonoBehaviour
     bool EnableTimer = false;
     public GameObject TimeText;
 
+    public static bool RankSave;
+
     private void Start()
     {
         EnableTimer = true;
         ElapsedTime = 0;
         ClearTime = 0;
+        RankSave = false;
     }
 
     private void Update()
@@ -36,6 +39,7 @@ public class Timer : MonoBehaviour
         if (Goal.TimeStop == true)
         {
             ClearTime = ElapsedTime;
+            RankSave = true;
             EnableTimer = false;
         }
     }

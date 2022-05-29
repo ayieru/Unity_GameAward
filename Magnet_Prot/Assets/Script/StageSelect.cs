@@ -6,8 +6,13 @@ using UnityEngine.SceneManagement;
 
 public class StageSelect : MonoBehaviour
 {
+    const int STAGE_TAX = 20;
+
     [Header("ステージID(text)")]
     public Text StageIDText;
+
+    [Header("クリアランク(text)")]
+    public Text ClearRankText;
 
     [Header("ステージの画像を格納する配列")]
     public Image[] StageButton;
@@ -15,7 +20,17 @@ public class StageSelect : MonoBehaviour
     [Header("選択中のステージの要素番号")]
     public static int SelectID = 0;//1-1
 
+    [Header("各ステージのクリアランク")]
+    public static int[] StageClearRank;
+
     private float BeforeHorizintal;
+    private bool IsCallOnce;
+
+    [RuntimeInitializeOnLoadMethod()]
+    private static void Initialize()
+    {
+        StageClearRank = new int[STAGE_TAX];
+    }
 
     void Start()
     {
@@ -25,6 +40,7 @@ public class StageSelect : MonoBehaviour
         StageIDChange();
 
         StageButton[SelectID].gameObject.SetActive(true);
+        DisplayClearRank();
 
     }
 
@@ -77,6 +93,8 @@ public class StageSelect : MonoBehaviour
 
         //IDテキスト変更
         StageIDChange();
+
+        DisplayClearRank();
     }
 
     //画像切り替え:右
@@ -100,6 +118,35 @@ public class StageSelect : MonoBehaviour
 
         //IDテキスト変更
         StageIDChange();
+
+        DisplayClearRank();
     }
+
+    //クリアランクを表示する
+    private void DisplayClearRank()
+    {
+        if (StageClearRank[SelectID] == 1)
+        {
+            ClearRankText.GetComponent<Text>().text = "S";
+        }
+        else if (StageClearRank[SelectID] == 2)
+        {
+            ClearRankText.GetComponent<Text>().text = "A";
+        }
+        else if (StageClearRank[SelectID] == 3)
+        {
+            ClearRankText.GetComponent<Text>().text = "B";
+        }
+        else if(StageClearRank[SelectID] == 4)
+        {
+            ClearRankText.GetComponent<Text>().text = "C";
+        }
+        else
+        {
+            ClearRankText.GetComponent<Text>().text = "";
+
+        }
+    }
+
 
 }
