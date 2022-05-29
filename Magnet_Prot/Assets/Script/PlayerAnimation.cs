@@ -70,7 +70,7 @@ public class PlayerAnimation : MonoBehaviour
             return;
         }
 
-        if(PlayerObj.GetPlayerState() != Player.State.Normal)
+        if (PlayerObj.GetPlayerState() != Player.State.Normal)
         {
             return;
         }
@@ -214,7 +214,8 @@ public class PlayerAnimation : MonoBehaviour
             }
         }
 
-        if (collision.gameObject.CompareTag("OnMetal"))
+        if (collision.gameObject.CompareTag("MagnetGround")
+    || collision.gameObject.CompareTag("IronGround"))
         {
             PlayerObj.SetWallJump(false);
 
@@ -234,7 +235,8 @@ public class PlayerAnimation : MonoBehaviour
             PlayerAnim.Play("Climbing", (int)CurrentLayer);
         }
 
-        if (collision.gameObject.CompareTag("OnMetal"))
+        if (collision.gameObject.CompareTag("MagnetGround")
+    || collision.gameObject.CompareTag("IronGround"))
         {
             OnMetalJudge = true;
         }
@@ -250,7 +252,8 @@ public class PlayerAnimation : MonoBehaviour
             }
         }
 
-        if (collision.gameObject.CompareTag("OnMetal"))
+        if (collision.gameObject.CompareTag("MagnetGround")
+            || collision.gameObject.CompareTag("IronGround"))
         {
             OnMetalJudge = false;
         }
