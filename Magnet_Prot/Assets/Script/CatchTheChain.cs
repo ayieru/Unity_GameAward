@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class CatchTheChain : MonoBehaviour
 {
-    //キャラクターの到達点
-    [SerializeField]
-    private Transform ArrivalPoint;
-
     private MoveChain ChainObj;
 
     void Start()
@@ -19,7 +15,7 @@ public class CatchTheChain : MonoBehaviour
     {
         Player player = collision.GetComponent<Player>();
 
-            if (collision.tag == "Player"
+            if (collision.gameObject.CompareTag("Player")
             && player.GetPlayerState() != Player.State.CatchChain
             && player.GetPlayerState() != Player.State.ReleaseChain)
             {
@@ -45,10 +41,5 @@ public class CatchTheChain : MonoBehaviour
 
             ChainObj.SetChainDirection((int)player.GetDirectionX());
         }
-    }
-
-    public Vector3 GetArrivalPoint()
-    {
-        return ArrivalPoint.localPosition;
     }
 }

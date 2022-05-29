@@ -12,8 +12,12 @@ TagManager:
   - Thorn
   - SavePoint
   - MagnetBlock
+  - Wood
+  - Chain
+  - OnMetal
   - MagnetGround
   - IronGround
+  - Goal
   layers:
   - Default
   - TransparentFX

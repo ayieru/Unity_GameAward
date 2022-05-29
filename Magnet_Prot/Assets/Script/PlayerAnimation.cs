@@ -19,11 +19,13 @@ public class PlayerAnimation : MonoBehaviour
 
     private AnimationLayer CurrentLayer = AnimationLayer.Player_Red;
 
-    private bool OnMetalJudge = false;
+    private bool SpecialFloor = false;
 
     private bool GameClear = false;
 
     private bool GameOver = false;
+
+    private bool HitBlockFloor = false;
 
     void Start()
     {
@@ -33,7 +35,7 @@ public class PlayerAnimation : MonoBehaviour
 
         CurrentLayer = AnimationLayer.Player_Red;
 
-        OnMetalJudge = false;
+        SpecialFloor = false;
 
         GameClear = false;
 
@@ -69,12 +71,7 @@ public class PlayerAnimation : MonoBehaviour
 
             return;
         }
-
-        if (PlayerObj.GetPlayerState() != Player.State.Normal)
-        {
-            return;
-        }
-
+        
         if (PlayerObj.GetHitJagde())//壁を登る時
         {
             PlayerAnim.Play("Climbing", (int)CurrentLayer);
@@ -96,10 +93,12 @@ public class PlayerAnimation : MonoBehaviour
             if (PlayerObj.GetNormalJump() || PlayerObj.GetWallJump())
             {
                 PlayerAnim.Play("Jump", (int)CurrentLayer);
+
                 return;
             }
 
-            if (!PlayerObj.IsJump() && !OnMetalJudge)//空中で磁石に引き寄せられている時or落下してる時
+            //↓これだと一瞬だけAttractionになる
+            if (!PlayerObj.IsJump() && !SpecialFloor)//空中で磁石に引き寄せられている時or落下してる時
             {
                 PlayerAnim.speed = 1.0f;
 
@@ -141,6 +140,8 @@ public class PlayerAnimation : MonoBehaviour
 
     public bool GetGameOver() { return GameOver; }
 
+    public void SetSpecialFloor(bool enable) { SpecialFloor = enable; }
+
     private void CheckFunction_Debug()
     {
         Debug.Log("通常ジャンプは？：" + PlayerObj.GetNormalJump());
@@ -177,21 +178,9 @@ public class PlayerAnimation : MonoBehaviour
     }
 
     /// <summary>
-    /// プレイヤーの極切り替えの際のアニメーションレイヤー変更
-    /// </summary>
-    /// <param name="nextLayer">切り替え後のレイヤー</param>
-    /// <param name="nextAnimationName">切り替え先のアニメーション名</param>
-    public void MagnetChange(AnimationLayer nextLayer, string nextAnimationName)
-    {
-        MagnetChange(nextLayer);
-
-        PlayerAnim.Play(nextAnimationName, (int)nextLayer);
-    }
-
-    /// <summary>
     /// unity側でジャンプ再生が終わったら呼び出す関数として使用する
     /// </summary>
-    public void JumpFinish()
+    public void AnimationStop()
     {
         PlayerAnim.speed = 0;//停止
     }
@@ -214,8 +203,8 @@ public class PlayerAnimation : MonoBehaviour
             }
         }
 
-        if (collision.gameObject.CompareTag("MagnetGround")
-    || collision.gameObject.CompareTag("IronGround"))
+        if (collision.gameObject.CompareTag("MagnetGround") ||
+            collision.gameObject.CompareTag("IronGround"))
         {
             PlayerObj.SetWallJump(false);
 
@@ -223,11 +212,21 @@ public class PlayerAnimation : MonoBehaviour
 
             PlayerObj.SetPlayerState(Player.State.Normal);
         }
+
+        if(collision.gameObject.CompareTag("Goal"))
+        {
+            GameClear = true;
+        }
+
+        if (collision.gameObject.CompareTag("Bock") ||
+            collision.gameObject.CompareTag("Floor"))
+        {
+            HitBlockFloor = true;
+        }
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        //簡易的に鉄を実装
         if (collision.gameObject.CompareTag("Iron") ||
             collision.gameObject.CompareTag("NPole") ||
             collision.gameObject.CompareTag("SPole"))
@@ -238,7 +237,7 @@ public class PlayerAnimation : MonoBehaviour
         if (collision.gameObject.CompareTag("MagnetGround")
     || collision.gameObject.CompareTag("IronGround"))
         {
-            OnMetalJudge = true;
+            SpecialFloor = true;
         }
     }
 
@@ -255,7 +254,13 @@ public class PlayerAnimation : MonoBehaviour
         if (collision.gameObject.CompareTag("MagnetGround")
             || collision.gameObject.CompareTag("IronGround"))
         {
-            OnMetalJudge = false;
+            SpecialFloor = false;
+        }
+
+        if (collision.gameObject.CompareTag("Bock") ||
+            collision.gameObject.CompareTag("Floor"))
+        {
+            HitBlockFloor = false;
         }
     }
 }

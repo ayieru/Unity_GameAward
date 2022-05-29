@@ -103,22 +103,27 @@ public class Player : MagnetManager
 
     void Update()
     {
+        if (PlayerAnim.GetGameClear() || PlayerAnim.GetGameOver())
+        {
+            return;
+        }
+
+        Debug.Log("IsGroundは？:" + IsGround);
+
+        Debug.Log("IsFootFieldは？:" + IsFootField);
+
         Vector3 localScale = transform.localScale;
 
         if (PlayerState == State.Normal)
         {
             HorizontalKey = Input.GetAxisRaw("Horizontal");
             VerticalKey = Input.GetAxisRaw("Vertical");  // 縦入力反応変数
-            float XSpeed = 0.0f;
-            float YSpeed = 0.0f;                            // 縦移動のスピード変数
 
             if (HitJagde)
             {
                 // 縦入力反応処理
                 if (VerticalKey > 0)
                 {
-                    YSpeed = Speed * 2.0f;
-
                     Rb.velocity = new Vector2(0.0f, Speed);
                 }
                 else if (VerticalKey < 0)
@@ -138,8 +143,6 @@ public class Player : MagnetManager
                 //横入力反応処理
                 if (HorizontalKey > 0)
                 {
-                    XSpeed = Speed;
-
                     Rb.velocity = new Vector2(Speed, Rb.velocity.y);
 
                     DirectionX = (int)PlayerDirection.Right;
@@ -150,8 +153,6 @@ public class Player : MagnetManager
                 }
                 else if (HorizontalKey < 0)
                 {
-                    XSpeed = -Speed;
-
                     Rb.velocity = new Vector2(-Speed, Rb.velocity.y);
 
                     DirectionX = (int)PlayerDirection.Left;
@@ -204,32 +205,14 @@ public class Player : MagnetManager
                     Pole = Magnet_Pole.N;
                     Debug.Log("極切り替え：S → N");
 
-                    if (MagnetHitCount >= 1)//磁石の側面に触れている時用にも対応
-                    {
-                        PlayerAnim.MagnetChange(PlayerAnimation.AnimationLayer.Player_Red, "Attraction");
-
-                        MagnetHitCount = 0;
-                    }
-                    else
-                    {
-                        PlayerAnim.MagnetChange(PlayerAnimation.AnimationLayer.Player_Red);
-                    }
+                    PlayerAnim.MagnetChange(PlayerAnimation.AnimationLayer.Player_Red);
                 }
                 else
                 {
                     Pole = Magnet_Pole.S;
                     Debug.Log("極切り替え：N → S");
 
-                    if (MagnetHitCount >= 1)
-                    {
-                        PlayerAnim.MagnetChange(PlayerAnimation.AnimationLayer.Player_Blue, "Idle");
-
-                        MagnetHitCount = 0;
-                    }
-                    else
-                    {
-                        PlayerAnim.MagnetChange(PlayerAnimation.AnimationLayer.Player_Blue);
-                    }
+                    PlayerAnim.MagnetChange(PlayerAnimation.AnimationLayer.Player_Blue);
                 }
             }
         }
@@ -238,23 +221,7 @@ public class Player : MagnetManager
             if (Input.GetButtonDown("Jump"))
             {
                 SetPlayerState(State.ReleaseChain);
-
-                Rb.simulated = true;
-
-                PlayerAnim.MagnetChange(PlayerAnim.GetCurrentLayer(), "Jump");
-
-                NormalJump = true;
             }
-            if (transform.localPosition != ChainObj.GetArrivalPoint())
-            {
-                //滑らかに決められた位置に移動させる
-                //transform.localPosition = Vector3.Lerp(transform.localPosition, ChainObj.GetArrivalPoint(), SpeedToRope * Time.deltaTime);
-            }
-
-            PlayerAnim.MagnetChange(PlayerAnim.GetCurrentLayer(), "Idle");
-
-            NormalJump = false;
-
         }
         else if (PlayerState == State.ReleaseChain)
         {
@@ -311,7 +278,7 @@ public class Player : MagnetManager
     /// 地面or足場と触れているかの判定
     /// </summary>
     /// <returns></returns>
-    public bool IsJump() { return (IsGround == true || IsFootField == true); }
+    public bool IsJump() { return IsGround == true || IsFootField == true; }
 
     public void SetPlayerState(State state, CatchTheChain catchTheChain = null)
     {
@@ -331,10 +298,23 @@ public class Player : MagnetManager
             transform.localRotation = Quaternion.Euler(0.0f, rot, 0.0f);
 
             SetCatchTheChain(catchTheChain);
+
+            //アニメーションの切り替え
+            HitJagde = true;
+
+            NormalJump = false;
+
+            WallJump = false;
         }
         else if (PlayerState == State.ReleaseChain)
         {
-            transform.SetParent(null);
+            Rb.simulated = true;
+
+            HitJagde = false;
+
+            NormalJump = true;
+
+            transform.SetParent(null);//親子付け解除
 
             Rb.SetRotation(0.0f);
 
@@ -472,6 +452,18 @@ public class Player : MagnetManager
 
             WallJump = false;
         }
+
+        if (collision.gameObject.CompareTag("Floor"))
+        {
+            SetPlayerState(State.Normal);
+            IsGround = true;
+        }
+
+        if (collision.gameObject.CompareTag("Block"))
+        {
+            SetPlayerState(State.Normal);
+            IsFootField = true;
+        }
     }
 
     // 離れたら処理が動く
@@ -514,8 +506,6 @@ public class Player : MagnetManager
         if (collision.gameObject.CompareTag("Block"))
         {
             IsFootField = false;
-
-            Debug.Log(IsFootField);
         }
     }
 
