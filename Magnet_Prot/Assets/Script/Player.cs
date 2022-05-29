@@ -8,7 +8,7 @@ public class Player : MagnetManager
     public class AudioClips
     {
         public float Volume = 0.0f;
-        public AudioClip audioClips;
+        public AudioClip[] audioClips;
     }
     public enum State
     {
@@ -23,7 +23,7 @@ public class Player : MagnetManager
     }
 
     [Header("切り替えのSE")]
-    public AudioClips ListAudioClips = new AudioClips();
+    [SerializeField] List<AudioClips> ListAudioClips = new List<AudioClips>();
 
     [Header("テンポを一定にするかどうか")]
     [SerializeField] bool RandomizePitch = true;
@@ -213,6 +213,11 @@ public class Player : MagnetManager
                         NormalJump = true;
                     }
                 }
+                AudioClip[] clips = ListAudioClips[1].audioClips;
+                float SoundVolume = ListAudioClips[1].Volume;
+                // テンポを毎回ランダムにして自然に近い感じにする
+                if (RandomizePitch) Source.pitch = 1.0f + Random.Range(-PitchRange, PitchRange);
+                Source.PlayOneShot(clips[0], SoundVolume);
             }
 
             //極切り替え
@@ -251,11 +256,11 @@ public class Player : MagnetManager
                     }
                 }
 
-                AudioClip clips = ListAudioClips.audioClips;
-                float SoundVolume = ListAudioClips.Volume;
+                AudioClip[] clips = ListAudioClips[0].audioClips;
+                float SoundVolume = ListAudioClips[0].Volume;
                 // テンポを毎回ランダムにして自然に近い感じにする
                 if (RandomizePitch) Source.pitch = 1.0f + Random.Range(-PitchRange, PitchRange);
-                Source.PlayOneShot(clips, SoundVolume);
+                Source.PlayOneShot(clips[0], SoundVolume);
             }
         }
         else if (PlayerState == State.CatchChain)
