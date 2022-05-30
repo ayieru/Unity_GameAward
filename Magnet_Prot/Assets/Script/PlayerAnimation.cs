@@ -18,6 +18,9 @@ public class PlayerAnimation : MonoBehaviour
     [SerializeField]
     private bool GameOver = false;
 
+    [SerializeField]
+    private bool ResultGameClear = false;
+
     private Animator PlayerAnim;
 
     private AnimatorStateInfo StateInfo;
@@ -59,10 +62,15 @@ public class PlayerAnimation : MonoBehaviour
     {
         CheckFunction_Debug();
 
-        if (GameClear)
+        if (ResultGameClear)
         {
             PlayerAnim.Play("Goal", (int)CurrentLayer);
 
+            return;
+        }
+
+        if (GameClear)
+        {
             return;
         }
 
@@ -212,11 +220,6 @@ public class PlayerAnimation : MonoBehaviour
 
             PlayerObj.SetPlayerState(Player.State.Normal);
         }
-
-        if (collision.gameObject.CompareTag("Goal"))
-        {
-            GameClear = true;
-        }
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -255,6 +258,14 @@ public class PlayerAnimation : MonoBehaviour
             collision.gameObject.CompareTag("Floor"))
         {
             HitBlockFloor = false;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Goal"))
+        {
+            GameClear = true;
         }
     }
 }
