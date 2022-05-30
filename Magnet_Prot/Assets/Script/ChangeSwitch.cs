@@ -62,7 +62,7 @@ public class ChangeSwitch : MonoBehaviour
             }
 
             SoundStart();
-            SpRen = PushSwitch;
+            GetComponent<SpriteRenderer>().sprite = PushSwitch;
 
             Push = true;
         }
