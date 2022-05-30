@@ -1390,7 +1390,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5200208854478397848, guid: 219f8b020f074ba4cab17e5c192d1fb3, type: 3}
       propertyPath: GameClear
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5200208854478397848, guid: 219f8b020f074ba4cab17e5c192d1fb3, type: 3}
       propertyPath: ResultGameClear
