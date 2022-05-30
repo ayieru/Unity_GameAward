@@ -17,6 +17,11 @@ public class StageSelect : MonoBehaviour
     [Header("ステージの画像を格納する配列")]
     public Image[] StageButton;
 
+    [Header("SE：選択")]
+    public AudioClip SeSelect;
+    [Header("SE：決定")]
+    public AudioClip SeDecision;
+
     [Header("選択中のステージの要素番号")]
     public static int SelectID = 0;//1-1
 
@@ -24,7 +29,7 @@ public class StageSelect : MonoBehaviour
     public static int[] StageClearRank;
 
     private float BeforeHorizintal;
-    private bool IsCallOnce;
+    AudioSource audioSource;
 
     [RuntimeInitializeOnLoadMethod()]
     private static void Initialize()
@@ -42,25 +47,35 @@ public class StageSelect : MonoBehaviour
         StageButton[SelectID].gameObject.SetActive(true);
         DisplayClearRank();
 
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
     {
-        //コマンドが押されたら、該当するステージを開始する
-        if (Input.GetButtonDown("Jump") || Input.GetButtonDown("Action"))
+        //該当するステージを開始する
+        if (Input.GetButtonDown("Jump"))
         {
+            audioSource.PlayOneShot(SeDecision);
             FadeManager.FadeOut(StageButton[SelectID].gameObject.name);
-            
+
+        }
+
+        //タイトルへ戻る
+        if (Input.GetKeyDown(KeyCode.Escape) == true || Input.GetButtonDown("Action"))
+        {
+            FadeManager.FadeOut("Title");
         }
 
         //横入力反応処理：前フレームの入力値が0の場合のみ
         if (Input.GetAxisRaw("Horizontal") > 0 && BeforeHorizintal == 0.0)
         {
             MoveRight();
+            audioSource.PlayOneShot(SeSelect);
         }
         else if (Input.GetAxisRaw("Horizontal") < 0 && BeforeHorizintal == 0.0)
         {
             MoveLeft();
+            audioSource.PlayOneShot(SeSelect);
         }
 
         BeforeHorizintal = Input.GetAxisRaw("Horizontal");
@@ -137,14 +152,13 @@ public class StageSelect : MonoBehaviour
         {
             ClearRankText.GetComponent<Text>().text = "B";
         }
-        else if(StageClearRank[SelectID] == 4)
+        else if (StageClearRank[SelectID] == 4)
         {
             ClearRankText.GetComponent<Text>().text = "C";
         }
         else
         {
             ClearRankText.GetComponent<Text>().text = "";
-
         }
     }
 
