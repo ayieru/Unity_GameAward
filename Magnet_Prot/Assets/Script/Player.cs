@@ -122,6 +122,12 @@ public class Player : MagnetManager
 
     void Update()
     {
+        //ポーズ画面でキャラが動かないようにするために必要な処理です
+        if (Mathf.Approximately(Time.timeScale, 0f))
+        {
+            return;
+        }
+
         if (PlayerAnim.GetGameClear() || PlayerAnim.GetGameOver())
         {
             return;
