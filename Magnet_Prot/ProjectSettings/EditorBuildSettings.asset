@@ -5,10 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Title.unity
     guid: 134ac373907c2c84e928b8f1268a9ddd
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/StageSelect.unity
     guid: ee485e3bb484e994da533a36b1bdfeda
   - enabled: 1
@@ -32,7 +32,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/ArakawaStage.unity
     guid: a0dcc1331218c6d4a905c486560a6dc6
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Result.unity
     guid: 6901fd2eee4d9c74ba938fb7e97acf44
   - enabled: 1

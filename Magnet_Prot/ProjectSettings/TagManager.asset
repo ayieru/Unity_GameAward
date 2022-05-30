@@ -12,10 +12,11 @@ TagManager:
   - Block
   - MagnetBlock
   - Chain
-  - NPole
+  - OnMetal
   - MagnetGround
-  - Thorn
   - Goal
+  - NPole
+  - Thorn
   - SPole
   layers:
   - Default
