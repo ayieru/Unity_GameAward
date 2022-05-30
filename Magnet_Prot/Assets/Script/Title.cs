@@ -8,6 +8,11 @@ public class Title : MonoBehaviour
 {
     private GameObject Startbutton;
 
+    [Header("SE：決定")]
+    public AudioClip SeDecision;
+
+    AudioSource audioSource;
+
     void Start()
     {
         FadeManager.FadeIn();
@@ -16,11 +21,15 @@ public class Title : MonoBehaviour
         //Startボタンが選択された状態にする
         Button button = Startbutton.GetComponent<Button>();
         button.Select();
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     //ゲーム開始処理
     public void GameStart()
     {
+        audioSource.PlayOneShot(SeDecision);
+
         //ステージセレクトシーンへ移動
         FadeManager.FadeOut("StageSelect");
     }

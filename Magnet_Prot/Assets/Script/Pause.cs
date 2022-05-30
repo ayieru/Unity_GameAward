@@ -83,7 +83,6 @@ public class Pause : MonoBehaviour
     //ゲームに戻る処理
     public void Resume()
     {
-
         audioSource.PlayOneShot(SeDecision);
 
         //ポーズ終了
