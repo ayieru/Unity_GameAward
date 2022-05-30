@@ -150,8 +150,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ListAudioClips:
-    Volume: 0.5
-    audioClips: {fileID: 8300000, guid: b054605d9d0c6484db7676ba7952fc16, type: 3}
+  - Volume: 0.5
+    audioClips:
+    - {fileID: 8300000, guid: b054605d9d0c6484db7676ba7952fc16, type: 3}
+  - Volume: 0.5
+    audioClips:
+    - {fileID: 8300000, guid: c24aacf3ad8052a4190779f1c231e649, type: 3}
   RandomizePitch: 1
   PitchRange: 0.1
   Pole: 1
@@ -318,11 +322,16 @@ MonoBehaviour:
     audioClips:
     - {fileID: 8300000, guid: 9fdbb34cfea72704d980f908b2c32323, type: 3}
   - Volume: 0.4
-    TypeTag: OnMetal
+    TypeTag: MagnetGround
     audioClips:
     - {fileID: 8300000, guid: f188be7d424b9f447877065e588d74a8, type: 3}
+  - Volume: 0.4
+    TypeTag: IronGround
+    audioClips:
+    - {fileID: 8300000, guid: 0cc8a9fa539e2834ca03f0ac9c0996e2, type: 3}
   RandomizePitch: 1
   PitchRange: 0.1
+  On: 0
 --- !u!1 &6460900677209814641
 GameObject:
   m_ObjectHideFlags: 0

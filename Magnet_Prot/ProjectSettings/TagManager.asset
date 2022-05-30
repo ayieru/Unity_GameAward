@@ -4,23 +4,20 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Iron
-  - NPole
-  - SPole
-  - Block
-  - Floor
-  - Thorn
   - SavePoint
-  - MagnetBlock
+  - Floor
   - Wood
+  - Iron
+  - IronGround
+  - Block
+  - MagnetBlock
   - Chain
   - OnMetal
   - MagnetGround
-  - IronGround
-  - Wood
-  - Chain
-  - OnMetal
   - Goal
+  - NPole
+  - Thorn
+  - SPole
   layers:
   - Default
   - TransparentFX
