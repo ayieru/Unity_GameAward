@@ -178,10 +178,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsLast: 0
-  S: 10
-  A: 20
-  B: 30
-  C: 50
+  S: 60
+  A: 90
+  B: 120
+  C: 150
   ClearUI: {fileID: 6276192711129248840}
 --- !u!114 &4414374200142043881
 MonoBehaviour:
@@ -195,6 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ac606dcb4631764c913107ebac8e2db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LimitTime: 300
   TimeText: {fileID: 99661012561267794}
 --- !u!61 &6276192710912613653
 BoxCollider2D:
