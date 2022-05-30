@@ -53,7 +53,6 @@ public class Magnet : MagnetManager
 
         child0 = transform.GetChild(0).gameObject;
 
-        spRen = GetComponent<SpriteRenderer>().sprite;
         dis = Vector2.Distance(transform.position, player.transform.position);
 
         currentPole = Pole;
@@ -83,11 +82,11 @@ public class Magnet : MagnetManager
 
         if (Pole == Magnet_Pole.N)
         {
-            spRen = N_Magnet;
+            GetComponent<SpriteRenderer>().sprite = N_Magnet;
         }
         else
         {
-            spRen = S_Magnet;
+            GetComponent<SpriteRenderer>().sprite = S_Magnet;
         }
     }
 
