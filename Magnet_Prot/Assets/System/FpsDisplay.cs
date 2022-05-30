@@ -38,7 +38,9 @@ public class FpsDisplay : MonoBehaviour
 
     private void OnGUI()
     {
+#if UNITY_EDITOR
         GUI.skin.label.fontSize = FontSize;
         GUILayout.Label(fps.ToString("f1") + "fps");
+#endif
     }
 }
