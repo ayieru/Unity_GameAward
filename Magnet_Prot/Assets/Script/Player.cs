@@ -128,7 +128,7 @@ public class Player : MagnetManager
             return;
         }
 
-        if (PlayerAnim.GetGameClear() || PlayerAnim.GetGameOver())
+        if (PlayerAnim.GetResultGameClear() || PlayerAnim.GetGameOver())
         {
             return;
         }

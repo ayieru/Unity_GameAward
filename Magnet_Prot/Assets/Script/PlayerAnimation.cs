@@ -10,14 +10,11 @@ public class PlayerAnimation : MonoBehaviour
         Player_Blue = 1,
     }
 
-    [Header("ゲームクリアフラグ(リザルトシーンで使用)")]
-    [SerializeField]
-    private bool GameClear = false;
-
     [Header("ゲームオーバーフラグ(リザルトシーンで使用)")]
     [SerializeField]
     private bool GameOver = false;
 
+    [Header("ゲームクリアフラグ(リザルトシーンで使用)")]
     [SerializeField]
     private bool ResultGameClear = false;
 
@@ -30,8 +27,6 @@ public class PlayerAnimation : MonoBehaviour
     private AnimationLayer CurrentLayer = AnimationLayer.Player_Red;
 
     private bool SpecialFloor = false;
-
-    private bool HitBlockFloor = false;
 
     void Start()
     {
@@ -66,11 +61,6 @@ public class PlayerAnimation : MonoBehaviour
         {
             PlayerAnim.Play("Goal", (int)CurrentLayer);
 
-            return;
-        }
-
-        if (GameClear)
-        {
             return;
         }
 
@@ -141,9 +131,9 @@ public class PlayerAnimation : MonoBehaviour
         }
     }
 
-    public void SetGameClear(bool enable) { GameClear = enable; }
+    public void SetResultGameClear(bool enable) { ResultGameClear = enable; }
 
-    public bool GetGameClear() { return GameClear; }
+    public bool GetResultGameClear() { return ResultGameClear; }
 
     public void SetGameOver(bool enable) { GameOver = enable; }
 
@@ -207,8 +197,6 @@ public class PlayerAnimation : MonoBehaviour
             PlayerObj.SetNormalJump(false);
 
             PlayerObj.SetWallJump(false);
-
-            HitBlockFloor = true;
         }
 
         if (collision.gameObject.CompareTag("MagnetGround") ||
@@ -253,19 +241,13 @@ public class PlayerAnimation : MonoBehaviour
         {
             SpecialFloor = false;
         }
-
-        if (collision.gameObject.CompareTag("Block") ||
-            collision.gameObject.CompareTag("Floor"))
-        {
-            HitBlockFloor = false;
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Goal"))
         {
-            GameClear = true;
+            ResultGameClear = true;
         }
     }
 }
