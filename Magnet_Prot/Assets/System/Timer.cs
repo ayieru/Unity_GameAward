@@ -40,7 +40,7 @@ public class Timer : MonoBehaviour
         ElapsedTime += Time.deltaTime;
 
         //制限時間を表示
-        TimeText.GetComponent<Text>().text = LimitTime.ToString("N2");
+        TimeText.GetComponent<Text>().text = LimitTime.ToString("f0");
 
         if(LimitTime<=0.0f)
         {
