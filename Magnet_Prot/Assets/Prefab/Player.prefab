@@ -150,9 +150,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ListAudioClips:
-  - Volume: 0.5
+  - Volume: 0.25
     audioClips:
-    - {fileID: 8300000, guid: b054605d9d0c6484db7676ba7952fc16, type: 3}
+    - {fileID: 8300000, guid: e9f9ab7717dc7cb4297629089e282ac3, type: 3}
   - Volume: 0.5
     audioClips:
     - {fileID: 8300000, guid: c24aacf3ad8052a4190779f1c231e649, type: 3}
@@ -177,6 +177,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69ad2b88520f98349b96b38d7a6b52ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GameClear: 0
+  GameOver: 0
 --- !u!95 &6460900676407027899
 Animator:
   serializedVersion: 3
