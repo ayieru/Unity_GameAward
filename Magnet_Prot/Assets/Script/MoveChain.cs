@@ -8,20 +8,24 @@ public class MoveChain : MonoBehaviour
     [SerializeField]
     private float RoundTripTime = 5.0f;
 
-    [Header("Z軸で振り子をする角度(初期の限界値)")]
+    [Header("プレイヤーが掴まってる時の動く角度")]
     [SerializeField]
-    private float MaxAngle = 90.0f;
+    private float EventAngle = 90.0f;
+
+    [Header("掴まってない時の動く角度")]
+    [SerializeField]
+    private float NormalAngle = 10.0f;
 
     [Header("ロープを元の位置に戻すスピード")]
     [SerializeField]
     private float UndoSpeed = 2.0f;
 
-    [Header("ロープが動いているか")]
-    [SerializeField]
-    private bool MoveFlag = false;
+    private float MaxAngle;
 
     private float DefaultMaxAngle;
-
+    
+    private bool MoveFlag = true;
+    
     //進んでいる方向
     private int ChainDirection = 1;
 
@@ -39,14 +43,15 @@ public class MoveChain : MonoBehaviour
 
         DefaultMaxAngle = MaxAngle;
 
-        MoveFlag = false;
+        MaxAngle = NormalAngle;
+
+        MoveFlag = true;
 
         UndoDirection = ChainDirection;
     }
     
     void FixedUpdate()
     {
-        
         if (MoveFlag)//ロープを掴んでいる時のロープの動き
         {
             //経過時間に合わせた割合を計算
@@ -56,15 +61,14 @@ public class MoveChain : MonoBehaviour
             Angle = Mathf.SmoothStep(Angle, ChainDirection * MaxAngle, t);
 
             //角度を変更
-            transform.localEulerAngles = new Vector3(0f, 0f, Angle);
+            transform.localEulerAngles = new Vector3(0.0f, 0.0f, Angle);
 
             //角度が指定した角度と1度の差になったら反転
-            if (Mathf.Abs(Mathf.DeltaAngle(Angle, ChainDirection * MaxAngle)) < 1f)
+            if (Mathf.Abs(Mathf.DeltaAngle(Angle, ChainDirection * MaxAngle)) < 1.0f)
             {
                 ChainDirection *= -1;
                 StartTime = Time.time;
-            }
-            
+            }            
         }
         else//ロープを離している時
         {
@@ -73,7 +77,7 @@ public class MoveChain : MonoBehaviour
             {
 
                 //　徐々に限界角度を小さくする
-                if (MaxAngle > 0f)
+                if (MaxAngle > NormalAngle)
                 {
                     MaxAngle -= UndoSpeed * Time.deltaTime;
                 }
@@ -85,14 +89,20 @@ public class MoveChain : MonoBehaviour
                 Angle = Mathf.SmoothStep(Angle, UndoDirection * MaxAngle, t);
 
                 //　角度を変更
-                transform.localEulerAngles = new Vector3(0f, 0f, Angle);
+                transform.localEulerAngles = new Vector3(0.0f, 0.0f, Angle);
 
                 //　角度が指定した角度と1度の差になったら反転
-                if (Mathf.Abs(Mathf.DeltaAngle(Angle, UndoDirection * MaxAngle)) < 1f)
+                if (Mathf.Abs(Mathf.DeltaAngle(Angle, UndoDirection * MaxAngle)) < 1.0f)
                 {
                     UndoDirection *= -1;
                     StartTime = Time.time;
                 }
+            }
+            else
+            {
+                MaxAngle = NormalAngle;
+
+                MoveFlag = true;
             }
         }
     }
@@ -104,7 +114,6 @@ public class MoveChain : MonoBehaviour
     public void SetMoveFlag(bool enable)
     {
         MoveFlag = enable;
-        MaxAngle = DefaultMaxAngle;
         
         if (!MoveFlag)//ロープを離した時
         {
@@ -115,6 +124,8 @@ public class MoveChain : MonoBehaviour
         else//ロープを掴んだ時
         {
             StartTime = Time.time;
+
+            MaxAngle = EventAngle;
         }
     }
 

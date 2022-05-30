@@ -5,6 +5,10 @@ using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
+    [Header("制限時間")]
+    [SerializeField]
+    private float LimitTime = 300;
+
     [Header("経過時間")]
     private float ElapsedTime = 0;
 
@@ -31,10 +35,23 @@ public class Timer : MonoBehaviour
             return;
         }
 
+        LimitTime -= Time.deltaTime;
+
         ElapsedTime += Time.deltaTime;
 
-        //クリア時間を表示
-        TimeText.GetComponent<Text>().text = ElapsedTime.ToString("N2");
+        //制限時間を表示
+        TimeText.GetComponent<Text>().text = LimitTime.ToString("N2");
+
+        if(LimitTime<=0.0f)
+        {
+            LimitTime = 0.0f;
+
+            EnableTimer = false;
+
+            FadeManager.FadeOut("Over");
+
+            return;
+        }
 
         if (Goal.TimeStop == true)
         {

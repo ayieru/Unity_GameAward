@@ -5,6 +5,10 @@ using UnityEngine.UI;
 
 public class Result : MonoBehaviour
 {
+    [SerializeField]
+    [Header("最初に選択しておくボタン")]
+    private Button DefaultSelectButton;
+
     private GameObject NextStageButton;
     private GameObject SelectButton;
     private GameObject StageText;
@@ -27,7 +31,7 @@ public class Result : MonoBehaviour
         }
         else
         {
-            Button button = NextStageButton.GetComponent<Button>();
+            Button button = DefaultSelectButton.GetComponent<Button>();
             button.Select();
         }
 
