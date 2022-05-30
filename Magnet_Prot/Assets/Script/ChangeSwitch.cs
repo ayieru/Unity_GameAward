@@ -42,8 +42,7 @@ public class ChangeSwitch : MonoBehaviour
     {
         Push = false;// 踏まれたか
         Source = GetComponent<AudioSource>();
-        SpRen = GetComponent<SpriteRenderer>().sprite;
-        SpRen = Switch;
+        GetComponent<SpriteRenderer>().sprite = Switch;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -62,7 +61,7 @@ public class ChangeSwitch : MonoBehaviour
             }
 
             SoundStart();
-            SpRen = PushSwitch;
+            GetComponent<SpriteRenderer>().sprite = PushSwitch;
 
             Push = true;
         }
