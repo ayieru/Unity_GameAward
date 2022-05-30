@@ -16,6 +16,14 @@ public class Pause : MonoBehaviour
     [Header("現在のシーン")]
     private string NowScene;
 
+    [Header("SE：ポーズ")]
+    public AudioClip SePause;
+
+    [Header("SE：決定")]
+    public AudioClip SeDecision;
+
+    AudioSource audioSource;
+
     //ポーズ中か
     private bool Pauseflug = false;
     private bool CallOnce = false;
@@ -31,6 +39,8 @@ public class Pause : MonoBehaviour
 
         //現在のシーン名を取得
         NowScene = SceneManager.GetActiveScene().name;
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -56,6 +66,7 @@ public class Pause : MonoBehaviour
     //ポーズ処理
     public void PauseNow()
     {
+        audioSource.PlayOneShot(SePause);
 
         //ゲーム内の時間を停止する
         Time.timeScale = 0;
@@ -72,6 +83,9 @@ public class Pause : MonoBehaviour
     //ゲームに戻る処理
     public void Resume()
     {
+
+        audioSource.PlayOneShot(SeDecision);
+
         //ポーズ終了
         Pauseflug = false;
         CallOnce = false;
@@ -86,6 +100,8 @@ public class Pause : MonoBehaviour
     //リトライ処理
     public void Retry()
     {
+        audioSource.PlayOneShot(SeDecision);
+
         //一度ゲームに戻る処理を行う
         Resume();
 
@@ -97,6 +113,8 @@ public class Pause : MonoBehaviour
     //ステージセレクト処理
     public void StageSelect()
     {
+        audioSource.PlayOneShot(SeDecision);
+
         //一度ゲームに戻る処理を行う
         Resume();
 
