@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ListAudioClips:
-  - Volume: 0.25
+  - Volume: 0.39
     audioClips:
     - {fileID: 8300000, guid: e9f9ab7717dc7cb4297629089e282ac3, type: 3}
   - Volume: 0.5
@@ -327,7 +327,7 @@ MonoBehaviour:
     TypeTag: MagnetGround
     audioClips:
     - {fileID: 8300000, guid: f188be7d424b9f447877065e588d74a8, type: 3}
-  - Volume: 0.4
+  - Volume: 0.09
     TypeTag: IronGround
     audioClips:
     - {fileID: 8300000, guid: 0cc8a9fa539e2834ca03f0ac9c0996e2, type: 3}
