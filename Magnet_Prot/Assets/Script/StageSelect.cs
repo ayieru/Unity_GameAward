@@ -14,8 +14,16 @@ public class StageSelect : MonoBehaviour
     [Header("クリアランク(text)")]
     public Text ClearRankText;
 
+    [Header("タイトルへ戻るボタン")]
+    public Button ReturnButton;
+
     [Header("ステージの画像を格納する配列")]
     public Image[] StageButton;
+
+    [Header("SE：選択")]
+    public AudioClip SeSelect;
+    [Header("SE：決定")]
+    public AudioClip SeDecision;
 
     [Header("選択中のステージの要素番号")]
     public static int SelectID = 0;//1-1
@@ -25,6 +33,7 @@ public class StageSelect : MonoBehaviour
 
     private float BeforeHorizintal;
     private bool IsCallOnce;
+    AudioSource audioSource;
 
     [RuntimeInitializeOnLoadMethod()]
     private static void Initialize()
@@ -42,25 +51,39 @@ public class StageSelect : MonoBehaviour
         StageButton[SelectID].gameObject.SetActive(true);
         DisplayClearRank();
 
+        //ゲームに戻るボタンが選択された状態にする
+        Button button = ReturnButton.GetComponent<Button>();
+        button.Select();
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
     {
-        //コマンドが押されたら、該当するステージを開始する
-        if (Input.GetButtonDown("Jump") || Input.GetButtonDown("Action"))
+        //該当するステージを開始する
+        if (Input.GetButtonDown("Jump"))
         {
+            audioSource.PlayOneShot(SeDecision);
             FadeManager.FadeOut(StageButton[SelectID].gameObject.name);
-            
+
+        }
+
+        //タイトルへ戻る
+        if (Input.GetButtonDown("Action"))
+        {
+            FadeManager.FadeOut("Title");
         }
 
         //横入力反応処理：前フレームの入力値が0の場合のみ
         if (Input.GetAxisRaw("Horizontal") > 0 && BeforeHorizintal == 0.0)
         {
             MoveRight();
+            audioSource.PlayOneShot(SeSelect);
         }
         else if (Input.GetAxisRaw("Horizontal") < 0 && BeforeHorizintal == 0.0)
         {
             MoveLeft();
+            audioSource.PlayOneShot(SeSelect);
         }
 
         BeforeHorizintal = Input.GetAxisRaw("Horizontal");
@@ -137,16 +160,20 @@ public class StageSelect : MonoBehaviour
         {
             ClearRankText.GetComponent<Text>().text = "B";
         }
-        else if(StageClearRank[SelectID] == 4)
+        else if (StageClearRank[SelectID] == 4)
         {
             ClearRankText.GetComponent<Text>().text = "C";
         }
         else
         {
             ClearRankText.GetComponent<Text>().text = "";
-
         }
     }
 
+    //タイトルへ戻る処理
+    public void ReturnTitle()
+    {
+        FadeManager.FadeOut("Title");
+    }
 
 }
