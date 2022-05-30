@@ -14,9 +14,6 @@ public class StageSelect : MonoBehaviour
     [Header("クリアランク(text)")]
     public Text ClearRankText;
 
-    [Header("タイトルへ戻るボタン")]
-    public Button ReturnButton;
-
     [Header("ステージの画像を格納する配列")]
     public Image[] StageButton;
 
@@ -32,7 +29,6 @@ public class StageSelect : MonoBehaviour
     public static int[] StageClearRank;
 
     private float BeforeHorizintal;
-    private bool IsCallOnce;
     AudioSource audioSource;
 
     [RuntimeInitializeOnLoadMethod()]
@@ -51,10 +47,6 @@ public class StageSelect : MonoBehaviour
         StageButton[SelectID].gameObject.SetActive(true);
         DisplayClearRank();
 
-        //ゲームに戻るボタンが選択された状態にする
-        Button button = ReturnButton.GetComponent<Button>();
-        button.Select();
-
         audioSource = GetComponent<AudioSource>();
     }
 
@@ -69,7 +61,7 @@ public class StageSelect : MonoBehaviour
         }
 
         //タイトルへ戻る
-        if (Input.GetButtonDown("Action"))
+        if (Input.GetKeyDown(KeyCode.Escape) == true || Input.GetButtonDown("Action"))
         {
             FadeManager.FadeOut("Title");
         }
@@ -170,10 +162,5 @@ public class StageSelect : MonoBehaviour
         }
     }
 
-    //タイトルへ戻る処理
-    public void ReturnTitle()
-    {
-        FadeManager.FadeOut("Title");
-    }
 
 }
