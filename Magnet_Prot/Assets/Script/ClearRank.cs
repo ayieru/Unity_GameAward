@@ -12,12 +12,10 @@ public class ClearRank : MonoBehaviour
 
     private void Start()
     {
-        
         StageSelect.StageClearRank[Goal.CurrentStageIndex - 2] = Goal.Rank;
         Debug.Log(Timer.ClearTime);
 
         DisplayClearRank();
-
     }
 
     //クリアランクを表示する
