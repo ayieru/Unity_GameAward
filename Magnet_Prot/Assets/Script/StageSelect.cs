@@ -61,7 +61,7 @@ public class StageSelect : MonoBehaviour
         }
 
         //タイトルへ戻る
-        if (Input.GetKeyDown(KeyCode.Escape) == true || Input.GetButtonDown("Action"))
+        if (Input.GetKeyDown(KeyCode.Escape) == true || Input.GetButtonDown("Jump"))
         {
             FadeManager.FadeOut("Title");
         }
