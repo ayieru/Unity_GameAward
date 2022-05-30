@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerAnimation : MonoBehaviour
 {
@@ -57,14 +58,14 @@ public class PlayerAnimation : MonoBehaviour
     {
         CheckFunction_Debug();
 
-        if (ResultGameClear)
+        //↓の二つは遷移先で再生させる
+        if (ResultGameClear && SceneManager.GetActiveScene().name == "Result")
         {
             PlayerAnim.Play("Goal", (int)CurrentLayer);
 
             return;
         }
-
-        if (GameOver)
+        if (GameOver && SceneManager.GetActiveScene().name == "Over")
         {
             PlayerAnim.Play("GameOver", (int)CurrentLayer);
 
@@ -240,14 +241,6 @@ public class PlayerAnimation : MonoBehaviour
             || collision.gameObject.CompareTag("IronGround"))
         {
             SpecialFloor = false;
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Goal"))
-        {
-            ResultGameClear = true;
         }
     }
 }
