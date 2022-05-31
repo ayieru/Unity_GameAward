@@ -37,10 +37,6 @@ public class Goal : MonoBehaviour
     public static float TimeB;
     public static float TimeC;
 
-    private int WaitTime = 0;
-
-    private int MaxWaitTime = 1 * 60;
-
     public GameObject ClearUI;
 
     private bool IsCallOnce;
@@ -58,22 +54,15 @@ public class Goal : MonoBehaviour
         TimeB = B;
         TimeC = C;
         IsCallOnce = false;
-
-        WaitTime = 0;
     }
 
     private void Update()
     {
         if (TimeStop)
         {
-            WaitTime++;
-
-            if (WaitTime >= MaxWaitTime)
-            {
-                TimeStop = false;
-                Time.timeScale = 1;
-                FadeManager.FadeOut("Result");
-            }
+            TimeStop = false;
+            Time.timeScale = 1;
+            FadeManager.FadeOut("Result");
         }
 
         if (Timer.RankSave == true)

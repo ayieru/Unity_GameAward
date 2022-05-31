@@ -37,8 +37,11 @@ public class Player : MagnetManager
     [Header("移動速度")]
     [SerializeField] float Speed = 5.0f;
 
-    [Header("ジャンプ力")]
-    [SerializeField] float JumpPower = 10.0f;
+    [Header("通常ジャンプのパワー")]
+    [SerializeField] float NormalJumpPower = 10.0f;
+
+    [Header("壁ジャンプのパワー")]
+    [SerializeField] float WallJumpPower = 10.0f;
 
     [Header("進んでいる向き")]
     [SerializeField] private float DirectionX;
@@ -128,7 +131,7 @@ public class Player : MagnetManager
             return;
         }
 
-        if (PlayerAnim.GetGameClear() || PlayerAnim.GetGameOver())
+        if (PlayerAnim.GetResultGameClear() || PlayerAnim.GetGameOver())
         {
             return;
         }
@@ -200,7 +203,7 @@ public class Player : MagnetManager
             {
                 if(HitJagde)//壁のぼり時
                 {
-                    Rb.AddForce((transform.up * 2.0f + (transform.right * (DirectionX * -1.0f))) * JumpPower * 0.5f, ForceMode2D.Impulse);
+                    Rb.AddForce((transform.up * 1.5f + (transform.right * (DirectionX * -1.0f))) * WallJumpPower, ForceMode2D.Impulse);
 
                     DirectionX = -DirectionX;
 
@@ -215,7 +218,7 @@ public class Player : MagnetManager
                     // 地面か足場に触れていたら
                     if (IsGround || IsFootField)
                     {
-                        Rb.AddForce(transform.up * JumpPower, ForceMode2D.Impulse);
+                        Rb.AddForce(transform.up * NormalJumpPower, ForceMode2D.Impulse);
 
                         NormalJump = true;
                     }
