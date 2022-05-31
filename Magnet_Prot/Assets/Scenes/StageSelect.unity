@@ -1219,7 +1219,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Enter / A\u30DC\u30BF\u30F3\u3067\u958B\u59CB"
+  m_Text: "A\u30DC\u30BF\u30F3\u3067\u958B\u59CB"
 --- !u!222 &535256712
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2358,7 +2358,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "ESC / B\u30DC\u30BF\u30F3\u3067\u30BF\u30A4\u30C8\u30EB\u3078"
+  m_Text: "B\u30DC\u30BF\u30F3\u3067\u30BF\u30A4\u30C8\u30EB\u3078"
 --- !u!222 &1906246113
 CanvasRenderer:
   m_ObjectHideFlags: 0
