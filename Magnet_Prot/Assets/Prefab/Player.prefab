@@ -160,7 +160,8 @@ MonoBehaviour:
   PitchRange: 0.1
   Pole: 1
   Speed: 5
-  JumpPower: 10
+  NormalJumpPower: 10
+  WallJumpPower: 10
   DirectionX: 0
   SpeedToRope: 5
   ReleasePower: 70
@@ -177,8 +178,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69ad2b88520f98349b96b38d7a6b52ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameClear: 0
   GameOver: 0
+  ResultGameClear: 0
 --- !u!95 &6460900676407027899
 Animator:
   serializedVersion: 3
@@ -394,7 +395,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 12
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
