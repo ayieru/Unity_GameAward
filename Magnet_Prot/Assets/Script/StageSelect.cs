@@ -53,7 +53,7 @@ public class StageSelect : MonoBehaviour
     void Update()
     {
         //該当するステージを開始する
-        if (Input.GetButtonDown("Action") || Input.GetKeyDown(KeyCode.Space) == true)
+        if (Input.GetButtonDown("Action") || Input.GetKeyDown(KeyCode.Return) == true)
         {
             audioSource.PlayOneShot(SeDecision);
             FadeManager.FadeOut(StageButton[SelectID].gameObject.name);
