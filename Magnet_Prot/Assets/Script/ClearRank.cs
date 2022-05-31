@@ -9,7 +9,6 @@ using UnityEngine.UI;
 
 public class ClearRank : MonoBehaviour
 {
-
     private void Start()
     {
         StageSelect.StageClearRank[Goal.CurrentStageIndex - 2] = Goal.Rank;
@@ -38,5 +37,4 @@ public class ClearRank : MonoBehaviour
             gameObject.GetComponent<Text>().text = "C";
         }
     }
-
 }
