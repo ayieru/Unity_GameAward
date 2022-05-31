@@ -7087,7 +7087,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5923058934754031463, guid: 6121f79c90329af4b9fdfb4a1a8aa2be, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5923058934754031463, guid: 6121f79c90329af4b9fdfb4a1a8aa2be, type: 3}
       propertyPath: m_AnchorMax.x
@@ -10749,6 +10749,22 @@ PrefabInstance:
       value: Goal
       objectReference: {fileID: 0}
     - target: {fileID: 6276192710912613652, guid: dbe970b07635e23409fb3cd8e8820da9, type: 3}
+      propertyPath: A
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 6276192710912613652, guid: dbe970b07635e23409fb3cd8e8820da9, type: 3}
+      propertyPath: B
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 6276192710912613652, guid: dbe970b07635e23409fb3cd8e8820da9, type: 3}
+      propertyPath: C
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 6276192710912613652, guid: dbe970b07635e23409fb3cd8e8820da9, type: 3}
+      propertyPath: S
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 6276192710912613652, guid: dbe970b07635e23409fb3cd8e8820da9, type: 3}
       propertyPath: IsLast
       value: 1
       objectReference: {fileID: 0}
@@ -10758,7 +10774,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6276192710912613655, guid: dbe970b07635e23409fb3cd8e8820da9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 110.656
+      value: 113.656
       objectReference: {fileID: 0}
     - target: {fileID: 6276192710912613655, guid: dbe970b07635e23409fb3cd8e8820da9, type: 3}
       propertyPath: m_LocalPosition.y

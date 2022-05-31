@@ -161,7 +161,7 @@ MonoBehaviour:
   Pole: 1
   Speed: 5
   NormalJumpPower: 10
-  WallJumpPower: 10
+  WallJumpPower: 5
   DirectionX: 0
   SpeedToRope: 5
   ReleasePower: 70
