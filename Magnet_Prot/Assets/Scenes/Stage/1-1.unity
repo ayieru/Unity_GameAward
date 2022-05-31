@@ -3913,13 +3913,29 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Goal
       objectReference: {fileID: 0}
+    - target: {fileID: 6276192710912613652, guid: dbe970b07635e23409fb3cd8e8820da9, type: 3}
+      propertyPath: A
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 6276192710912613652, guid: dbe970b07635e23409fb3cd8e8820da9, type: 3}
+      propertyPath: B
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 6276192710912613652, guid: dbe970b07635e23409fb3cd8e8820da9, type: 3}
+      propertyPath: C
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 6276192710912613652, guid: dbe970b07635e23409fb3cd8e8820da9, type: 3}
+      propertyPath: S
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 6276192710912613655, guid: dbe970b07635e23409fb3cd8e8820da9, type: 3}
       propertyPath: m_RootOrder
       value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 6276192710912613655, guid: dbe970b07635e23409fb3cd8e8820da9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 227.86613
+      value: 229.86613
       objectReference: {fileID: 0}
     - target: {fileID: 6276192710912613655, guid: dbe970b07635e23409fb3cd8e8820da9, type: 3}
       propertyPath: m_LocalPosition.y
