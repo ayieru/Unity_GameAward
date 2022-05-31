@@ -147,7 +147,7 @@ public class Player : MagnetManager
             HorizontalKey = Input.GetAxisRaw("Horizontal");
             VerticalKey = Input.GetAxisRaw("Vertical");  // 縦入力反応変数
 
-            if (HitJagde)
+            if (HitJagde || MagnetHitCount >= 1)
             {
                 // 縦入力反応処理
                 if (VerticalKey > 0)
@@ -430,9 +430,7 @@ public class Player : MagnetManager
         if (collision.gameObject.CompareTag("Iron"))
         {
             Debug.Log("鉄にくっついた！！");
-
-            Debug.Log(MagnetHitCount);
-
+            
             //既にTure
             if (HitJagde)
             {
@@ -459,7 +457,11 @@ public class Player : MagnetManager
 
                 MagnetHitCount++;
 
+                Debug.LogError(MagnetHitCount);
+
                 HitJagde = true;
+
+                Debug.LogWarning("くっついた！！HItJudgeは？" + HitJagde);
             }
 
             PlayerDirectionCorrection(transform.position.x, collision.gameObject.transform.position.x);
@@ -521,9 +523,11 @@ public class Player : MagnetManager
 
             MagnetHitCount = System.Math.Max(MagnetHitCount - 1, 0);
 
-            Debug.Log(MagnetHitCount);
+            Debug.LogError(MagnetHitCount);
 
             HitJagde = false;
+
+            Debug.LogError("離れた！！HItJudgeは？" + HitJagde);
 
             Rb.gravityScale = 1.0f;
         }
