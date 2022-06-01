@@ -68,6 +68,7 @@ public class FadeManager : MonoBehaviour
         if (fadeImage == null) Init();
         fadeImage.color = Color.black;
         IsFadeIn = true;
+        Inoperable();
     }
 
     //フェードアウト開始
@@ -80,6 +81,7 @@ public class FadeManager : MonoBehaviour
         fadeImage.color = Color.clear;
         fadeCanvas.enabled = true;
         IsFadeOut = true;
+        Inoperable();
     }
 
     //フェードアウト開始
@@ -92,6 +94,7 @@ public class FadeManager : MonoBehaviour
         fadeImage.color = Color.clear;
         fadeCanvas.enabled = true;
         IsFadeOut = true;
+        Inoperable();
     }
 
     void Update()
@@ -140,4 +143,16 @@ public class FadeManager : MonoBehaviour
         }
     }
 
+    private static IEnumerator Inoperable() 
+    {
+        GameObject PlayerGO = GameObject.Find("Player");
+        if (PlayerGO)
+        {
+            Player PlayerSc = PlayerGO.GetComponent<Player>();
+            PlayerSc.enabled = false;
+            yield return new WaitForSeconds(fadeTime);
+            PlayerSc.enabled = true;
+            yield break;
+        }
+    }
 }
