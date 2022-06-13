@@ -459,6 +459,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FloatGround1 (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 6662003804613849212, guid: 05c339eb430f91c498a26a8d7ee2edb7, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
     - target: {fileID: 6662003804613849214, guid: 05c339eb430f91c498a26a8d7ee2edb7, type: 3}
       propertyPath: m_Size.x
       value: 7
