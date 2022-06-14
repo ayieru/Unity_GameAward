@@ -25,12 +25,6 @@ public class Player : MagnetManager
     [Header("切り替えのSE")]
     [SerializeField] List<AudioClips> ListAudioClips = new List<AudioClips>();
 
-    [Header("テンポを一定にするかどうか")]
-    [SerializeField] bool RandomizePitch = true;
-
-    [Header("テンポ数")]
-    [SerializeField] float PitchRange = 0.1f;
-
     [Header("極")]
     [SerializeField] Magnet_Pole Pole = Magnet_Pole.N;
 
@@ -218,16 +212,15 @@ public class Player : MagnetManager
                     // 地面か足場に触れていたら
                     if (IsGround || IsFootField)
                     {
+                        AudioClip[] clips = ListAudioClips[1].audioClips;
+                        float SoundVolume = ListAudioClips[1].Volume;
+                        Source.PlayOneShot(clips[0], SoundVolume);
+
                         Rb.AddForce(transform.up * NormalJumpPower, ForceMode2D.Impulse);
 
                         NormalJump = true;
                     }
                 }
-                AudioClip[] clips = ListAudioClips[1].audioClips;
-                float SoundVolume = ListAudioClips[1].Volume;
-                // テンポを毎回ランダムにして自然に近い感じにする
-                if (RandomizePitch) Source.pitch = 1.0f + Random.Range(-PitchRange, PitchRange);
-                Source.PlayOneShot(clips[0], SoundVolume);
             }
 
             //極切り替え
@@ -250,8 +243,6 @@ public class Player : MagnetManager
 
                 AudioClip[] clips = ListAudioClips[0].audioClips;
                 float SoundVolume = ListAudioClips[0].Volume;
-                // テンポを毎回ランダムにして自然に近い感じにする
-                if (RandomizePitch) Source.pitch = 1.0f + Random.Range(-PitchRange, PitchRange);
                 Source.PlayOneShot(clips[0], SoundVolume);
             }
         }
