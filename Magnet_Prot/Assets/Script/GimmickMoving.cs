@@ -6,7 +6,7 @@ public class GimmickMoving : MonoBehaviour
 {
 
     [Header("移動箇所設定")]
-    public GameObject[] MovePoint;
+    public Vector2[] MovePoint;
 
     [Header("移動速度")]
     public float Speed = 1.0f;
@@ -24,7 +24,7 @@ public class GimmickMoving : MonoBehaviour
         if (MovePoint != null && MovePoint.Length > 0 && rb != null)
         {
             // 初期座標設定
-            rb.position = MovePoint[0].transform.position;
+            rb.position = MovePoint[0];
         }
     }
 
@@ -33,16 +33,18 @@ public class GimmickMoving : MonoBehaviour
     {
         if (MovePoint == null || MovePoint.Length <= 0 || rb == null) return;
 
+        Vector2 MovePos = this.transform.position;
+
         // 通常
         if (!NowReturn)
         {
             int nextPoint = NowMovePoint + 1;
 
             // 目標ポイントとの誤差がわずかになるまで移動
-            if (Vector2.Distance(transform.position, MovePoint[nextPoint].transform.position) > 0.1f)
+            if (Vector2.Distance(MovePos, MovePoint[nextPoint]) > 0.1f)
             {
                 // 現在地から次のポイントへのベクトルを作成
-                Vector2 toVector = Vector2.MoveTowards(transform.position, MovePoint[nextPoint].transform.position, Speed * Time.deltaTime);
+                Vector2 toVector = Vector2.MoveTowards(MovePos, MovePoint[nextPoint], Speed * Time.deltaTime);
 
                 // 次のポイントへ移動
                 rb.MovePosition(toVector);
@@ -50,7 +52,7 @@ public class GimmickMoving : MonoBehaviour
             // 次のポイントを１つ進める
             else
             {
-                rb.MovePosition(MovePoint[nextPoint].transform.position);
+                rb.MovePosition(MovePoint[nextPoint]);
                 ++NowMovePoint;
 
                 // 現在地が配列の最後だった場合
@@ -63,10 +65,10 @@ public class GimmickMoving : MonoBehaviour
             int nextPoint = NowMovePoint - 1;
 
             // 目標ポイントとの誤差がわずかになるまで移動
-            if (Vector2.Distance(transform.position, MovePoint[nextPoint].transform.position) > 0.1f)
+            if (Vector2.Distance(MovePos, MovePoint[nextPoint]) > 0.1f)
             {
                 // 現在地から次のポイントへのベクトルを作成
-                Vector2 toVector = Vector2.MoveTowards(transform.position, MovePoint[nextPoint].transform.position, Speed * Time.deltaTime);
+                Vector2 toVector = Vector2.MoveTowards(MovePos, MovePoint[nextPoint], Speed * Time.deltaTime);
 
                 // 次のポイントへ移動
                 rb.MovePosition(toVector);
@@ -74,7 +76,7 @@ public class GimmickMoving : MonoBehaviour
             // 次のポイントを１つ戻す
             else
             {
-                rb.MovePosition(MovePoint[nextPoint].transform.position);
+                rb.MovePosition(MovePoint[nextPoint]);
                 --NowMovePoint;
 
                 // 現在地が配列の最初だった場合
