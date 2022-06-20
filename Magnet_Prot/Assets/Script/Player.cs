@@ -130,10 +130,6 @@ public class Player : MagnetManager
             return;
         }
 
-        Debug.Log("IsGroundは？:" + IsGround);
-
-        Debug.Log("IsFootFieldは？:" + IsFootField);
-
         Vector3 localScale = transform.localScale;
 
         if (PlayerState == State.Normal)
@@ -229,14 +225,12 @@ public class Player : MagnetManager
                 if (Pole == Magnet_Pole.S)
                 {
                     Pole = Magnet_Pole.N;
-                    Debug.Log("極切り替え：S → N");
 
                     PlayerAnim.MagnetChange(PlayerAnimation.AnimationLayer.Player_Red);
                 }
                 else
                 {
                     Pole = Magnet_Pole.S;
-                    Debug.Log("極切り替え：N → S");
 
                     PlayerAnim.MagnetChange(PlayerAnimation.AnimationLayer.Player_Blue);
                 }
@@ -387,8 +381,6 @@ public class Player : MagnetManager
             IsGround = true;
 
             PlayerState = State.Normal;
-
-            Debug.Log(IsGround);
         }
 
         if (collision.gameObject.CompareTag("Block"))
@@ -419,9 +411,7 @@ public class Player : MagnetManager
     {
         //簡易的に鉄を実装
         if (collision.gameObject.CompareTag("Iron"))
-        {
-            Debug.Log("鉄にくっついた！！");
-            
+        {            
             //既にTure
             if (HitJagde)
             {
@@ -444,15 +434,9 @@ public class Player : MagnetManager
             // 磁石によって引き寄せられてるか
             if (collision.gameObject.GetComponent<Magnet>().Pole != Pole)
             {
-                Debug.Log("磁石にくっついた！！");
-
                 MagnetHitCount++;
 
-                Debug.LogError(MagnetHitCount);
-
                 HitJagde = true;
-
-                Debug.LogWarning("くっついた！！HItJudgeは？" + HitJagde);
             }
 
             PlayerDirectionCorrection(transform.position.x, collision.gameObject.transform.position.x);
@@ -510,15 +494,9 @@ public class Player : MagnetManager
     {
         if (collision.gameObject.CompareTag("NPole") || collision.gameObject.CompareTag("SPole"))
         {
-            Debug.Log("離れた！！");
-
             MagnetHitCount = System.Math.Max(MagnetHitCount - 1, 0);
 
-            Debug.LogError(MagnetHitCount);
-
             HitJagde = false;
-
-            Debug.LogError("離れた！！HItJudgeは？" + HitJagde);
 
             Rb.gravityScale = 1.0f;
         }
@@ -526,8 +504,6 @@ public class Player : MagnetManager
         //簡易的に鉄を実装
         if (collision.gameObject.CompareTag("Iron"))
         {
-            Debug.Log("離れた！！");
-
             if (!TwoFlug)
             {
                 HitJagde = false;
@@ -559,8 +535,6 @@ public class Player : MagnetManager
             localScale.x = -1.0f;
 
             transform.localScale = localScale;
-
-            Debug.Log("左向きに補正！！");
         }
         else
         {
@@ -569,8 +543,6 @@ public class Player : MagnetManager
             localScale.x = 1.0f;
 
             transform.localScale = localScale;
-
-            Debug.Log("右向きに補正！！");
         }
     }
 

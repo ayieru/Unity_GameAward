@@ -56,8 +56,6 @@ public class PlayerAnimation : MonoBehaviour
 
     void Update()
     {
-        CheckFunction_Debug();
-
         //↓の二つは遷移先で再生させる
         if (ResultGameClear && SceneManager.GetActiveScene().name == "Result")
         {
@@ -141,13 +139,6 @@ public class PlayerAnimation : MonoBehaviour
     public bool GetGameOver() { return GameOver; }
 
     public void SetSpecialFloor(bool enable) { SpecialFloor = enable; }
-
-    private void CheckFunction_Debug()
-    {
-        Debug.Log("通常ジャンプは？：" + PlayerObj.GetNormalJump());
-
-        Debug.Log("壁ジャンプは？：" + PlayerObj.GetWallJump());
-    }
 
     /// <summary>
     /// アニメーション再生速度設定
