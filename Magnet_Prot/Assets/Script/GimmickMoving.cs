@@ -15,8 +15,9 @@ public class GimmickMoving : MonoBehaviour
     public bool FirstBack = false;
 
     private Rigidbody2D rb;
-    private int NowMovePoint = 0;   // 現在の要素数
-    private bool NowReturn = false; // 戻るか戻らないか
+    private int SaveNum = 0;                // 一番近い要素数を保存する
+    private bool NowReturn = false;         // 戻るか戻らないか
+    private float SaveDistance = 10000.0f;  // 比較するための長さ保存
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +27,7 @@ public class GimmickMoving : MonoBehaviour
         if (MovePoint != null && MovePoint.Length > 0 && rb != null)
         {
             // 初期座標設定
-            rb.position = MovePoint[0].transform.position;
+            rb.position = this.transform.position;
         }
     }
 
@@ -35,10 +36,25 @@ public class GimmickMoving : MonoBehaviour
     {
         if (MovePoint.Length <= 1 || rb == null) return;
 
+        // オブジェクトの位置と要素の位置を比較して近いところに向かわせる
+        for (int i = 0; i < MovePoint.Length; i++)
+        {
+            float Distance;
+            Distance = Vector2.Distance(this.transform.position, MovePoint[i].transform.position);
+            // 保存した長さと今回の長さを比較する
+            if (Distance < SaveDistance)
+            {
+                // 長さ・要素数保存
+                SaveDistance = Distance;
+                SaveNum = i;
+            }
+        }
+
         // 最初に戻るか
         if(FirstBack)
         {
-            int nextPoint = NowMovePoint + 1;
+            // 一番近い要素数を目標ポイントとして使用する
+            int nextPoint = SaveNum;
 
             // 目標ポイントとの誤差がわずかになるまで移動
             if (Vector2.Distance(this.transform.position, MovePoint[nextPoint].transform.position) > 0.1f)
@@ -52,10 +68,10 @@ public class GimmickMoving : MonoBehaviour
             else// 次のポイントを１つ進める
             {
                 rb.MovePosition(MovePoint[nextPoint].transform.position);
-                ++NowMovePoint;// 要素数のカウントを増やす
+                ++SaveNum;// 要素数のカウントを増やす
 
                 // 現在地が配列の最後だった場合
-                if (NowMovePoint + 1 >= MovePoint.Length) NowMovePoint = -1;
+                if (SaveNum >= MovePoint.Length) SaveNum = 0;
             }
         }
         else// 順番通り戻るか
@@ -63,7 +79,7 @@ public class GimmickMoving : MonoBehaviour
             // 通常
             if (!NowReturn)
             {
-                int nextPoint = NowMovePoint + 1;
+                int nextPoint = SaveNum;
 
                 // 目標ポイントとの誤差がわずかになるまで移動
                 if (Vector2.Distance(this.transform.position, MovePoint[nextPoint].transform.position) > 0.1f)
@@ -77,15 +93,15 @@ public class GimmickMoving : MonoBehaviour
                 else// 次のポイントを１つ進める
                 {
                     rb.MovePosition(MovePoint[nextPoint].transform.position);
-                    ++NowMovePoint;// 要素数のカウントを増やす
+                    ++SaveNum;// 要素数のカウントを増やす
 
                     // 現在地が配列の最後だった場合
-                    if (NowMovePoint + 1 >= MovePoint.Length) NowReturn = true;
+                    if (SaveNum >= MovePoint.Length) NowReturn = true;
                 }
             }
             else// 折返し
             {
-                int nextPoint = NowMovePoint - 1;
+                int nextPoint = SaveNum - 1;
 
                 // 目標ポイントとの誤差がわずかになるまで移動
                 if (Vector2.Distance(this.transform.position, MovePoint[nextPoint].transform.position) > 0.1f)
@@ -99,10 +115,10 @@ public class GimmickMoving : MonoBehaviour
                 else// 次のポイントを１つ戻す
                 {
                     rb.MovePosition(MovePoint[nextPoint].transform.position);
-                    --NowMovePoint;// 要素数のカウントを減らす
+                    --SaveNum;// 要素数のカウントを減らす
 
                     // 現在地が配列の最初だった場合
-                    if (NowMovePoint <= 0) NowReturn = false;
+                    if (SaveNum <= 0) NowReturn = false;
                 }
             }
         }
