@@ -23,11 +23,27 @@ public class GimmickMoving : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        
         // MovePointが存在する場合、かつMovePointの要素数がある場合、かつrbがあるなら
         if (MovePoint != null && MovePoint.Length > 0 && rb != null)
         {
-            // 初期座標設定
-            rb.position = this.transform.position;
+            // オブジェクトの位置と要素の位置を比較して近いところに向かわせる
+            for (int i = 0; i < MovePoint.Length; i++)
+            {
+                float Distance;// 今回の長さ
+                // 自身とi番目の座標の長さを計算
+                Distance = Vector2.Distance(this.transform.position, MovePoint[i].transform.position);
+                // 保存した長さと今回の長さを比較する
+                if (Distance < SaveDistance)
+                {
+                    // 長さ・要素数保存
+                    SaveDistance = Distance;
+                    SaveNum = i;
+
+                    // 初期座標設定
+                    rb.position = MovePoint[SaveNum].transform.position;
+                }
+            }
         }
     }
 
@@ -35,20 +51,6 @@ public class GimmickMoving : MonoBehaviour
     void Update()
     {
         if (MovePoint.Length <= 1 || rb == null) return;
-
-        // オブジェクトの位置と要素の位置を比較して近いところに向かわせる
-        for (int i = 0; i < MovePoint.Length; i++)
-        {
-            float Distance;
-            Distance = Vector2.Distance(this.transform.position, MovePoint[i].transform.position);
-            // 保存した長さと今回の長さを比較する
-            if (Distance < SaveDistance)
-            {
-                // 長さ・要素数保存
-                SaveDistance = Distance;
-                SaveNum = i;
-            }
-        }
 
         // 最初に戻るか
         if(FirstBack)
@@ -70,7 +72,7 @@ public class GimmickMoving : MonoBehaviour
                 rb.MovePosition(MovePoint[nextPoint].transform.position);
                 ++SaveNum;// 要素数のカウントを増やす
 
-                // 現在地が配列の最後だった場合
+                // 現在地が配列の最後だった場合、要素数を最初に戻す
                 if (SaveNum >= MovePoint.Length) SaveNum = 0;
             }
         }
@@ -95,12 +97,13 @@ public class GimmickMoving : MonoBehaviour
                     rb.MovePosition(MovePoint[nextPoint].transform.position);
                     ++SaveNum;// 要素数のカウントを増やす
 
-                    // 現在地が配列の最後だった場合
+                    // 現在地が配列の最後だった場合、戻るようにする
                     if (SaveNum >= MovePoint.Length) NowReturn = true;
                 }
             }
             else// 折返し
             {
+                // 現在の要素数より1個前の要素数を出す
                 int nextPoint = SaveNum - 1;
 
                 // 目標ポイントとの誤差がわずかになるまで移動
@@ -117,7 +120,7 @@ public class GimmickMoving : MonoBehaviour
                     rb.MovePosition(MovePoint[nextPoint].transform.position);
                     --SaveNum;// 要素数のカウントを減らす
 
-                    // 現在地が配列の最初だった場合
+                    // 現在地が配列の最初だった場合、通常にする
                     if (SaveNum <= 0) NowReturn = false;
                 }
             }
