@@ -15,18 +15,35 @@ public class GimmickMoving : MonoBehaviour
     public bool FirstBack = false;
 
     private Rigidbody2D rb;
-    private int NowMovePoint = 0;   // 現在の要素数
-    private bool NowReturn = false; // 戻るか戻らないか
+    private int SaveNum = 0;                // 一番近い要素数を保存する
+    private bool NowReturn = false;         // 戻るか戻らないか
+    private float SaveDistance = 10000.0f;  // 比較するための長さ保存
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        
         // MovePointが存在する場合、かつMovePointの要素数がある場合、かつrbがあるなら
         if (MovePoint != null && MovePoint.Length > 0 && rb != null)
         {
-            // 初期座標設定
-            rb.position = MovePoint[0].transform.position;
+            // オブジェクトの位置と要素の位置を比較して近いところに向かわせる
+            for (int i = 0; i < MovePoint.Length; i++)
+            {
+                float Distance;// 今回の長さ
+                // 自身とi番目の座標の長さを計算
+                Distance = Vector2.Distance(this.transform.position, MovePoint[i].transform.position);
+                // 保存した長さと今回の長さを比較する
+                if (Distance < SaveDistance)
+                {
+                    // 長さ・要素数保存
+                    SaveDistance = Distance;
+                    SaveNum = i;
+
+                    // 初期座標設定
+                    rb.position = MovePoint[SaveNum].transform.position;
+                }
+            }
         }
     }
 
@@ -38,7 +55,8 @@ public class GimmickMoving : MonoBehaviour
         // 最初に戻るか
         if(FirstBack)
         {
-            int nextPoint = NowMovePoint + 1;
+            // 一番近い要素数を目標ポイントとして使用する
+            int nextPoint = SaveNum;
 
             // 目標ポイントとの誤差がわずかになるまで移動
             if (Vector2.Distance(this.transform.position, MovePoint[nextPoint].transform.position) > 0.1f)
@@ -52,10 +70,10 @@ public class GimmickMoving : MonoBehaviour
             else// 次のポイントを１つ進める
             {
                 rb.MovePosition(MovePoint[nextPoint].transform.position);
-                ++NowMovePoint;// 要素数のカウントを増やす
+                ++SaveNum;// 要素数のカウントを増やす
 
-                // 現在地が配列の最後だった場合
-                if (NowMovePoint + 1 >= MovePoint.Length) NowMovePoint = -1;
+                // 現在地が配列の最後だった場合、要素数を最初に戻す
+                if (SaveNum >= MovePoint.Length) SaveNum = 0;
             }
         }
         else// 順番通り戻るか
@@ -63,7 +81,7 @@ public class GimmickMoving : MonoBehaviour
             // 通常
             if (!NowReturn)
             {
-                int nextPoint = NowMovePoint + 1;
+                int nextPoint = SaveNum;
 
                 // 目標ポイントとの誤差がわずかになるまで移動
                 if (Vector2.Distance(this.transform.position, MovePoint[nextPoint].transform.position) > 0.1f)
@@ -77,15 +95,16 @@ public class GimmickMoving : MonoBehaviour
                 else// 次のポイントを１つ進める
                 {
                     rb.MovePosition(MovePoint[nextPoint].transform.position);
-                    ++NowMovePoint;// 要素数のカウントを増やす
+                    ++SaveNum;// 要素数のカウントを増やす
 
-                    // 現在地が配列の最後だった場合
-                    if (NowMovePoint + 1 >= MovePoint.Length) NowReturn = true;
+                    // 現在地が配列の最後だった場合、戻るようにする
+                    if (SaveNum >= MovePoint.Length) NowReturn = true;
                 }
             }
             else// 折返し
             {
-                int nextPoint = NowMovePoint - 1;
+                // 現在の要素数より1個前の要素数を出す
+                int nextPoint = SaveNum - 1;
 
                 // 目標ポイントとの誤差がわずかになるまで移動
                 if (Vector2.Distance(this.transform.position, MovePoint[nextPoint].transform.position) > 0.1f)
@@ -99,10 +118,10 @@ public class GimmickMoving : MonoBehaviour
                 else// 次のポイントを１つ戻す
                 {
                     rb.MovePosition(MovePoint[nextPoint].transform.position);
-                    --NowMovePoint;// 要素数のカウントを減らす
+                    --SaveNum;// 要素数のカウントを減らす
 
-                    // 現在地が配列の最初だった場合
-                    if (NowMovePoint <= 0) NowReturn = false;
+                    // 現在地が配列の最初だった場合、通常にする
+                    if (SaveNum <= 0) NowReturn = false;
                 }
             }
         }
