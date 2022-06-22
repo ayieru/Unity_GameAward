@@ -87,17 +87,21 @@ public class Goal : MonoBehaviour
         {
             Rank = 1;
         }
-        else if (TimeS + 1 <= Timer.ClearTime && Timer.ClearTime <= TimeA)
+        else if (TimeS < Timer.ClearTime && Timer.ClearTime <= TimeA)
         {
             Rank = 2;
         }
-        else if (TimeA + 1 <= Timer.ClearTime && Timer.ClearTime <= TimeB)
+        else if (TimeA < Timer.ClearTime && Timer.ClearTime <= TimeB)
         {
             Rank = 3;
         }
-        else if (TimeC <= Timer.ClearTime)
+        else if (TimeB < Timer.ClearTime)
         {
             Rank = 4;
+        }
+        else
+        {
+            Rank = 0;
         }
 
     }
