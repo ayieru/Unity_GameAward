@@ -63,14 +63,14 @@ public class PlayerAnimation : MonoBehaviour
 
             return;
         }
-        if (GameOver && SceneManager.GetActiveScene().name == "Over")
+        else if (GameOver && SceneManager.GetActiveScene().name == "Over")
         {
             PlayerAnim.Play("GameOver", (int)CurrentLayer);
 
             return;
         }
 
-        if (PlayerObj.GetHitJagde())//壁を登る時
+        if (PlayerObj.GetHitJagde() || PlayerObj.GetMagnetHitCount() >= 1)//上下移動状態
         {
             PlayerAnim.Play("Climbing", (int)CurrentLayer);
 
@@ -82,49 +82,36 @@ public class PlayerAnimation : MonoBehaviour
             {
                 PlayerAnim.speed = 1;//再開
             }
-
-            return;
         }
-
-        if (PlayerObj.GetHorizontalKey() > 0 || PlayerObj.GetHorizontalKey() < 0)//歩いてる時
+        else//左右移動状態
         {
-            if (PlayerObj.GetNormalJump() || PlayerObj.GetWallJump())
+            if (PlayerObj.GetComponent<Rigidbody2D>().velocity.y > 0.5f)
             {
                 PlayerAnim.Play("Jump", (int)CurrentLayer);
 
                 return;
             }
-
-            //↓これだと一瞬だけAttractionになる
-            if (!PlayerObj.IsJump() && !SpecialFloor)//空中で磁石に引き寄せられている時or落下してる時
+            else if (PlayerObj.GetComponent<Rigidbody2D>().velocity.y < 0.5f)
             {
-                PlayerAnim.speed = 1.0f;
-
-                PlayerAnim.Play("Attraction", (int)CurrentLayer);
-
-                return;
-            }
-
-            PlayerAnim.speed = 1.0f;
-
-            PlayerAnim.Play("Walk", (int)CurrentLayer);
-        }
-        else//歩いてない時
-        {
-            if (PlayerObj.GetNormalJump() || PlayerObj.GetWallJump())
-            {
-                if (PlayerObj.GetMagnetHitCount() <= 0)
+                //地面or足場と触れていない。かつMagnetGroundやIronGroundといった特殊な足場と触れていない時
+                if (!PlayerObj.IsJump() && !SpecialFloor)//空中で磁石に引き寄せられている時or落下してる時
                 {
-                    PlayerAnim.Play("Jump", (int)CurrentLayer);
+                    PlayerAnim.speed = 1.0f;
+
+                    PlayerAnim.Play("Attraction", (int)CurrentLayer);
 
                     return;
                 }
             }
 
-            if (PlayerObj.GetMagnetHitCount() <= 0)
+            if (PlayerObj.GetHorizontalKey() > 0 || PlayerObj.GetHorizontalKey() < 0)//歩いてる時
             {
                 PlayerAnim.speed = 1.0f;
 
+                PlayerAnim.Play("Walk", (int)CurrentLayer);
+            }
+            else if (PlayerObj.GetHorizontalKey() == 0)//歩いてる時
+            {
                 PlayerAnim.Play("Idle", (int)CurrentLayer);
             }
         }
@@ -189,32 +176,42 @@ public class PlayerAnimation : MonoBehaviour
             PlayerObj.SetNormalJump(false);
 
             PlayerObj.SetWallJump(false);
+
+            return;
         }
 
-        if (collision.gameObject.CompareTag("MagnetGround") ||
-            collision.gameObject.CompareTag("IronGround"))
+        if (collision.gameObject.CompareTag("MagnetGround")
+            || collision.gameObject.CompareTag("IronGround")
+            || collision.gameObject.CompareTag("MagnetBlock"))
         {
             PlayerObj.SetWallJump(false);
 
             PlayerObj.SetNormalJump(false);
 
             PlayerObj.SetPlayerState(Player.State.Normal);
+
+            return;
         }
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Iron") ||
-            collision.gameObject.CompareTag("NPole") ||
-            collision.gameObject.CompareTag("SPole"))
+        if (collision.gameObject.CompareTag("Iron")
+            ||collision.gameObject.CompareTag("NPole")
+            ||collision.gameObject.CompareTag("SPole"))
         {
             PlayerAnim.Play("Climbing", (int)CurrentLayer);
+
+            return;
         }
 
         if (collision.gameObject.CompareTag("MagnetGround")
-    || collision.gameObject.CompareTag("IronGround"))
+            || collision.gameObject.CompareTag("IronGround")
+            || collision.gameObject.CompareTag("MagnetBlock"))
         {
             SpecialFloor = true;
+
+            return;
         }
     }
 
@@ -226,12 +223,16 @@ public class PlayerAnimation : MonoBehaviour
             {
                 PlayerAnim.Play("Idle", (int)CurrentLayer);
             }
+
+            return;
         }
 
         if (collision.gameObject.CompareTag("MagnetGround")
-            || collision.gameObject.CompareTag("IronGround"))
+        || collision.gameObject.CompareTag("IronGround"))
         {
             SpecialFloor = false;
+
+            return;
         }
     }
 }

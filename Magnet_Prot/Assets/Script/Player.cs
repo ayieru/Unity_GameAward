@@ -115,7 +115,7 @@ public class Player : MagnetManager
 
         PlayerPosX = transform.position.x;
         PlayerPosY = transform.position.y;
-}
+    }
 
     void Update()
     {
@@ -150,7 +150,7 @@ public class Player : MagnetManager
                 }
                 else
                 {
-                    if(!WallJump)
+                    if (!WallJump)
                     {
                         Rb.velocity = new Vector2(0.0f, 0.0f);
                     }
@@ -183,16 +183,18 @@ public class Player : MagnetManager
                 {
                     if (!WallJump)
                     {
-                      Rb.velocity = new Vector2(0.0f, Rb.velocity.y);
+                        Rb.velocity = new Vector2(0.0f, Rb.velocity.y);
                     }
                 }
             }
 
             //ジャンプ
-            if (Input.GetButtonDown("Jump") && !(Rb.velocity.y < -0.5f))
+            if (Input.GetButtonDown("Jump"))// && !(Rb.velocity.y < -0.5f))
             {
-                if(HitJagde)//壁のぼり時
+                if (HitJagde && MagnetHitCount <= 0)//壁のぼり時
                 {
+                    Rb.velocity = new Vector2(0.0f, 0.0f);//Wキーが押されていてもかかる力を０にしてジャンプのパワーを固定にする
+
                     Rb.AddForce((transform.up * 1.5f + (transform.right * (DirectionX * -1.0f))) * WallJumpPower, ForceMode2D.Impulse);
 
                     DirectionX = -DirectionX;
@@ -403,7 +405,7 @@ public class Player : MagnetManager
             }
         }
 
-        
+
     }
 
     // あたったタイミングで処理が動く
@@ -411,7 +413,7 @@ public class Player : MagnetManager
     {
         //簡易的に鉄を実装
         if (collision.gameObject.CompareTag("Iron"))
-        {            
+        {
             //既にTure
             if (HitJagde)
             {
@@ -427,6 +429,8 @@ public class Player : MagnetManager
             WallJump = false;
 
             PlayerDirectionCorrection(transform.position.x, collision.gameObject.transform.position.x);
+
+            return;
         }
 
         if (collision.gameObject.CompareTag("NPole") || collision.gameObject.CompareTag("SPole"))
@@ -442,9 +446,11 @@ public class Player : MagnetManager
             PlayerDirectionCorrection(transform.position.x, collision.gameObject.transform.position.x);
 
             PlayerAnim.SetPlayerAnimationSpeed(1.0f);
+
+            return;
         }
 
-        
+
 
         if (collision.gameObject.CompareTag("Thorn"))
         {
@@ -467,6 +473,8 @@ public class Player : MagnetManager
 
             // とげに刺さったら、ジャンプの力を0にして浮かないようにする。
             Rb.velocity = new Vector2(0.0f, 0.0f);
+
+            return;
         }
 
         if (collision.gameObject.CompareTag("Chain"))
@@ -474,18 +482,24 @@ public class Player : MagnetManager
             NormalJump = false;
 
             WallJump = false;
+
+            return;
         }
 
         if (collision.gameObject.CompareTag("Floor"))
         {
             SetPlayerState(State.Normal);
             IsGround = true;
+
+            return;
         }
 
         if (collision.gameObject.CompareTag("Block"))
         {
             SetPlayerState(State.Normal);
             IsFootField = true;
+
+            return;
         }
     }
 
@@ -499,6 +513,8 @@ public class Player : MagnetManager
             HitJagde = false;
 
             Rb.gravityScale = 1.0f;
+
+            return;
         }
 
         //簡易的に鉄を実装
@@ -513,22 +529,28 @@ public class Player : MagnetManager
             {
                 TwoFlug = false;
             }
+
+            return;
         }
 
         if (collision.gameObject.CompareTag("Floor"))
         {
             IsGround = false;
+
+            return;
         }
 
         if (collision.gameObject.CompareTag("Block"))
         {
             IsFootField = false;
+
+            return;
         }
     }
 
     public void PlayerDirectionCorrection(float posA, float posB)
     {
-        if((posA - posB) >= 0.0f)
+        if ((posA - posB) >= 0.0f)
         {
             Vector3 localScale = transform.localScale;
 
@@ -555,16 +577,16 @@ public class Player : MagnetManager
 
         // 自身のサイズ分座標をずらす
         RightPosX += texX;
-        
+
         SavePlayerRightPosX = RightPosX;
-        
+
         /*-----------左側のX座標設定-----------*/
         float LeftPosX;
         LeftPosX = transform.position.x;
 
         // 自身のサイズ分座標をずらす
         LeftPosX -= texX;
-        
+
         SavePlayerLeftPosX = LeftPosX;
 
         /*-----------Y座標設定-----------*/
