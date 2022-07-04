@@ -115,7 +115,7 @@ public class Player : MagnetManager
 
         PlayerPosX = transform.position.x;
         PlayerPosY = transform.position.y;
-}
+    }
 
     void Update()
     {
@@ -129,10 +129,6 @@ public class Player : MagnetManager
         {
             return;
         }
-
-        Debug.Log("IsGroundは？:" + IsGround);
-
-        Debug.Log("IsFootFieldは？:" + IsFootField);
 
         Vector3 localScale = transform.localScale;
 
@@ -154,7 +150,7 @@ public class Player : MagnetManager
                 }
                 else
                 {
-                    if(!WallJump)
+                    if (!WallJump)
                     {
                         Rb.velocity = new Vector2(0.0f, 0.0f);
                     }
@@ -187,16 +183,18 @@ public class Player : MagnetManager
                 {
                     if (!WallJump)
                     {
-                      Rb.velocity = new Vector2(0.0f, Rb.velocity.y);
+                        Rb.velocity = new Vector2(0.0f, Rb.velocity.y);
                     }
                 }
             }
 
             //ジャンプ
-            if (Input.GetButtonDown("Jump") && !(Rb.velocity.y < -0.5f))
+            if (Input.GetButtonDown("Jump"))// && !(Rb.velocity.y < -0.5f))
             {
-                if(HitJagde)//壁のぼり時
+                if (HitJagde && MagnetHitCount <= 0)//壁のぼり時
                 {
+                    Rb.velocity = new Vector2(0.0f, 0.0f);//Wキーが押されていてもかかる力を０にしてジャンプのパワーを固定にする
+
                     Rb.AddForce((transform.up * 1.5f + (transform.right * (DirectionX * -1.0f))) * WallJumpPower, ForceMode2D.Impulse);
 
                     DirectionX = -DirectionX;
@@ -229,14 +227,12 @@ public class Player : MagnetManager
                 if (Pole == Magnet_Pole.S)
                 {
                     Pole = Magnet_Pole.N;
-                    Debug.Log("極切り替え：S → N");
 
                     PlayerAnim.MagnetChange(PlayerAnimation.AnimationLayer.Player_Red);
                 }
                 else
                 {
                     Pole = Magnet_Pole.S;
-                    Debug.Log("極切り替え：N → S");
 
                     PlayerAnim.MagnetChange(PlayerAnimation.AnimationLayer.Player_Blue);
                 }
@@ -387,8 +383,6 @@ public class Player : MagnetManager
             IsGround = true;
 
             PlayerState = State.Normal;
-
-            Debug.Log(IsGround);
         }
 
         if (collision.gameObject.CompareTag("Block"))
@@ -411,7 +405,7 @@ public class Player : MagnetManager
             }
         }
 
-        
+
     }
 
     // あたったタイミングで処理が動く
@@ -420,8 +414,6 @@ public class Player : MagnetManager
         //簡易的に鉄を実装
         if (collision.gameObject.CompareTag("Iron"))
         {
-            Debug.Log("鉄にくっついた！！");
-            
             //既にTure
             if (HitJagde)
             {
@@ -437,6 +429,8 @@ public class Player : MagnetManager
             WallJump = false;
 
             PlayerDirectionCorrection(transform.position.x, collision.gameObject.transform.position.x);
+
+            return;
         }
 
         if (collision.gameObject.CompareTag("NPole") || collision.gameObject.CompareTag("SPole"))
@@ -444,23 +438,19 @@ public class Player : MagnetManager
             // 磁石によって引き寄せられてるか
             if (collision.gameObject.GetComponent<Magnet>().Pole != Pole)
             {
-                Debug.Log("磁石にくっついた！！");
-
                 MagnetHitCount++;
 
-                Debug.LogError(MagnetHitCount);
-
                 HitJagde = true;
-
-                Debug.LogWarning("くっついた！！HItJudgeは？" + HitJagde);
             }
 
             PlayerDirectionCorrection(transform.position.x, collision.gameObject.transform.position.x);
 
             PlayerAnim.SetPlayerAnimationSpeed(1.0f);
+
+            return;
         }
 
-        
+
 
         if (collision.gameObject.CompareTag("Thorn"))
         {
@@ -483,6 +473,8 @@ public class Player : MagnetManager
 
             // とげに刺さったら、ジャンプの力を0にして浮かないようにする。
             Rb.velocity = new Vector2(0.0f, 0.0f);
+
+            return;
         }
 
         if (collision.gameObject.CompareTag("Chain"))
@@ -490,18 +482,24 @@ public class Player : MagnetManager
             NormalJump = false;
 
             WallJump = false;
+
+            return;
         }
 
         if (collision.gameObject.CompareTag("Floor"))
         {
             SetPlayerState(State.Normal);
             IsGround = true;
+
+            return;
         }
 
         if (collision.gameObject.CompareTag("Block"))
         {
             SetPlayerState(State.Normal);
             IsFootField = true;
+
+            return;
         }
     }
 
@@ -510,24 +508,18 @@ public class Player : MagnetManager
     {
         if (collision.gameObject.CompareTag("NPole") || collision.gameObject.CompareTag("SPole"))
         {
-            Debug.Log("離れた！！");
-
             MagnetHitCount = System.Math.Max(MagnetHitCount - 1, 0);
-
-            Debug.LogError(MagnetHitCount);
 
             HitJagde = false;
 
-            Debug.LogError("離れた！！HItJudgeは？" + HitJagde);
-
             Rb.gravityScale = 1.0f;
+
+            return;
         }
 
         //簡易的に鉄を実装
         if (collision.gameObject.CompareTag("Iron"))
         {
-            Debug.Log("離れた！！");
-
             if (!TwoFlug)
             {
                 HitJagde = false;
@@ -537,30 +529,34 @@ public class Player : MagnetManager
             {
                 TwoFlug = false;
             }
+
+            return;
         }
 
         if (collision.gameObject.CompareTag("Floor"))
         {
             IsGround = false;
+
+            return;
         }
 
         if (collision.gameObject.CompareTag("Block"))
         {
             IsFootField = false;
+
+            return;
         }
     }
 
     public void PlayerDirectionCorrection(float posA, float posB)
     {
-        if((posA - posB) >= 0.0f)
+        if ((posA - posB) >= 0.0f)
         {
             Vector3 localScale = transform.localScale;
 
             localScale.x = -1.0f;
 
             transform.localScale = localScale;
-
-            Debug.Log("左向きに補正！！");
         }
         else
         {
@@ -569,8 +565,6 @@ public class Player : MagnetManager
             localScale.x = 1.0f;
 
             transform.localScale = localScale;
-
-            Debug.Log("右向きに補正！！");
         }
     }
 
@@ -583,16 +577,16 @@ public class Player : MagnetManager
 
         // 自身のサイズ分座標をずらす
         RightPosX += texX;
-        
+
         SavePlayerRightPosX = RightPosX;
-        
+
         /*-----------左側のX座標設定-----------*/
         float LeftPosX;
         LeftPosX = transform.position.x;
 
         // 自身のサイズ分座標をずらす
         LeftPosX -= texX;
-        
+
         SavePlayerLeftPosX = LeftPosX;
 
         /*-----------Y座標設定-----------*/
