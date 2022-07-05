@@ -94,7 +94,7 @@ public class PlayerAnimation : MonoBehaviour
             else if (PlayerObj.GetComponent<Rigidbody2D>().velocity.y < 0.5f)
             {
                 //地面or足場と触れていない。かつMagnetGroundやIronGroundといった特殊な足場と触れていない時
-                if (!PlayerObj.IsJump() && !SpecialFloor)//空中で磁石に引き寄せられている時or落下してる時
+                if (!PlayerObj.IsJump() && !SpecialFloor && PlayerObj)//空中で磁石に引き寄せられている時or落下してる時
                 {
                     PlayerAnim.speed = 1.0f;
 
