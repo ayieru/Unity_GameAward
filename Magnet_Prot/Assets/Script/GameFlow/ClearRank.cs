@@ -9,10 +9,14 @@ using UnityEngine.UI;
 
 public class ClearRank : MonoBehaviour
 {
+    private string text;
+
     private void Start()
     {
         StageSelect.StageClearRank[Goal.CurrentStageIndex - 2] = Goal.Rank;
         Debug.Log(Timer.ClearTime);
+
+        text = gameObject.GetComponent<Text>().text;
 
         DisplayClearRank();
     }
@@ -22,19 +26,19 @@ public class ClearRank : MonoBehaviour
     {
         if (Goal.Rank == 1)
         {
-            gameObject.GetComponent<Text>().text = "S";
+            text = "S";
         }
         else if(Goal.Rank == 2)
         {
-            gameObject.GetComponent<Text>().text = "A";
+            text = "A";
         }
         else if(Goal.Rank ==3)
         {
-            gameObject.GetComponent<Text>().text = "B";
+            text = "B";
         }
         else
         {
-            gameObject.GetComponent<Text>().text = "C";
+            text = "C";
         }
     }
 }

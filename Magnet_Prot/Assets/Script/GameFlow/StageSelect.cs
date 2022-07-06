@@ -57,7 +57,6 @@ public class StageSelect : MonoBehaviour
         {
             audioSource.PlayOneShot(SeDecision);
             FadeManager.FadeOut(StageButton[SelectID].gameObject.name);
-
         }
 
         //タイトルへ戻る

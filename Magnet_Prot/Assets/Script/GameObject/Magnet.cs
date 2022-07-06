@@ -76,6 +76,21 @@ public class Magnet : MagnetManager
         if (currentPole != Pole) ChangeColor();
     }
 
+    public void ChangePole()
+    {
+        if (Pole == Magnet_Pole.N)
+        {
+            Pole = Magnet_Pole.S;
+        }
+        else
+        {
+            Pole = Magnet_Pole.N;
+        }
+
+        ChangeColor();
+        currentPole = Pole;
+    }
+
     private void ChangeColor()
     {
         if (!N_Magnet || !S_Magnet) return;
@@ -89,21 +104,6 @@ public class Magnet : MagnetManager
             GetComponent<SpriteRenderer>().sprite = S_Magnet;
         }
     }
-
-    public void ChangePole()
-    {
-        if (Pole == Magnet_Pole.N)
-        {
-            Pole = Magnet_Pole.S;
-        }
-        else
-        {
-            Pole = Magnet_Pole.N;
-        }
-        ChangeColor();
-        currentPole = Pole;
-    }
-
     private void UpdateMagnet()
     {
         dis = Vector2.Distance(transform.position, player.transform.position);
