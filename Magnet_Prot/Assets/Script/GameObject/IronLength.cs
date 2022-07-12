@@ -36,7 +36,7 @@ public class IronLength : MonoBehaviour
             child.GetComponent<BoxCollider2D>().size.y + SizeY - 1);
 
         //座標補正
-        transform.position = new Vector2(transform.position.x - (SizeX / 2), transform.position.y + (SizeY / 2));
+        transform.position = new Vector2(transform.position.x + (SizeX / 2), transform.position.y + (SizeY / 2));
     }
     
     void Update()
