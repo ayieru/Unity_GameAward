@@ -931,8 +931,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60765ea53f31b404eb4a8ed5bf0a8fe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SizeX: 1
-  SizeY: 5
+  SizeX: 5
+  SizeY: 1
 --- !u!1001 &1944396412
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -943,6 +943,10 @@ PrefabInstance:
     - target: {fileID: 2408606033851941608, guid: 8a054c71fe224be40adcd582c3af46ba, type: 3}
       propertyPath: m_SpriteTilingProperty.drawMode
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2408606033851941608, guid: 8a054c71fe224be40adcd582c3af46ba, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.x
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2408606033851941608, guid: 8a054c71fe224be40adcd582c3af46ba, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.y
@@ -962,11 +966,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5809435640526245123, guid: 8a054c71fe224be40adcd582c3af46ba, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.43
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: 5809435640526245123, guid: 8a054c71fe224be40adcd582c3af46ba, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.63
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 5809435640526245123, guid: 8a054c71fe224be40adcd582c3af46ba, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1007,6 +1011,10 @@ PrefabInstance:
     - target: {fileID: 7230562282698400534, guid: 8a054c71fe224be40adcd582c3af46ba, type: 3}
       propertyPath: m_Name
       value: IronCenter
+      objectReference: {fileID: 0}
+    - target: {fileID: 8710729117806158401, guid: 8a054c71fe224be40adcd582c3af46ba, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a054c71fe224be40adcd582c3af46ba, type: 3}
