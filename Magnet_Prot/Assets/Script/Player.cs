@@ -411,7 +411,6 @@ public class Player : MagnetManager
     // あたったタイミングで処理が動く
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //簡易的に鉄を実装
         if (collision.gameObject.CompareTag("Iron"))
         {
             //既にTure
@@ -441,6 +440,8 @@ public class Player : MagnetManager
                 MagnetHitCount++;
 
                 HitJagde = true;
+
+                Rb.gravityScale = 0.0f;
             }
 
             PlayerDirectionCorrection(transform.position.x, collision.gameObject.transform.position.x);
@@ -517,7 +518,6 @@ public class Player : MagnetManager
             return;
         }
 
-        //簡易的に鉄を実装
         if (collision.gameObject.CompareTag("Iron"))
         {
             if (!TwoFlug)
