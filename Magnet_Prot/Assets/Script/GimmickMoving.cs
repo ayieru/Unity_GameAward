@@ -14,7 +14,7 @@ public class GimmickMoving : MonoBehaviour
     [Header("最後に到達したら最初に戻すか")]
     public bool FirstBack = false;
 
-    private Rigidbody2D rb;
+    private Transform tr;
     private int SaveNum = 0;                // 一番近い要素数を保存する
     private bool NowReturn = false;         // 戻るか戻らないか
     private float SaveDistance = 10000.0f;  // 比較するための長さ保存
@@ -22,10 +22,10 @@ public class GimmickMoving : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        tr = GetComponent<Transform>();
         
-        // MovePointが存在する場合、かつMovePointの要素数がある場合、かつrbがあるなら
-        if (MovePoint != null && MovePoint.Length > 0 && rb != null)
+        // MovePointが存在する場合、かつMovePointの要素数がある場合なら
+        if (MovePoint != null && MovePoint.Length > 0)
         {
             // オブジェクトの位置と要素の位置を比較して近いところに向かわせる
             for (int i = 0; i < MovePoint.Length; i++)
@@ -41,7 +41,7 @@ public class GimmickMoving : MonoBehaviour
                     SaveNum = i;
 
                     // 初期座標設定
-                    rb.position = MovePoint[SaveNum].transform.position;
+                    tr.position = MovePoint[SaveNum].transform.position;
                 }
             }
         }
@@ -50,7 +50,7 @@ public class GimmickMoving : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (MovePoint.Length <= 1 || rb == null) return;
+        if (MovePoint.Length <= 1) return;
 
         // 最初に戻るか
         if(FirstBack)
@@ -65,11 +65,11 @@ public class GimmickMoving : MonoBehaviour
                 Vector2 toVector = Vector2.MoveTowards(this.transform.position, MovePoint[nextPoint].transform.position, Speed * Time.deltaTime);
 
                 // 次のポイントへ移動
-                rb.MovePosition(toVector);
+                tr.position = toVector;
             }
             else// 次のポイントを１つ進める
             {
-                rb.MovePosition(MovePoint[nextPoint].transform.position);
+                tr.position = MovePoint[nextPoint].transform.position;
                 ++SaveNum;// 要素数のカウントを増やす
 
                 // 現在地が配列の最後だった場合、要素数を最初に戻す
@@ -90,11 +90,11 @@ public class GimmickMoving : MonoBehaviour
                     Vector2 toVector = Vector2.MoveTowards(this.transform.position, MovePoint[nextPoint].transform.position, Speed * Time.deltaTime);
 
                     // 次のポイントへ移動
-                    rb.MovePosition(toVector);
+                    tr.position = toVector;
                 }
                 else// 次のポイントを１つ進める
                 {
-                    rb.MovePosition(MovePoint[nextPoint].transform.position);
+                    tr.position = MovePoint[nextPoint].transform.position;
                     ++SaveNum;// 要素数のカウントを増やす
 
                     // 現在地が配列の最後だった場合、戻るようにする
@@ -113,11 +113,11 @@ public class GimmickMoving : MonoBehaviour
                     Vector2 toVector = Vector2.MoveTowards(this.transform.position, MovePoint[nextPoint].transform.position, Speed * Time.deltaTime);
 
                     // 次のポイントへ移動
-                    rb.MovePosition(toVector);
+                    tr.position = toVector;
                 }
                 else// 次のポイントを１つ戻す
                 {
-                    rb.MovePosition(MovePoint[nextPoint].transform.position);
+                    tr.position = MovePoint[nextPoint].transform.position;
                     --SaveNum;// 要素数のカウントを減らす
 
                     // 現在地が配列の最初だった場合、通常にする
