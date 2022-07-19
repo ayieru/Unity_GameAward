@@ -15,7 +15,6 @@ public class GimmickMoving : MonoBehaviour
     public bool FirstBack = false;
 
     private Transform tr;
-    //private Rigidbody2D rb;
     private int SaveNum = 0;                // 一番近い要素数を保存する
     private bool NowReturn = false;         // 戻るか戻らないか
     private float SaveDistance = 10000.0f;  // 比較するための長さ保存
@@ -23,11 +22,10 @@ public class GimmickMoving : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //rb = GetComponent<Rigidbody2D>();
         tr = GetComponent<Transform>();
         
-        // MovePointが存在する場合、かつMovePointの要素数がある場合、かつrbがあるなら
-        if (MovePoint != null && MovePoint.Length > 0 /*&& rb != null*/)
+        // MovePointが存在する場合、かつMovePointの要素数がある場合なら
+        if (MovePoint != null && MovePoint.Length > 0)
         {
             // オブジェクトの位置と要素の位置を比較して近いところに向かわせる
             for (int i = 0; i < MovePoint.Length; i++)
@@ -52,7 +50,7 @@ public class GimmickMoving : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (MovePoint.Length <= 1 /*|| rb == null*/) return;
+        if (MovePoint.Length <= 1) return;
 
         // 最初に戻るか
         if(FirstBack)
