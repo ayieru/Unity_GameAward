@@ -98,7 +98,7 @@ public class PlayerAnimation : MonoBehaviour
                 {
                     PlayerAnim.speed = 1.0f;
 
-                    PlayerAnim.Play("Attraction", (int)CurrentLayer);
+                    PlayerAnim.Play("Fall", (int)CurrentLayer);
 
                     return;
                 }
@@ -112,7 +112,7 @@ public class PlayerAnimation : MonoBehaviour
             }
             else if (PlayerObj.GetHorizontalKey() == 0)//歩いてる時
             {
-                PlayerAnim.Play("Idle", (int)CurrentLayer);
+                PlayerAnim.Play("IdleSide", (int)CurrentLayer);
             }
         }
     }
@@ -228,7 +228,8 @@ public class PlayerAnimation : MonoBehaviour
         }
 
         if (collision.gameObject.CompareTag("MagnetGround")
-        || collision.gameObject.CompareTag("IronGround"))
+        || collision.gameObject.CompareTag("IronGround")
+        || collision.gameObject.CompareTag("MagnetBlock"))
         {
             SpecialFloor = false;
 
