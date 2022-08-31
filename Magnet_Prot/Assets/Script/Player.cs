@@ -72,6 +72,10 @@ public class Player : MagnetManager
 
     private Rigidbody2D Rb;
 
+    private GameObject MainCamera;  // MainCamera
+
+    private CameraLockRotate CRL;   // MainCameraにアタッチされてるスクリプト
+
     private bool IsGround = false;      // 地面と触れているか
     private bool IsFootField = false;   // 足場と触れているか
 
@@ -115,6 +119,11 @@ public class Player : MagnetManager
 
         PlayerPosX = transform.position.x;
         PlayerPosY = transform.position.y;
+
+        // プレイヤーの子階層のMainCameraを取得
+        MainCamera = transform.Find("MainCamera").gameObject;
+        // MainCameraにアタッチされてるCameraLockRotateを取得する
+        CRL = MainCamera.GetComponent<CameraLockRotate>();
     }
 
     void Update()
@@ -272,6 +281,10 @@ public class Player : MagnetManager
                 0.0f
                 );
         }
+
+        // ここにカメラ下限より下に行ったら戻る処理を書く。
+
+
     }
 
     public Magnet_Pole GetPole() { return Pole; }
@@ -404,8 +417,6 @@ public class Player : MagnetManager
                 IsFootField = true;
             }
         }
-
-
     }
 
     // あたったタイミングで処理が動く
@@ -454,25 +465,7 @@ public class Player : MagnetManager
 
         if (collision.gameObject.CompareTag("Thorn"))
         {
-            Vector2 worldPos = this.transform.position;
-
-            // セーブポイント通ったか
-            if (SavePoint.instance != null)
-            {
-                // 通ったセーブポイントの座標に復活させる
-                worldPos = SavePoint.instance.GetSavePointPos().position;
-            }
-            // 通ってないなら初期座標に戻る
-            else
-            {
-                worldPos.x = PlayerPosX;
-                worldPos.y = PlayerPosY;
-            }
-
-            transform.position = worldPos;// 座標設定
-
-            // とげに刺さったら、ジャンプの力を0にして浮かないようにする。
-            Rb.velocity = new Vector2(0.0f, 0.0f);
+            DamageJadge();
 
             return;
         }
@@ -597,5 +590,29 @@ public class Player : MagnetManager
         PosY -= texY;
 
         SavePlayerPosY = PosY;
+    }
+
+    // 落下・棘
+    private void DamageJadge()
+    {
+        Vector2 worldPos = this.transform.position;
+
+        // セーブポイント通ったか
+        if (SavePoint.instance != null)
+        {
+            // 通ったセーブポイントの座標に復活させる
+            worldPos = SavePoint.instance.GetSavePointPos().position;
+        }
+        // 通ってないなら初期座標に戻る
+        else
+        {
+            worldPos.x = PlayerPosX;
+            worldPos.y = PlayerPosY;
+        }
+
+        transform.position = worldPos;// 座標設定
+
+        // とげに刺さったら、ジャンプの力を0にして浮かないようにする。
+        Rb.velocity = new Vector2(0.0f, 0.0f);
     }
 }
