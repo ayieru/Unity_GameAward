@@ -110,6 +110,8 @@ public class Player : MagnetManager
 
         MagnetHitCount = 0;
 
+        Speed = 5.0f;
+
         texX = gameObject.GetComponent<SpriteRenderer>().bounds.size.x * 0.5f;
         texY = gameObject.GetComponent<SpriteRenderer>().bounds.size.y * 0.5f;
 
@@ -161,7 +163,14 @@ public class Player : MagnetManager
                 //横入力反応処理
                 if (HorizontalKey > 0)
                 {
-                    Rb.velocity = new Vector2(Speed, Rb.velocity.y);
+                    if(Rb.gravityScale<=0.0f)
+                    {
+                        Rb.velocity = new Vector2(Speed, 0.0f);
+                    }
+                    else
+                    {
+                        Rb.velocity = new Vector2(Speed, Rb.velocity.y);
+                    }
 
                     DirectionX = (int)PlayerDirection.Right;
 
@@ -171,7 +180,14 @@ public class Player : MagnetManager
                 }
                 else if (HorizontalKey < 0)
                 {
-                    Rb.velocity = new Vector2(-Speed, Rb.velocity.y);
+                    if (Rb.gravityScale <= 0.0f)
+                    {
+                        Rb.velocity = new Vector2(-Speed, 0.0f);
+                    }
+                    else
+                    {
+                        Rb.velocity = new Vector2(-Speed, Rb.velocity.y);
+                    }
 
                     DirectionX = (int)PlayerDirection.Left;
 
@@ -183,6 +199,7 @@ public class Player : MagnetManager
                 {
                     if (!WallJump)
                     {
+
                         Rb.velocity = new Vector2(0.0f, Rb.velocity.y);
                     }
                 }
@@ -383,6 +400,8 @@ public class Player : MagnetManager
             IsGround = true;
 
             PlayerState = State.Normal;
+
+            return;
         }
 
         if (collision.gameObject.CompareTag("Block"))
@@ -403,16 +422,32 @@ public class Player : MagnetManager
                 // ジャンプ出来るようにする
                 IsFootField = true;
             }
+
+            return;
         }
 
+        if (collision.gameObject.CompareTag("IronGround") || collision.gameObject.CompareTag("IronSide"))
+        {
+            Rb.gravityScale = 0.0f;
 
+            return;
+        }
     }
 
     // あたったタイミングで処理が動く
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //簡易的に鉄を実装
-        if (collision.gameObject.CompareTag("Iron"))
+        if (collision.gameObject.CompareTag("IronGround"))
+        {
+            Rb.gravityScale = 0.0f;
+
+            NormalJump = false;
+
+            WallJump = false;
+
+            return;
+        }
+        else if (collision.gameObject.CompareTag("IronSide"))
         {
             //既にTure
             if (HitJagde)
@@ -428,7 +463,7 @@ public class Player : MagnetManager
 
             WallJump = false;
 
-            PlayerDirectionCorrection(transform.position.x, collision.gameObject.transform.position.x);
+            SetDirectionX(transform.position.x, collision.gameObject.transform.position.x);
 
             return;
         }
@@ -443,7 +478,7 @@ public class Player : MagnetManager
                 HitJagde = true;
             }
 
-            PlayerDirectionCorrection(transform.position.x, collision.gameObject.transform.position.x);
+            SetDirectionX(transform.position.x, collision.gameObject.transform.position.x);
 
             PlayerAnim.SetPlayerAnimationSpeed(1.0f);
 
@@ -518,7 +553,7 @@ public class Player : MagnetManager
         }
 
         //簡易的に鉄を実装
-        if (collision.gameObject.CompareTag("Iron"))
+        if (collision.gameObject.CompareTag("IronSide") || collision.gameObject.CompareTag("IronGround"))
         {
             if (!TwoFlug)
             {
@@ -548,7 +583,7 @@ public class Player : MagnetManager
         }
     }
 
-    public void PlayerDirectionCorrection(float posA, float posB)
+    public void SetDirectionX(float posA, float posB)
     {
         if ((posA - posB) >= 0.0f)
         {
@@ -565,6 +600,18 @@ public class Player : MagnetManager
             localScale.x = 1.0f;
 
             transform.localScale = localScale;
+        }
+    }
+
+    public void SetDirectionY(float posA, float posB)
+    {
+        if ((posA - posB) >= 0.0f)
+        {
+
+        }
+        else
+        {
+            Rb.gravityScale = 0.0f;
         }
     }
 

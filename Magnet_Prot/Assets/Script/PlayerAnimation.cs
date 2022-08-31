@@ -196,7 +196,7 @@ public class PlayerAnimation : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Iron")
+        if (collision.gameObject.CompareTag("IronSide")
             ||collision.gameObject.CompareTag("NPole")
             ||collision.gameObject.CompareTag("SPole"))
         {
