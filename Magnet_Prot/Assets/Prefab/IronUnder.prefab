@@ -8,8 +8,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1640526495488002865, guid: 3abda3aa2832c404289e0f1f365dc15f, type: 3}
-      propertyPath: m_SpriteTilingProperty.drawMode
+      propertyPath: m_Size.x
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640526495488002865, guid: 3abda3aa2832c404289e0f1f365dc15f, type: 3}
+      propertyPath: m_Size.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640526495488002865, guid: 3abda3aa2832c404289e0f1f365dc15f, type: 3}
+      propertyPath: m_Offset.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640526495488002865, guid: 3abda3aa2832c404289e0f1f365dc15f, type: 3}
+      propertyPath: m_SpriteTilingProperty.drawMode
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1640526495488002865, guid: 3abda3aa2832c404289e0f1f365dc15f, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
@@ -19,6 +31,14 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 1.0031021
       objectReference: {fileID: 0}
+    - target: {fileID: 5713939493108231064, guid: 3abda3aa2832c404289e0f1f365dc15f, type: 3}
+      propertyPath: m_Name
+      value: CollisionSide
+      objectReference: {fileID: 0}
+    - target: {fileID: 5713939493108231064, guid: 3abda3aa2832c404289e0f1f365dc15f, type: 3}
+      propertyPath: m_TagString
+      value: IronSide
+      objectReference: {fileID: 0}
     - target: {fileID: 6048715128019692239, guid: 3abda3aa2832c404289e0f1f365dc15f, type: 3}
       propertyPath: m_Name
       value: IronUnder
@@ -27,13 +47,21 @@ PrefabInstance:
       propertyPath: m_TagString
       value: IronGround
       objectReference: {fileID: 0}
+    - target: {fileID: 6188008396929878326, guid: 3abda3aa2832c404289e0f1f365dc15f, type: 3}
+      propertyPath: m_Size.y
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6188008396929878326, guid: 3abda3aa2832c404289e0f1f365dc15f, type: 3}
+      propertyPath: m_Offset.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7044555791773235086, guid: 3abda3aa2832c404289e0f1f365dc15f, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 9c4fa77be05a54c4094a9b3aa95ed76f, type: 3}
     - target: {fileID: 7044555791773235086, guid: 3abda3aa2832c404289e0f1f365dc15f, type: 3}
       propertyPath: m_DrawMode
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7437139143487505626, guid: 3abda3aa2832c404289e0f1f365dc15f, type: 3}
       propertyPath: m_RootOrder

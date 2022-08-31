@@ -53,13 +53,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Over.unity
     guid: a67bb48a82eaff243beaa191887cd43d
-  - enabled: 0
-    path: Assets/Scenes/DebugScenes/Nagaya.unity
-    guid: d5c933330510fc24d9e1fe9e54826b80
-  - enabled: 0
-    path: Assets/Scenes/ArakawaStage.unity
-    guid: a0dcc1331218c6d4a905c486560a6dc6
-  - enabled: 0
-    path: Assets/Scenes/DebugScenes/Jakio.unity
-    guid: 993f418bf1e63ff4985629090a1ae596
   m_configObjects: {}
